@@ -1,0 +1,33 @@
+﻿2023/04/29 11:38:10 にビルドを開始しました。
+     1>ノード 2 上のプロジェクト "D:\MyProjects\MouseGesture\MouseGesture\MouseGesture.vcxproj" (rebuild ターゲット)。
+     1>_PrepareForClean:
+         ファイル "Release\MouseGesture.lastbuildstate" を削除しています。
+       InitializeBuildStatus:
+         "Release\MouseGesture.unsuccessfulbuild" のタッチ タスクを実行しています。
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D _WINDOWS /D NDEBUG /D _MBCS /D _AFXDLL /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"StdAfx.h" /Fp"Release\MouseGesture.pch" /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
+         stdafx.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D _WINDOWS /D NDEBUG /D _MBCS /D _AFXDLL /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Release\MouseGesture.pch" /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt MouseGesture.cpp MouseGestureDlg.cpp
+         MouseGesture.cpp
+         MouseGestureDlg.cpp
+     1>MouseGestureDlg.cpp(111): warning C4101: 'dwThreadID' : ローカル変数は 1 度も使われていません。
+       ResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /D NDEBUG /D _AFXDLL /l"0x0411" /IRelease\ /nologo /fo"Release\MouseGesture.res" MouseGesture.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\MyProjects\MouseGesture\Release\MouseGesture.exe" /INCREMENTAL:NO /NOLOGO MouseHook.lib /MANIFEST /ManifestFile:"Release\MouseGesture.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\MyProjects\MouseGesture\Release\MouseGesture.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\MyProjects\MouseGesture\Release\MouseGesture.lib" /MACHINE:X86 Release\MouseGesture.res
+         Release\MouseGesture.obj
+         Release\MouseGestureDlg.obj
+         Release\stdafx.obj
+         コード生成しています。
+         コード生成が終了しました。
+         MouseGesture.vcxproj -> D:\MyProjects\MouseGesture\Release\MouseGesture.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"D:\MyProjects\MouseGesture\Release\MouseGesture.exe;#1" /manifest Release\MouseGesture.exe.intermediate.manifest "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\Include\Manifest\dpiaware.manifest"
+       FinalizeBuildStatus:
+         ファイル "Release\MouseGesture.unsuccessfulbuild" を削除しています。
+         "Release\MouseGesture.lastbuildstate" のタッチ タスクを実行しています。
+     1>プロジェクト "D:\MyProjects\MouseGesture\MouseGesture\MouseGesture.vcxproj" (rebuild ターゲット) のビルドが完了しました。
+
+ビルドに成功しました。
+
+経過時間 00:00:04.67
