@@ -1,0 +1,7 @@
+	hookproc @1; MouseHook.def : DLL のモジュール パラメーターを宣言します。
+
+LIBRARY
+
+EXPORTS
+    ; 明示的なエクスポートはここへ記述できます
+	MouseHookProc @1
