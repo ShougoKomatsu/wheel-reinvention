@@ -504,7 +504,7 @@ void CSAutomationDlg::Operate1()
 		dwResult = WaitForSingleObject(g_hThread1,0);
 		if(dwResult != STATUS_WAIT_0){return;}
 	}
-	g_sFilePath1.Format(_T("%s\\%s"),m_sDir, m_sEditFileName1);
+	g_sFilePath1.Format(_T("%s\\Macro\\%s"),m_sDir, m_sEditFileName1);
 	int iParam;
 	iParam=(m_uiEditLoop<<4)+1;
 	g_hThread1 = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
@@ -523,7 +523,7 @@ void CSAutomationDlg::Operate2()
 		if(dwResult != STATUS_WAIT_0){return;}
 	}
 
-	g_sFilePath2.Format(_T("%s\\%s"),m_sDir, m_sEditFileName2);
+	g_sFilePath2.Format(_T("%s\\Macro\\%s"),m_sDir, m_sEditFileName2);
 	int iParam;
 	iParam=(m_uiEditLoop<<4)+2;
 	g_hThread2 = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
@@ -543,7 +543,7 @@ void CSAutomationDlg::Operate3()
 		if(dwResult != STATUS_WAIT_0){return;}
 	}
 
-	g_sFilePath3.Format(_T("%s\\%s"),m_sDir, m_sEditFileName3);
+	g_sFilePath3.Format(_T("%s\\Macro\\%s"),m_sDir, m_sEditFileName3);
 	int iParam;
 	iParam=(m_uiEditLoop<<4)+3;
 	g_hThread2 = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
