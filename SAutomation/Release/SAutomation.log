@@ -1,0 +1,40 @@
+﻿2023/05/10 22:05:59 にビルドを開始しました。
+     1>ノード 2 上のプロジェクト "D:\MyProjects\SAutomation\SAutomation.vcxproj" (rebuild ターゲット)。
+     1>_PrepareForClean:
+         ファイル "Release\SAutomation.lastbuildstate" を削除しています。
+       InitializeBuildStatus:
+         "AlwaysCreate" が指定されたため "Release\SAutomation.unsuccessfulbuild" を作成しています。
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D _WINDOWS /D NDEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"StdAfx.h" /Fp"Release\SAutomation.pch" /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
+         stdafx.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D _WINDOWS /D NDEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Release\SAutomation.pch" /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Automation.cpp MouseAutomation.cpp Perser.cpp SAutomation.cpp SAutomationDlg.cpp
+         Automation.cpp
+     1>Automation.cpp(128): warning C4244: '=' : 'wchar_t' から 'char' への変換です。データが失われる可能性があります。
+     1>Automation.cpp(143): warning C4244: '=' : 'wchar_t' から 'char' への変換です。データが失われる可能性があります。
+         MouseAutomation.cpp
+         Perser.cpp
+         SAutomation.cpp
+         SAutomationDlg.cpp
+       ResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /D NDEBUG /D _UNICODE /D UNICODE /D _AFXDLL /l"0x0411" /IRelease\ /nologo /fo"Release\SAutomation.res" SAutomation.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\MyProjects\SAutomation\Release\SAutomation.exe" /INCREMENTAL:NO /NOLOGO /MANIFEST /ManifestFile:"Release\SAutomation.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\MyProjects\SAutomation\Release\SAutomation.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /ENTRY:"wWinMainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\MyProjects\SAutomation\Release\SAutomation.lib" /MACHINE:X86 Release\SAutomation.res
+         Release\Automation.obj
+         Release\MouseAutomation.obj
+         Release\Perser.obj
+         Release\SAutomation.obj
+         Release\SAutomationDlg.obj
+         Release\stdafx.obj
+         コード生成しています。
+         コード生成が終了しました。
+         SAutomation.vcxproj -> D:\MyProjects\SAutomation\Release\SAutomation.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"D:\MyProjects\SAutomation\Release\SAutomation.exe;#1" /manifest Release\SAutomation.exe.intermediate.manifest "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\Include\Manifest\dpiaware.manifest"
+       FinalizeBuildStatus:
+         ファイル "Release\SAutomation.unsuccessfulbuild" を削除しています。
+         "Release\SAutomation.lastbuildstate" のタッチ タスクを実行しています。
+     1>プロジェクト "D:\MyProjects\SAutomation\SAutomation.vcxproj" (rebuild ターゲット) のビルドが完了しました。
+
+ビルドに成功しました。
+
+経過時間 00:00:04.33
