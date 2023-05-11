@@ -27,6 +27,7 @@ protected:
 	DWORD m_dwHotKey3;
 	CString m_sDir;
 	void FileSelect(CString *sFileName);
+	void SaveSettings();
 	BOOL MouseMoveAndDisp(DWORD dwMoveDirection, int iDistance);
 	// ŽÀ‘•
 protected:

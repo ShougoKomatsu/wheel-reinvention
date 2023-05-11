@@ -115,3 +115,20 @@ DWORD WINAPI CommandThread(LPVOID arg)
 	TerminateThread(hGetStepKey, 0);
 	return 0;
 }
+BOOL WaitUntilCtrlShiftReleased()
+{
+	short shCtrl;
+	short shShift;
+	while(1)
+	{
+		shShift = GetKeyState(VK_LSHIFT);
+		shCtrl = GetKeyState(VK_CONTROL);
+		if((shShift>=0)&&(shCtrl>=0)) 
+		{
+			return TRUE;
+		}
+
+		Sleep(1);
+	}
+	return FALSE;
+}

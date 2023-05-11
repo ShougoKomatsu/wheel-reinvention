@@ -236,23 +236,7 @@ HCURSOR CSAutomationDlg::OnQueryDragIcon()
 void CSAutomationDlg::OnEnChangeEdit1()
 {
 }
-BOOL WaitUntilCtrlShiftReleased()
-{
-	short shCtrl;
-	short shShift;
-	while(1)
-	{
-		shShift = GetKeyState(VK_LSHIFT);
-		shCtrl = GetKeyState(VK_CONTROL);
-		if((shShift>=0)&&(shCtrl>=0)) 
-		{
-			return TRUE;
-		}
 
-		Sleep(1);
-	}
-	return FALSE;
-}
 BOOL CSAutomationDlg::MouseMoveAndDisp(DWORD dwMoveDirection, int iDistance)
 {
 	long lMouseX;
@@ -396,12 +380,13 @@ void CSAutomationDlg::OnBnClickedButton1()
 {
 	FileSelect(&m_sEditFileName1);
 	UpdateData(FALSE);
-
+	SaveSettings();
 }
 void CSAutomationDlg::OnBnClickedButton2()
 {
 	FileSelect(&m_sEditFileName2);
 	UpdateData(FALSE);
+	SaveSettings();
 }
 
 
@@ -409,11 +394,11 @@ void CSAutomationDlg::OnBnClickedButton3()
 {
 	FileSelect(&m_sEditFileName3);
 	UpdateData(FALSE);
+	SaveSettings();
 }
 
-BOOL CSAutomationDlg::DestroyWindow()
+void CSAutomationDlg::SaveSettings()
 {
-	if(g_hhook != NULL){UnhookWindowsHookEx(g_hhook);}
 	UpdateData(TRUE);
 	CString sFilePath;
 	sFilePath.Format(_T("%s\\SAutomation.ini"), m_sDir); 
@@ -421,5 +406,11 @@ BOOL CSAutomationDlg::DestroyWindow()
 	WritePrivateProfileString(_T("FileName"),_T("1"),m_sEditFileName1,sFilePath);
 	WritePrivateProfileString(_T("FileName"),_T("2"),m_sEditFileName2,sFilePath);
 	WritePrivateProfileString(_T("FileName"),_T("3"),m_sEditFileName3,sFilePath);
+}
+
+BOOL CSAutomationDlg::DestroyWindow()
+{
+	if(g_hhook != NULL){UnhookWindowsHookEx(g_hhook);}
+	SaveSettings();
 	return CDialogEx::DestroyWindow();
 }
