@@ -22,8 +22,9 @@ protected:
 	void Operate1();
 	void Operate2();
 	void Operate3();
-	long m_lMouseX;
-	long m_lMouseY;
+	DWORD m_dwHotKey1;
+	DWORD m_dwHotKey2;
+	DWORD m_dwHotKey3;
 	CString m_sDir;
 	void FileSelect(CString *sFileName);
 	BOOL MouseMoveAndDisp(DWORD dwMoveDirection, int iDistance);

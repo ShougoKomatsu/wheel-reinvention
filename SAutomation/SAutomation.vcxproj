@@ -100,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Automation.h" />
+    <ClInclude Include="Common.h" />
     <ClInclude Include="MouseAutomation.h" />
     <ClInclude Include="Perser.h" />
     <ClInclude Include="Resource.h" />
@@ -107,9 +108,11 @@
     <ClInclude Include="SAutomationDlg.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Thread.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Automation.cpp" />
+    <ClCompile Include="Common.cpp" />
     <ClCompile Include="MouseAutomation.cpp" />
     <ClCompile Include="Perser.cpp" />
     <ClCompile Include="SAutomation.cpp" />
@@ -118,6 +121,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Thread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SAutomation.rc" />

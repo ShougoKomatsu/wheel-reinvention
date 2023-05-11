@@ -6,7 +6,7 @@
 #include "SAutomation.h"
 #include "SAutomationDlg.h"
 #include "afxdialogex.h"
-
+#include "Thread.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -14,17 +14,7 @@
 
 #include "Automation.h"
 #define TIMER_DISP_MOUSPOS (100)
-HANDLE g_hThread1;
-HANDLE g_hThread2;
-HANDLE g_hThread3;
 
-CString g_sFilePath1;
-CString g_sFilePath2;
-CString g_sFilePath3;
-BOOL g_bHalt = FALSE;
-BOOL g_bSuspend = FALSE;
-LONGLONG g_llStepIn = 0;
-LONGLONG g_llStepOut = 1;
 
 // アプリケーションのバージョン情報に使われる CAboutDlg ダイアログ
 
@@ -139,33 +129,26 @@ BOOL CSAutomationDlg::OnInitDialog()
 			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
 		}
 	}
-
+	
+	POINT p;
+	GetCursorPos(&p);
+	g_iR=p.y;
+	g_iC=p.x;
 	g_hhook=SetWindowsHookEx(WH_MOUSE_LL,(HOOKPROC)MouseHookProc,NULL ,0);
 
 
-	m_lMouseX=0;
-	m_lMouseY=0;
-	g_hThread1 = NULL;
-	g_hThread2 = NULL;
-	SetTimer(TIMER_DISP_MOUSPOS,100, NULL);
-	RegisterHotKey(NULL, 1, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, (0x42));
-	RegisterHotKey(NULL, 1, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, (0x43));
-	RegisterHotKey(NULL, 1, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, (0x44));
+	SetTimer(TIMER_DISP_MOUSPOS,200, NULL);
 
-	RegisterHotKey(NULL, 1, MOD_NOREPEAT, VK_ESCAPE);
 	m_uiEditLoop=1;
 	TCHAR szData[MAX_PATH];
 	GetCurrentDirectory(sizeof(szData)/sizeof(TCHAR),szData);
 	m_sDir.Format(_T("%s"),szData);
 
-	CFileFind cf;
 	CString sMacroFolderPath;
 	sMacroFolderPath.Format(_T("%s\\Macro"),m_sDir);
-
-	if(cf.FindFile(sMacroFolderPath) != TRUE)
-	{
-		_tmkdir(sMacroFolderPath);
-	}
+	
+	CFileFind cf;
+	if(cf.FindFile(sMacroFolderPath) != TRUE){_tmkdir(sMacroFolderPath);}
 
 
 	CString sFilePath;
@@ -176,6 +159,19 @@ BOOL CSAutomationDlg::OnInitDialog()
 	m_sEditFileName2.Format(_T("%s"),szData);
 	GetPrivateProfileString(_T("FileName"),_T("3"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 	m_sEditFileName3.Format(_T("%s"),szData);
+
+	g_bHalt = FALSE;
+	g_hThread1 = NULL;
+	g_hThread2 = NULL;
+	g_hThread3 = NULL;
+	m_dwHotKey1=0x42;
+	m_dwHotKey2=0x43;
+	m_dwHotKey3=0x44;
+	RegisterHotKey(NULL, 1, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey1);
+	RegisterHotKey(NULL, 1, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey2);
+	RegisterHotKey(NULL, 1, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey3);
+
+	RegisterHotKey(NULL, 1, MOD_NOREPEAT, VK_ESCAPE);
 
 	UpdateData(FALSE);
 
@@ -237,77 +233,6 @@ HCURSOR CSAutomationDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
-BOOL ReadUTFFile(CString sFilePath, CString* sData)
-{
-	CFileFind cFind;
-	if(cFind.FindFile(sFilePath)==FALSE){return FALSE;}
-
-	FILE* f;
-	CString sBuf;
-	CString sDocBuf;
-
-	_tfopen_s(&f, sFilePath,_T("r, ccs=UTF-8"));
-	CStdioFile cstdioF(f);
-	while(cstdioF.ReadString(sBuf)!= NULL){sDocBuf = sDocBuf + sBuf+_T("\x0d\x0a");}
-	cstdioF.Close();
-	fclose(f);
-
-	sData->Format(_T("%s"), sDocBuf);
-	return TRUE;
-}
-
-
-BOOL ReadTextFile(CString sFilePath, CStringArray* saCommands)
-{
-
-	saCommands->RemoveAll();
-	BOOL bRet;
-	CString sFileDataRaw;
-	bRet = ReadUTFFile(sFilePath, &sFileDataRaw);
-	if(bRet != TRUE){return FALSE;}
-
-	unsigned long ulFileDataLength;
-	long lCR1;
-	long lCR2;
-
-	lCR1 = 0;
-	ulFileDataLength = sFileDataRaw.GetLength();
-	for(unsigned long ulPointer = 0; ulPointer<=ulFileDataLength; ulPointer++)
-	{
-		lCR2 = sFileDataRaw.Find(_T("\r"),lCR1);
-		if(lCR2<=0)
-		{
-			lCR2 = sFileDataRaw.Find(_T("\n"),lCR1);
-			if(lCR2<=0)
-			{
-				CString sBufTemp;
-				sBufTemp.Trim(_T("\r"));
-				sBufTemp.Trim(_T("\n"));
-				sBufTemp.Format(_T("%s"), sFileDataRaw.Mid(lCR1, sFileDataRaw.GetLength()-lCR1));
-				if(sBufTemp.GetLength()>0)
-				{
-					if(sBufTemp.GetLength()>0){saCommands->Add(sBufTemp);}
-				}
-				return TRUE;
-			}
-		}
-
-		CString sLineData;
-		sLineData.Format(_T("%s"), sFileDataRaw.Mid(lCR1, lCR2-lCR1));
-		sLineData.Trim(_T("\r"));
-		sLineData.Trim(_T("\n"));
-		if(sLineData.GetLength()>0)
-		{
-			if(sLineData.GetLength()>0){saCommands->Add(sLineData);}
-		}
-		lCR1=lCR2+1;
-	}
-
-	//ここには来ない
-	return FALSE;
-}
-
 void CSAutomationDlg::OnEnChangeEdit1()
 {
 }
@@ -330,19 +255,23 @@ BOOL WaitUntilCtrlShiftReleased()
 }
 BOOL CSAutomationDlg::MouseMoveAndDisp(DWORD dwMoveDirection, int iDistance)
 {
-	if(dwMoveDirection == VK_LEFT){m_lMouseX -= iDistance;}
-	if(dwMoveDirection == VK_RIGHT){m_lMouseX += iDistance;}
-	if(dwMoveDirection == VK_UP){m_lMouseY -= iDistance;}
-	if(dwMoveDirection == VK_DOWN){m_lMouseY += iDistance;}
+	long lMouseX;
+	long lMouseY;
+	lMouseX = g_iC;
+	lMouseY = g_iR;
+	if(dwMoveDirection == VK_LEFT){lMouseX -= iDistance;}
+	if(dwMoveDirection == VK_RIGHT){lMouseX += iDistance;}
+	if(dwMoveDirection == VK_UP){lMouseY -= iDistance;}
+	if(dwMoveDirection == VK_DOWN){lMouseY += iDistance;}
 
-	if(m_lMouseX<0){m_lMouseX=0;}
-	if(m_lMouseY<0){m_lMouseY=0;}
-	if(m_lMouseX>=::GetSystemMetrics(SM_CXSCREEN)){m_lMouseX = ::GetSystemMetrics(SM_CXSCREEN)-1;}
-	if(m_lMouseY>=::GetSystemMetrics(SM_CXSCREEN)){m_lMouseY = ::GetSystemMetrics(SM_CYSCREEN)-1;}
+	if(lMouseX<0){lMouseX=0;}
+	if(lMouseY<0){lMouseY=0;}
+	if(lMouseX>=::GetSystemMetrics(SM_CXSCREEN)){lMouseX = ::GetSystemMetrics(SM_CXSCREEN)-1;}
+	if(lMouseY>=::GetSystemMetrics(SM_CXSCREEN)){lMouseY = ::GetSystemMetrics(SM_CYSCREEN)-1;}
 
 	DWORD dwX, dwY;
-	dwX = m_lMouseX * 65535/ ::GetSystemMetrics(SM_CXSCREEN);
-	dwY = m_lMouseY * 65535/ ::GetSystemMetrics(SM_CYSCREEN);
+	dwX = (lMouseX+1) * 65535/ ::GetSystemMetrics(SM_CXSCREEN);
+	dwY = (lMouseY+1) * 65535/ ::GetSystemMetrics(SM_CYSCREEN);
 	mouse_event(MOUSEEVENTF_ABSOLUTE|MOUSEEVENTF_MOVE, dwX, dwY, NULL, NULL);
 
 	return TRUE;
@@ -364,9 +293,9 @@ BOOL CSAutomationDlg::PreTranslateMessage(MSG* pMsg)
 	{
 		int iKey;
 		iKey = (pMsg->lParam)>>16;
-		if(iKey == 0x42){Operate1();return TRUE;}
-		if(iKey == 0x43){Operate2();return TRUE;}
-		if(iKey == 0x44){Operate3();return TRUE;}
+		if(iKey == m_dwHotKey1){Operate1();return TRUE;}
+		if(iKey == m_dwHotKey2){Operate2();return TRUE;}
+		if(iKey == m_dwHotKey3){Operate3();return TRUE;}
 		if(iKey == VK_ESCAPE){g_bHalt = TRUE;}
 	}
 
@@ -392,105 +321,6 @@ void CSAutomationDlg::OnMouseMove(UINT nFlags, CPoint point)
 {
 
 	CDialogEx::OnMouseMove(nFlags, point);
-}
-
-DWORD WINAPI GetKeyThread(LPVOID arg)
-{
-	short shSpace;
-	short shCtrl;
-	short shShift;
-	while(1)
-	{
-		shShift = GetKeyState(VK_SHIFT);
-		shCtrl = GetKeyState(VK_CONTROL);
-		shSpace = GetKeyState(VK_SPACE);
-		if((shSpace<0)&&(shShift<0)&&(shCtrl<0)) 
-		{
-			g_bSuspend = TRUE;  
-		}
-		else        	
-		{
-			g_bSuspend = FALSE;
-		}
-		Sleep(1);
-	}
-
-	return 0;
-} 
-DWORD WINAPI GetStepKeyThread(LPVOID arg)
-{
-	short shStep;
-	short shCtrl;
-	short shShift;
-	while(1)
-	{
-
-		shShift = GetKeyState(VK_SHIFT);
-		shCtrl = GetKeyState(VK_CONTROL);
-		shStep = GetKeyState(0x53);
-		if((shStep<0)&&(shShift<0)&&(shCtrl<0)) 
-		{
-			if(g_llStepOut==1){g_llStepIn=1;}
-		}
-
-		Sleep(1);
-	}
-	return 0;
-} 
-
-int g_iSceneData1;
-int g_iSceneData2;
-int g_iSceneData3;
-DWORD WINAPI CommandThread(LPVOID arg)
-{
-	HANDLE hGetKey;
-	HANDLE hGetStepKey;
-	DWORD dwThreadID;
-	int* iSceneData;
-	hGetKey = CreateThread(NULL, 0, GetKeyThread, NULL, 0, &dwThreadID);
-	hGetStepKey = CreateThread(NULL, 0, GetStepKeyThread, NULL, 0, &dwThreadID);
-	CStringArray saCommands;
-	if(((*(int*)arg)&0x03) ==1)
-	{
-		ReadTextFile(g_sFilePath1,&saCommands);
-		g_iSceneData1=0;
-		iSceneData=&g_iSceneData1;
-	} 
-	if(((*(int*)arg)&0x03) ==2)
-	{
-		ReadTextFile(g_sFilePath2,&saCommands);
-		g_iSceneData2=2;
-		iSceneData=&g_iSceneData2;
-	}
-	if(((*(int*)arg)&0x03) ==3)
-	{
-		ReadTextFile(g_sFilePath3,&saCommands);
-		g_iSceneData3=3;
-		iSceneData=&g_iSceneData3;
-	}
-
-
-	int iLoop;
-	iLoop = (*(int*)arg)>>4;
-	(*(int*)arg) = 0;  
-
-	int iListLength;
-	int iRet;
-	for(int j=0; j<iLoop; j++)
-	{
-		iListLength =(int) saCommands.GetCount();
-		for(int i=0; i<iListLength; i++)
-		{
-			if(g_bHalt == TRUE){g_bHalt = FALSE;return 0;}
-			iRet = OperateCommand(iSceneData, &g_bHalt, &g_bSuspend, &g_llStepIn, saCommands.GetAt(i));
-			if(iRet != 0){g_bHalt = FALSE; return 0;}
-			g_llStepOut=1;
-			g_llStepIn=0;
-		}
-	}
-	TerminateThread(hGetKey, 0);
-	TerminateThread(hGetStepKey, 0);
-	return 0;
 }
 
 void CSAutomationDlg::Operate1()
@@ -583,7 +413,6 @@ void CSAutomationDlg::OnBnClickedButton3()
 
 BOOL CSAutomationDlg::DestroyWindow()
 {
-	// TODO: ここに特定なコードを追加するか、もしくは基本クラスを呼び出してください。
 	if(g_hhook != NULL){UnhookWindowsHookEx(g_hhook);}
 	UpdateData(TRUE);
 	CString sFilePath;
