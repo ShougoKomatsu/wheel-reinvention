@@ -123,7 +123,7 @@ int atoi_hex(CString sData, BYTE* byData)
 
 	if(sData.Left(2).Compare(_T("0x"))!=0){return -1;}
 	if(sData.GetLength()!=4){return -1;}
-
+		
 	char cChar;
 	cChar = sData.GetAt(2);
 	if((cChar >= '0') && (cChar<= '9'))
@@ -166,6 +166,11 @@ int KeyDownAndUp(CStringArray* saData)
 		atoi_hex(saData->GetAt(0), &bySendKey);
 		return KeyDownAndUp(bySendKey);
 	}
+	
+	if(saData->GetAt(0).Compare(_T("©"))==0){return KeyDownAndUp(VK_LEFT);}
+	if(saData->GetAt(0).Compare(_T("ª"))==0){return KeyDownAndUp(VK_UP);}
+	if(saData->GetAt(0).Compare(_T("¨"))==0){return KeyDownAndUp(VK_RIGHT);}
+	if(saData->GetAt(0).Compare(_T("«"))==0){return KeyDownAndUp(VK_DOWN);}
 
 	bySendKey = (BYTE)(saData->GetAt(0).GetAt(0));
 
