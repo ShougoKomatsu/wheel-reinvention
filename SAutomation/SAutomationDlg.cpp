@@ -260,6 +260,25 @@ BOOL CSAutomationDlg::MouseMoveAndDisp(DWORD dwMoveDirection, int iDistance)
 
 	return TRUE;
 }
+
+BOOL WaitUntilCtrlShiftReleased()
+{
+	short shCtrl;
+	short shShift;
+	while(1)
+	{
+		shShift = GetAsyncKeyState (VK_LSHIFT);
+		shCtrl = GetAsyncKeyState (VK_CONTROL);
+		if((shShift>=0)&&(shCtrl>=0)) 
+		{
+			return TRUE;
+		}
+
+		Sleep(1);
+	}
+	return FALSE;
+}
+
 BOOL CSAutomationDlg::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: ここに特定なコードを追加するか、もしくは基本クラスを呼び出してください。
@@ -277,9 +296,9 @@ BOOL CSAutomationDlg::PreTranslateMessage(MSG* pMsg)
 	{
 		int iKey;
 		iKey = (pMsg->lParam)>>16;
-		if(iKey == m_dwHotKey1){Operate1();return TRUE;}
-		if(iKey == m_dwHotKey2){Operate2();return TRUE;}
-		if(iKey == m_dwHotKey3){Operate3();return TRUE;}
+		if(iKey == m_dwHotKey1){WaitUntilCtrlShiftReleased(); Operate1();return TRUE;}
+		if(iKey == m_dwHotKey2){WaitUntilCtrlShiftReleased(); Operate2();return TRUE;}
+		if(iKey == m_dwHotKey3){WaitUntilCtrlShiftReleased(); Operate3();return TRUE;}
 		if(iKey == VK_ESCAPE){g_bHalt = TRUE;}
 	}
 
