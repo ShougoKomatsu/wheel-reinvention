@@ -369,7 +369,7 @@ void CSAutomationDlg::Operate3()
 	UpdateData(TRUE);
 	DWORD dwThreadID;
 
-	if(g_hThread2 != NULL)
+	if(g_hThread3 != NULL)
 	{
 		DWORD dwResult;
 		dwResult = WaitForSingleObject(g_hThread3,0);
@@ -379,7 +379,7 @@ void CSAutomationDlg::Operate3()
 	g_sFilePath3.Format(_T("%s\\Macro\\%s"),m_sDir, m_sEditFileName3);
 	int iParam;
 	iParam=(m_uiEditLoop<<4)+3;
-	g_hThread2 = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
+	g_hThread3 = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 }
 
