@@ -56,4 +56,8 @@ public:
 	CString m_sEditFileName2;
 	CString m_sEditFileName3;
 	afx_msg LRESULT OnOperate(WPARAM wParam, LPARAM lParam);
+	CComboBox m_combo1;
+	CComboBox m_combo2;
+	CComboBox m_combo3;
+	afx_msg void OnSelchangeCombo3();
 };
