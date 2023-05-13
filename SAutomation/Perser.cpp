@@ -22,7 +22,7 @@ BOOL GetCommand(CString sDataLine, int* iCommandType)
 	if(sDataLocal.SpanIncluding(_T("0123456789")).Compare(sDataLocal)==0){*iCommandType = COMMAND_DELAY; return TRUE;}
 
 	if((sDataLocal.Left(4).Compare(_T("dim "))==0)){*iCommandType=COMMAND_DECRARE; return TRUE;}
-
+	if(sDataLocal.Compare(_T("_"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
 
 	if(sDataLocal.GetLength()==2)
 	{
@@ -158,7 +158,7 @@ BOOL GetKeyType(CString sInput, CString* sOut)
 		if(sRemindLower.Compare(_T("f23"))==0){sOut->Format(_T("0x%02x"),VK_F23);return TRUE;}
 		if(sRemindLower.Compare(_T("f24"))==0){sOut->Format(_T("0x%02x"),VK_F24);return TRUE;}
 	}
-
+	
 	if(sRemindLower.Compare(_T("lshift"))==0){sOut->Format(_T("0x%02x"),VK_SHIFT);return TRUE;}
 	if(sRemindLower.Compare(_T("rshift"))==0){sOut->Format(_T("0x%02x"),VK_SHIFT);return TRUE;}
 	if(sRemindLower.Compare(_T("lctrl"))==0){sOut->Format(_T("0x%02x"),VK_CONTROL);return TRUE;}

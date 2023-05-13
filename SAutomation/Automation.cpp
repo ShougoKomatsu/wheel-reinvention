@@ -92,6 +92,27 @@ int KeyDownAndUp(BYTE bySendKey)
 	return 0;
 }
 
+int KeyDownAndUpUnicode(TCHAR tch)
+{
+	INPUT input[2];
+	input[0].type = INPUT_KEYBOARD;
+	input[0].ki.wVk = 0;
+	input[0].ki.wScan = tch;
+	input[0].ki.dwFlags = KEYEVENTF_UNICODE;
+	input[0].ki.time = 0;
+	input[0].ki.dwExtraInfo = 0;
+
+	input[1].type = INPUT_KEYBOARD;
+	input[1].ki.wVk = 0;
+	input[1].ki.wScan = tch;
+	input[1].ki.dwFlags = KEYEVENTF_UNICODE | KEYEVENTF_KEYUP;
+	input[1].ki.time = 0;
+	input[1].ki.dwExtraInfo = 0;
+
+	SendInput(2, input, sizeof(INPUT));
+	return 0;
+}
+
 int KeyDown(BYTE bySendKey)
 {
 	INPUT inputs[1] = {};
@@ -171,6 +192,11 @@ int KeyDownAndUp(CStringArray* saData)
 	if(saData->GetAt(0).Compare(_T("ª"))==0){return KeyDownAndUp(VK_UP);}
 	if(saData->GetAt(0).Compare(_T("¨"))==0){return KeyDownAndUp(VK_RIGHT);}
 	if(saData->GetAt(0).Compare(_T("«"))==0){return KeyDownAndUp(VK_DOWN);}
+	
+	if(saData->GetAt(0).Compare(_T("_"))==0)
+	{
+		return KeyDownAndUpUnicode(L'_');
+	}
 
 	bySendKey = (BYTE)(saData->GetAt(0).GetAt(0));
 
