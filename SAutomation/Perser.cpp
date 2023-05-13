@@ -23,6 +23,8 @@ BOOL GetCommand(CString sDataLine, int* iCommandType)
 
 	if((sDataLocal.Left(4).Compare(_T("dim "))==0)){*iCommandType=COMMAND_DECRARE; return TRUE;}
 	if(sDataLocal.Compare(_T("_"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+	if(sDataLocal.Compare(_T("enter"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+	if(sDataLocal.Compare(_T("return"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
 
 	if(sDataLocal.GetLength()==2)
 	{
@@ -167,7 +169,9 @@ BOOL GetKeyType(CString sInput, CString* sOut)
 	if(sRemindLower.Compare(_T("ralt"))==0){sOut->Format(_T("0x%02x"),VK_MENU);return TRUE;}
 
 	if(sRemindLower.Compare(_T("tab"))==0){sOut->Format(_T("0x%02x"),VK_TAB);return TRUE;}
-	if(sRemindLower.Compare(_T("enter"))==0){sOut->Format(_T("0x%02x"),VK_RETURN);return TRUE;}
+	if(sRemindLower.Compare(_T("enter"))==0){
+		sOut->Format(_T("0x%02x"),VK_RETURN);return TRUE;
+	}
 	if(sRemindLower.Compare(_T("return"))==0){sOut->Format(_T("0x%02x"),VK_RETURN);return TRUE;}
 	if(sRemindLower.Compare(_T("space"))==0){sOut->Format(_T("0x%02x"),VK_SPACE);return TRUE;}
 	sOut->Format(_T("%s"), sRemind);
