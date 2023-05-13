@@ -14,16 +14,48 @@ BOOL GetCommand(CString sDataLine, int* iCommandType)
 	if(sDataLocal.Right(2).Compare(_T("up"))==0){*iCommandType=COMMAND_KEY_UP; return TRUE;}
 
 	if(sDataLocal.Left(5).Compare(_T("break"))==0){*iCommandType=COMMAND_BREAK; return TRUE;}
-	if(sDataLocal.Left(12).Compare(_T("lmouse click"))==0){
-		*iCommandType=COMMAND_MOUSE_L_CLICK; 
-		return TRUE;}
+	if(sDataLocal.Left(12).Compare(_T("lmouse click"))==0){		*iCommandType=COMMAND_MOUSE_L_CLICK; 		return TRUE;}
 	if(sDataLocal.Left(11).Compare(_T("lmouse down"))==0){*iCommandType=COMMAND_MOUSE_L_DOWN; return TRUE;}
 	if(sDataLocal.Left(9).Compare(_T("lmouse up"))==0){*iCommandType=COMMAND_MOUSE_L_UP; return TRUE;}
 	if(sDataLocal.Left(8).Compare(_T("mousepos"))==0){*iCommandType=COMMAND_MOUSE_MOVE; return TRUE;}
 	if(sDataLocal.Left(5).Compare(_T("wheel"))==0){*iCommandType=COMMAND_WHEEL; return TRUE;}
 	if(sDataLocal.SpanIncluding(_T("0123456789")).Compare(sDataLocal)==0){*iCommandType = COMMAND_DELAY; return TRUE;}
-	
+
 	if((sDataLocal.Left(4).Compare(_T("dim "))==0)){*iCommandType=COMMAND_DECRARE; return TRUE;}
+
+
+	if(sDataLocal.GetLength()==2)
+	{
+		if(sDataLocal.Compare(_T("f1"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f2"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f3"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f4"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f5"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f6"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f7"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f8"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f9"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+	}
+	
+	if(sDataLocal.GetLength()==3)
+	{
+		if(sDataLocal.Compare(_T("f10"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f11"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f12"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f13"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f14"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f15"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f16"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f17"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f18"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f19"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		
+		if(sDataLocal.Compare(_T("f20"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f21"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f22"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f23"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+		if(sDataLocal.Compare(_T("f24"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+	}
 
 	if((sDataLocal.Left(1).Compare(_T("<"))==0)&&(sDataLocal.Left(1).Compare(_T(">"))==0))
 	{
@@ -42,7 +74,7 @@ BOOL GetCommand(CString sDataLine, int* iCommandType)
 		}
 		else{return FALSE;}
 	}
-	
+
 	if((sDataLocal.Left(1).Compare(_T("<"))==0)&&(sDataLocal.Left(1).Compare(_T(">"))==0))
 	{
 		CString sRemindRepeat;
@@ -93,6 +125,39 @@ BOOL GetKeyType(CString sInput, CString* sOut)
 	CString sRemindLower;
 	sRemindLower.Format(_T("%s"), sRemind);
 	sRemindLower.MakeLower();
+	
+	if(sRemindLower.GetLength()==2)
+	{
+		if(sRemindLower.Compare(_T("f1"))==0){sOut->Format(_T("0x%02x"),VK_F1);return TRUE;}
+		if(sRemindLower.Compare(_T("f2"))==0){sOut->Format(_T("0x%02x"),VK_F2);return TRUE;}
+		if(sRemindLower.Compare(_T("f3"))==0){sOut->Format(_T("0x%02x"),VK_F3);return TRUE;}
+		if(sRemindLower.Compare(_T("f4"))==0){sOut->Format(_T("0x%02x"),VK_F4);return TRUE;}
+		if(sRemindLower.Compare(_T("f5"))==0){sOut->Format(_T("0x%02x"),VK_F5);return TRUE;}
+		if(sRemindLower.Compare(_T("f6"))==0){sOut->Format(_T("0x%02x"),VK_F6);return TRUE;}
+		if(sRemindLower.Compare(_T("f7"))==0){sOut->Format(_T("0x%02x"),VK_F7);return TRUE;}
+		if(sRemindLower.Compare(_T("f8"))==0){sOut->Format(_T("0x%02x"),VK_F8);return TRUE;}
+		if(sRemindLower.Compare(_T("f9"))==0){sOut->Format(_T("0x%02x"),VK_F9);return TRUE;}
+	}
+	
+	if(sRemindLower.GetLength()==3)
+	{
+		if(sRemindLower.Compare(_T("f10"))==0){sOut->Format(_T("0x%02x"),VK_F10);return TRUE;}
+		if(sRemindLower.Compare(_T("f11"))==0){sOut->Format(_T("0x%02x"),VK_F11);return TRUE;}
+		if(sRemindLower.Compare(_T("f12"))==0){sOut->Format(_T("0x%02x"),VK_F12);return TRUE;}
+		if(sRemindLower.Compare(_T("f13"))==0){sOut->Format(_T("0x%02x"),VK_F13);return TRUE;}
+		if(sRemindLower.Compare(_T("f14"))==0){sOut->Format(_T("0x%02x"),VK_F14);return TRUE;}
+		if(sRemindLower.Compare(_T("f15"))==0){sOut->Format(_T("0x%02x"),VK_F15);return TRUE;}
+		if(sRemindLower.Compare(_T("f16"))==0){sOut->Format(_T("0x%02x"),VK_F16);return TRUE;}
+		if(sRemindLower.Compare(_T("f17"))==0){sOut->Format(_T("0x%02x"),VK_F17);return TRUE;}
+		if(sRemindLower.Compare(_T("f18"))==0){sOut->Format(_T("0x%02x"),VK_F18);return TRUE;}
+		if(sRemindLower.Compare(_T("f19"))==0){sOut->Format(_T("0x%02x"),VK_F19);return TRUE;}
+		
+		if(sRemindLower.Compare(_T("f20"))==0){sOut->Format(_T("0x%02x"),VK_F20);return TRUE;}
+		if(sRemindLower.Compare(_T("f21"))==0){sOut->Format(_T("0x%02x"),VK_F21);return TRUE;}
+		if(sRemindLower.Compare(_T("f22"))==0){sOut->Format(_T("0x%02x"),VK_F22);return TRUE;}
+		if(sRemindLower.Compare(_T("f23"))==0){sOut->Format(_T("0x%02x"),VK_F23);return TRUE;}
+		if(sRemindLower.Compare(_T("f24"))==0){sOut->Format(_T("0x%02x"),VK_F24);return TRUE;}
+	}
 
 	if(sRemindLower.Compare(_T("lshift"))==0){sOut->Format(_T("0x%02x"),VK_SHIFT);return TRUE;}
 	if(sRemindLower.Compare(_T("rshift"))==0){sOut->Format(_T("0x%02x"),VK_SHIFT);return TRUE;}
