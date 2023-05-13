@@ -296,9 +296,9 @@ BOOL CSAutomationDlg::PreTranslateMessage(MSG* pMsg)
 	{
 		int iKey;
 		iKey = (pMsg->lParam)>>16;
-		if(iKey == m_dwHotKey1){WaitUntilCtrlShiftReleased(); Operate1();return TRUE;}
-		if(iKey == m_dwHotKey2){WaitUntilCtrlShiftReleased(); Operate2();return TRUE;}
-		if(iKey == m_dwHotKey3){WaitUntilCtrlShiftReleased(); Operate3();return TRUE;}
+		if(iKey == m_dwHotKey1){ Operate1();return TRUE;}
+		if(iKey == m_dwHotKey2){ Operate2();return TRUE;}
+		if(iKey == m_dwHotKey3){Operate3();return TRUE;}
 		if(iKey == VK_ESCAPE){g_bHalt = TRUE;}
 	}
 
