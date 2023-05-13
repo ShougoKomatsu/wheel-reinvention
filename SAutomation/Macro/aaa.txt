@@ -1,5 +1,5 @@
 ﻿
-LMouse Click(1080, 1600)
+LMouse Click(1080, 100)
 300
 LMouse Click(1080, 1466)
 300

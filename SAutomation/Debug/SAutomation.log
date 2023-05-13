@@ -1,0 +1,29 @@
+﻿2023/05/12 20:18:31 にビルドを開始しました。
+     1>ノード 2 上のプロジェクト "C:\Users\PC4\Documents\GitHub\wheel-reinvention\SAutomation\SAutomation.vcxproj" (build ターゲット)。
+     1>InitializeBuildStatus:
+         "AlwaysCreate" が指定されたため "Debug\SAutomation.unsuccessfulbuild" を作成しています。
+       ClCompile:
+         すべての出力が最新のものです。
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\SAutomation.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt SAutomationDlg.cpp
+         SAutomationDlg.cpp
+       ResourceCompile:
+         すべての出力が最新のものです。
+       ManifestResourceCompile:
+         すべての出力が最新のものです。
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\PC4\Documents\GitHub\wheel-reinvention\SAutomation\Debug\SAutomation.exe" /INCREMENTAL /NOLOGO /MANIFEST /ManifestFile:"Debug\SAutomation.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\PC4\Documents\GitHub\wheel-reinvention\SAutomation\Debug\SAutomation.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"wWinMainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\PC4\Documents\GitHub\wheel-reinvention\SAutomation\Debug\SAutomation.lib" /MACHINE:X86 Debug\SAutomation.res
+         Debug\SAutomation.exe.embed.manifest.res
+         Debug\Automation.obj
+         Debug\Common.obj
+         Debug\MouseAutomation.obj
+         Debug\Perser.obj
+         Debug\SAutomation.obj
+         Debug\SAutomationDlg.obj
+         Debug\stdafx.obj
+         Debug\Thread.obj
+     1>LINK : fatal error LNK1168: ファイル C:\Users\PC4\Documents\GitHub\wheel-reinvention\SAutomation\Debug\SAutomation.exe を開いて書き込むことができません。
+     1>プロジェクト "C:\Users\PC4\Documents\GitHub\wheel-reinvention\SAutomation\SAutomation.vcxproj" (build ターゲット) のビルドが終了しました -- 失敗。
+
+ビルドに失敗しました。
+
+経過時間 00:00:00.49

@@ -38,6 +38,7 @@ protected:
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
+
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedButton1();
@@ -54,4 +55,5 @@ public:
 	CString m_sEditFileName1;
 	CString m_sEditFileName2;
 	CString m_sEditFileName3;
+	afx_msg LRESULT OnOperate(WPARAM wParam, LPARAM lParam);
 };
