@@ -67,18 +67,18 @@ void CSAutomationDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_MOUSEPOS_C, m_sEditMousePosC);
 	DDX_Text(pDX, IDC_EDIT_MOUSEPOS_R, m_sEditMousePosR);
 	DDX_Text(pDX, IDC_EDIT2, m_uiEditLoop);
-	DDX_Text(pDX, IDC_EDIT_FILE_0, m_sEditFileName[0]);
-	DDX_Text(pDX, IDC_EDIT_FILE_1, m_sEditFileName[1]);
-	DDX_Text(pDX, IDC_EDIT_FILE_2, m_sEditFileName[2]);
-	DDX_Text(pDX, IDC_EDIT_FILE_3, m_sEditFileName[3]);
-	DDX_Text(pDX, IDC_EDIT_FILE_4, m_sEditFileName[4]);
-	DDX_Text(pDX, IDC_EDIT_FILE_5, m_sEditFileName[5]);
-	DDX_Control(pDX, IDC_COMBO0, m_combo[0]);
-	DDX_Control(pDX, IDC_COMBO1, m_combo[1]);
-	DDX_Control(pDX, IDC_COMBO2, m_combo[2]);
-	DDX_Control(pDX, IDC_COMBO3, m_combo[3]);
-	DDX_Control(pDX, IDC_COMBO4, m_combo[4]);
-	DDX_Control(pDX, IDC_COMBO5, m_combo[5]);
+	DDX_Text(pDX, IDC_EDIT_FILE_0, (m_sEditFileName[0]));
+	DDX_Text(pDX, IDC_EDIT_FILE_1, (m_sEditFileName[1]));
+	DDX_Text(pDX, IDC_EDIT_FILE_2, (m_sEditFileName[2]));
+	DDX_Text(pDX, IDC_EDIT_FILE_3, (m_sEditFileName[3]));
+	DDX_Text(pDX, IDC_EDIT_FILE_4, (m_sEditFileName[4]));
+	DDX_Text(pDX, IDC_EDIT_FILE_5, (m_sEditFileName[5]));
+	DDX_Control(pDX, IDC_COMBO0, (m_combo[0]));
+	DDX_Control(pDX, IDC_COMBO1, (m_combo[1]));
+	DDX_Control(pDX, IDC_COMBO2, (m_combo[2]));
+	DDX_Control(pDX, IDC_COMBO3, (m_combo[3]));
+	DDX_Control(pDX, IDC_COMBO4, (m_combo[4]));
+	DDX_Control(pDX, IDC_COMBO5, (m_combo[5]));
 }
 
 BEGIN_MESSAGE_MAP(CSAutomationDlg, CDialogEx)
@@ -215,34 +215,34 @@ BOOL CSAutomationDlg::OnInitDialog()
 
 	CString sFilePath;
 	sFilePath.Format(_T("%s\\SAutomation.ini"), m_sDir); 
-	GetPrivateProfileString(_T("FileName"),_T("0"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_sEditFileName[0].Format(_T("%s"),szData);
 	GetPrivateProfileString(_T("FileName"),_T("1"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_sEditFileName[1].Format(_T("%s"),szData);
+	m_sEditFileName[0].Format(_T("%s"),szData);
 	GetPrivateProfileString(_T("FileName"),_T("2"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_sEditFileName[2].Format(_T("%s"),szData);
+	m_sEditFileName[1].Format(_T("%s"),szData);
 	GetPrivateProfileString(_T("FileName"),_T("3"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_sEditFileName[3].Format(_T("%s"),szData);
+	m_sEditFileName[2].Format(_T("%s"),szData);
 	GetPrivateProfileString(_T("FileName"),_T("4"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_sEditFileName[4].Format(_T("%s"),szData);
+	m_sEditFileName[3].Format(_T("%s"),szData);
 	GetPrivateProfileString(_T("FileName"),_T("5"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	m_sEditFileName[4].Format(_T("%s"),szData);
+	GetPrivateProfileString(_T("FileName"),_T("6"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 	m_sEditFileName[5].Format(_T("%s"),szData);
 
 
 
 	CString sHotkey[MAX_THREAD];
 
-	GetPrivateProfileString(_T("Hotkey"),_T("0"),_T("b"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	GetPrivateProfileString(_T("Hotkey"),_T("1"),_T("b"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 	sHotkey[0].Format(_T("%s"), szData);
-	GetPrivateProfileString(_T("Hotkey"),_T("1"),_T("c"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	GetPrivateProfileString(_T("Hotkey"),_T("2"),_T("c"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 	sHotkey[1].Format(_T("%s"), szData);
-	GetPrivateProfileString(_T("Hotkey"),_T("2"),_T("d"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	GetPrivateProfileString(_T("Hotkey"),_T("3"),_T("d"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 	sHotkey[2].Format(_T("%s"), szData);
-	GetPrivateProfileString(_T("Hotkey"),_T("3"),_T("e"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	GetPrivateProfileString(_T("Hotkey"),_T("4"),_T("e"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 	sHotkey[3].Format(_T("%s"), szData);
-	GetPrivateProfileString(_T("Hotkey"),_T("4"),_T("f"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	GetPrivateProfileString(_T("Hotkey"),_T("5"),_T("f"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 	sHotkey[4].Format(_T("%s"), szData);
-	GetPrivateProfileString(_T("Hotkey"),_T("5"),_T("g"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	GetPrivateProfileString(_T("Hotkey"),_T("6"),_T("g"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 	sHotkey[5].Format(_T("%s"), szData);
 
 	for(int i= 0 ; i<6; i++)
@@ -627,27 +627,29 @@ void CSAutomationDlg::SaveSettings()
 	
 	CString sData;
 	TCHAR tch[8];
-	if(m_combo[0].GetCurSel()>=0){sData.Format(_T("b"));}
+	if(m_combo[0].GetCurSel()<0){sData.Format(_T("b"));}
 	else{m_combo[0].GetLBText(m_combo[0].GetCurSel(),tch); sData.Format(_T("%s"), tch);}
 	WritePrivateProfileString(_T("Hotkey"),_T("1"),sData,sFilePath);
 	
-	if(m_combo[1].GetCurSel()>=0){sData.Format(_T("c"));}
+	if(m_combo[1].GetCurSel()<0){sData.Format(_T("c"));}
 	else{m_combo[1].GetLBText(m_combo[1].GetCurSel(),tch); sData.Format(_T("%s"), tch);}
 	WritePrivateProfileString(_T("Hotkey"),_T("2"),sData,sFilePath);
 	
-	if(m_combo[2].GetCurSel()>=0){sData.Format(_T("d"));}
+	if(m_combo[2].GetCurSel()<0){sData.Format(_T("d"));}
 	else{m_combo[2].GetLBText(m_combo[2].GetCurSel(),tch); sData.Format(_T("%s"), tch);}
 	WritePrivateProfileString(_T("Hotkey"),_T("3"),sData,sFilePath);
 	
-	if(m_combo[3].GetCurSel()>=0){sData.Format(_T("e"));}
+	if(m_combo[3].GetCurSel()<0){sData.Format(_T("e"));}
 	else{m_combo[3].GetLBText(m_combo[3].GetCurSel(),tch); sData.Format(_T("%s"), tch);}
 	WritePrivateProfileString(_T("Hotkey"),_T("4"),sData,sFilePath);
 	
-	if(m_combo[4].GetCurSel()>=0){sData.Format(_T("f"));}
+	if(m_combo[4].GetCurSel()<0){sData.Format(_T("f"));}
 	else{m_combo[4].GetLBText(m_combo[4].GetCurSel(),tch); sData.Format(_T("%s"), tch);}
 	WritePrivateProfileString(_T("Hotkey"),_T("5"),sData,sFilePath);
 	
-	if(m_combo[5].GetCurSel()>=0){sData.Format(_T("g"));}
+	int i;
+	i=m_combo[5].GetCurSel();
+	if(m_combo[5].GetCurSel()<0){sData.Format(_T("g"));}
 	else{m_combo[5].GetLBText(m_combo[5].GetCurSel(),tch); sData.Format(_T("%s"), tch);}
 	WritePrivateProfileString(_T("Hotkey"),_T("6"),sData,sFilePath);
 
