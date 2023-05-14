@@ -22,3 +22,5 @@ void MouseVWheel(int iWheel);
 void MouseVWheel(CStringArray* saData);
 void MouseLClick(UINT nX, UINT nY);
 void MouseLClick(CStringArray* saData);
+
+extern int g_iClickDulation;

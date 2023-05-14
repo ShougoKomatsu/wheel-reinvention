@@ -227,8 +227,9 @@ BOOL CSAutomationDlg::OnInitDialog()
 	m_sEditFileName[4].Format(_T("%s"),szData);
 	GetPrivateProfileString(_T("FileName"),_T("6"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 	m_sEditFileName[5].Format(_T("%s"),szData);
-
-
+	
+	GetPrivateProfileString(_T("Mouse"),_T("ClickDulation"),_T("50"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	g_iClickDulation = _ttoi(szData);
 
 	CString sHotkey[MAX_THREAD];
 

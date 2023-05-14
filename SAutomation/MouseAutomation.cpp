@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "MouseAutomation.h"
+
+int g_iClickDulation = 50;
+
 void MouseLDown(UINT nX, UINT nY)
 {
 	DWORD dwX, dwY;
@@ -29,7 +32,7 @@ void MouseLClick(UINT nX, UINT nY)
 {
 	MoveMouse(nX, nY);
 	MouseLDown(nX, nY);
-	Sleep(50);
+	Sleep(g_iClickDulation);
 	MouseLUp(nX, nY);
 }
 
