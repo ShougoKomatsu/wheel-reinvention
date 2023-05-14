@@ -57,9 +57,6 @@ CSAutomationDlg::CSAutomationDlg(CWnd* pParent /*=NULL*/)
 	, m_sEditMousePosC(_T(""))
 	, m_sEditMousePosR(_T(""))
 	, m_uiEditLoop(0)
-	, m_sEditFileName1(_T(""))
-	, m_sEditFileName2(_T(""))
-	, m_sEditFileName3(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -70,12 +67,18 @@ void CSAutomationDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_MOUSEPOS_C, m_sEditMousePosC);
 	DDX_Text(pDX, IDC_EDIT_MOUSEPOS_R, m_sEditMousePosR);
 	DDX_Text(pDX, IDC_EDIT2, m_uiEditLoop);
-	DDX_Text(pDX, IDC_EDIT_FILE_1, m_sEditFileName1);
-	DDX_Text(pDX, IDC_EDIT_FILE_2, m_sEditFileName2);
-	DDX_Text(pDX, IDC_EDIT_FILE_3, m_sEditFileName3);
+	DDX_Text(pDX, IDC_EDIT_FILE_1, m_sEditFileName[0]);
+	DDX_Text(pDX, IDC_EDIT_FILE_2, m_sEditFileName[1]);
+	DDX_Text(pDX, IDC_EDIT_FILE_3, m_sEditFileName[2]);
+	DDX_Text(pDX, IDC_EDIT_FILE_4, m_sEditFileName[3]);
+	DDX_Text(pDX, IDC_EDIT_FILE_5, m_sEditFileName[4]);
+	DDX_Text(pDX, IDC_EDIT_FILE_6, m_sEditFileName[5]);
 	DDX_Control(pDX, IDC_COMBO1, m_combo1);
 	DDX_Control(pDX, IDC_COMBO2, m_combo2);
 	DDX_Control(pDX, IDC_COMBO3, m_combo3);
+	DDX_Control(pDX, IDC_COMBO4, m_combo4);
+	DDX_Control(pDX, IDC_COMBO5, m_combo5);
+	DDX_Control(pDX, IDC_COMBO6, m_combo6);
 }
 
 BEGIN_MESSAGE_MAP(CSAutomationDlg, CDialogEx)
@@ -83,12 +86,20 @@ BEGIN_MESSAGE_MAP(CSAutomationDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, &CSAutomationDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CSAutomationDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON3, &CSAutomationDlg::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON4, &CSAutomationDlg::OnBnClickedButton4)
+	ON_BN_CLICKED(IDC_BUTTON5, &CSAutomationDlg::OnBnClickedButton5)
+	ON_BN_CLICKED(IDC_BUTTON6, &CSAutomationDlg::OnBnClickedButton6)
 	ON_EN_CHANGE(IDC_EDIT1, &CSAutomationDlg::OnEnChangeEdit1)
 	ON_WM_TIMER()
 	ON_WM_MOUSEMOVE()
-	ON_BN_CLICKED(IDC_BUTTON2, &CSAutomationDlg::OnBnClickedButton2)
-	ON_BN_CLICKED(IDC_BUTTON3, &CSAutomationDlg::OnBnClickedButton3)
+	ON_CBN_SELCHANGE(IDC_COMBO1, &CSAutomationDlg::OnSelchangeCombo1)
+	ON_CBN_SELCHANGE(IDC_COMBO2, &CSAutomationDlg::OnSelchangeCombo2)
 	ON_CBN_SELCHANGE(IDC_COMBO3, &CSAutomationDlg::OnSelchangeCombo3)
+	ON_CBN_SELCHANGE(IDC_COMBO4, &CSAutomationDlg::OnSelchangeCombo4)
+	ON_CBN_SELCHANGE(IDC_COMBO5, &CSAutomationDlg::OnSelchangeCombo5)
+	ON_CBN_SELCHANGE(IDC_COMBO6, &CSAutomationDlg::OnSelchangeCombo6)
 END_MESSAGE_MAP()
 
 
@@ -96,9 +107,9 @@ END_MESSAGE_MAP()
 HHOOK g_hhook=NULL;
 int g_iR=0;
 int g_iC=0;
-HANDLE g_hHotkey1;
-HANDLE g_hHotkey2;
-HANDLE g_hHotkey3;
+
+HANDLE g_hHotkey[6];
+
 LRESULT CALLBACK MouseHookProc(int code, WPARAM wParam, LPARAM lParam)
 {
 	switch(wParam)
@@ -205,37 +216,63 @@ BOOL CSAutomationDlg::OnInitDialog()
 	CString sFilePath;
 	sFilePath.Format(_T("%s\\SAutomation.ini"), m_sDir); 
 	GetPrivateProfileString(_T("FileName"),_T("1"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_sEditFileName1.Format(_T("%s"),szData);
+	m_sEditFileName[0].Format(_T("%s"),szData);
 	GetPrivateProfileString(_T("FileName"),_T("2"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_sEditFileName2.Format(_T("%s"),szData);
+	m_sEditFileName[1].Format(_T("%s"),szData);
 	GetPrivateProfileString(_T("FileName"),_T("3"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_sEditFileName3.Format(_T("%s"),szData);
-	CString sHotkey1;
-	CString sHotkey2;
-	CString sHotkey3;
-	GetPrivateProfileString(_T("Hotkey"),_T("1"),_T("b"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	sHotkey1.Format(_T("%s"), szData);
-	GetPrivateProfileString(_T("Hotkey"),_T("2"),_T("c"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	sHotkey2.Format(_T("%s"), szData);
-	GetPrivateProfileString(_T("Hotkey"),_T("3"),_T("d"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	sHotkey3.Format(_T("%s"), szData);
+	m_sEditFileName[2].Format(_T("%s"),szData);
+	GetPrivateProfileString(_T("FileName"),_T("4"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	m_sEditFileName[3].Format(_T("%s"),szData);
+	GetPrivateProfileString(_T("FileName"),_T("5"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	m_sEditFileName[4].Format(_T("%s"),szData);
+	GetPrivateProfileString(_T("FileName"),_T("6"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	m_sEditFileName[5].Format(_T("%s"),szData);
 
-	SetComboItem(&m_combo1,sHotkey1, 2);
-	SetComboItem(&m_combo2,sHotkey2, 3);
-	SetComboItem(&m_combo3,sHotkey3, 4);
+
+
+	CString sHotkey[MAX_THREAD];
+
+	GetPrivateProfileString(_T("Hotkey"),_T("1"),_T("b"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	sHotkey[0].Format(_T("%s"), szData);
+	GetPrivateProfileString(_T("Hotkey"),_T("2"),_T("c"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	sHotkey[1].Format(_T("%s"), szData);
+	GetPrivateProfileString(_T("Hotkey"),_T("3"),_T("d"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	sHotkey[2].Format(_T("%s"), szData);
+	GetPrivateProfileString(_T("Hotkey"),_T("4"),_T("e"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	sHotkey[3].Format(_T("%s"), szData);
+	GetPrivateProfileString(_T("Hotkey"),_T("5"),_T("f"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	sHotkey[4].Format(_T("%s"), szData);
+	GetPrivateProfileString(_T("Hotkey"),_T("6"),_T("g"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	sHotkey[5].Format(_T("%s"), szData);
+
+	SetComboItem(&m_combo1,sHotkey[0], 2);
+	SetComboItem(&m_combo2,sHotkey[1], 3);
+	SetComboItem(&m_combo3,sHotkey[2], 4);
+	SetComboItem(&m_combo3,sHotkey[3], 5);
+	SetComboItem(&m_combo3,sHotkey[4], 6);
+	SetComboItem(&m_combo3,sHotkey[5], 7);
 
 
 	g_bHalt = FALSE;
-	g_hThread1 = NULL;
-	g_hThread2 = NULL;
-	g_hThread3 = NULL;
+	g_hThread[0] = NULL;
+	g_hThread[1] = NULL;
+	g_hThread[2] = NULL;
+	g_hThread[3] = NULL;
+	g_hThread[4] = NULL;
+	g_hThread[5] = NULL;
 	
-	m_dwHotKey1 = char(sHotkey1.GetAt(0))-'a'+0x41;
-	m_dwHotKey2 = char(sHotkey2.GetAt(0))-'a'+0x41;
-	m_dwHotKey3 = char(sHotkey3.GetAt(0))-'a'+0x41;
-	RegisterHotKey(NULL, 1, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey1);
-	RegisterHotKey(NULL, 2, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey2);
-	RegisterHotKey(NULL, 3, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey3);
+	m_dwHotKey[0] = char(sHotkey[0].GetAt(0))-'a'+0x41;
+	m_dwHotKey[1] = char(sHotkey[1].GetAt(0))-'a'+0x41;
+	m_dwHotKey[2] = char(sHotkey[2].GetAt(0))-'a'+0x41;
+	m_dwHotKey[3] = char(sHotkey[3].GetAt(0))-'a'+0x41;
+	m_dwHotKey[4] = char(sHotkey[4].GetAt(0))-'a'+0x41;
+	m_dwHotKey[5] = char(sHotkey[5].GetAt(0))-'a'+0x41;
+	RegisterHotKey(NULL, 1, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[0]);
+	RegisterHotKey(NULL, 2, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[1]);
+	RegisterHotKey(NULL, 3, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[2]);
+	RegisterHotKey(NULL, 4, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[3]);
+	RegisterHotKey(NULL, 5, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[4]);
+	RegisterHotKey(NULL, 6, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[5]);
 
 	RegisterHotKey(NULL, 10, MOD_NOREPEAT, VK_ESCAPE);
 
@@ -362,9 +399,12 @@ BOOL CSAutomationDlg::PreTranslateMessage(MSG* pMsg)
 	{
 		int iKey;
 		iKey = (pMsg->lParam)>>16;
-		if(iKey == m_dwHotKey1){ Operate1();return TRUE;}
-		if(iKey == m_dwHotKey2){ Operate2();return TRUE;}
-		if(iKey == m_dwHotKey3){Operate3();return TRUE;}
+		if(iKey == m_dwHotKey[0]){ Operate1();return TRUE;}
+		if(iKey == m_dwHotKey[1]){ Operate2();return TRUE;}
+		if(iKey == m_dwHotKey[2]){Operate3();return TRUE;}
+		if(iKey == m_dwHotKey[3]){Operate4();return TRUE;}
+		if(iKey == m_dwHotKey[4]){Operate5();return TRUE;}
+		if(iKey == m_dwHotKey[5]){Operate6();return TRUE;}
 		if(iKey == VK_ESCAPE){g_bHalt = TRUE;}
 	}
 
@@ -386,27 +426,29 @@ void CSAutomationDlg::OnTimer(UINT_PTR nIDEvent)
 }
 
 
+
 void CSAutomationDlg::OnMouseMove(UINT nFlags, CPoint point)
 {
 
 	CDialogEx::OnMouseMove(nFlags, point);
 }
 
+
 void CSAutomationDlg::Operate1()
 {
 
 	UpdateData(TRUE);
 	DWORD dwThreadID;
-	if(g_hThread1 != NULL)
+	if(g_hThread[0] != NULL)
 	{
 		DWORD dwResult;
-		dwResult = WaitForSingleObject(g_hThread1,0);
+		dwResult = WaitForSingleObject(g_hThread[0],0);
 		if(dwResult != STATUS_WAIT_0){return;}
 	}
-	g_sFilePath1.Format(_T("%s\\Macro\\%s"),m_sDir, m_sEditFileName1);
+	g_sFilePath[0].Format(_T("%s\\Macro\\%s"),m_sDir, m_sEditFileName[0]);
 	int iParam;
 	iParam=(m_uiEditLoop<<4)+1;
-	g_hThread1 = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
+	g_hThread[0] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 
 }
@@ -415,17 +457,17 @@ void CSAutomationDlg::Operate2()
 	UpdateData(TRUE);
 	DWORD dwThreadID;
 
-	if(g_hThread2 != NULL)
+	if(g_hThread[1] != NULL)
 	{
 		DWORD dwResult;
-		dwResult = WaitForSingleObject(g_hThread2,0);
+		dwResult = WaitForSingleObject(g_hThread[1],0);
 		if(dwResult != STATUS_WAIT_0){return;}
 	}
 
-	g_sFilePath2.Format(_T("%s\\Macro\\%s"),m_sDir, m_sEditFileName2);
+	g_sFilePath[1].Format(_T("%s\\Macro\\%s"),m_sDir, m_sEditFileName[1]);
 	int iParam;
 	iParam=(m_uiEditLoop<<4)+2;
-	g_hThread2 = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
+	g_hThread[1] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 }
 
@@ -435,19 +477,88 @@ void CSAutomationDlg::Operate3()
 	UpdateData(TRUE);
 	DWORD dwThreadID;
 
-	if(g_hThread3 != NULL)
+	if(g_hThread[2] != NULL)
 	{
 		DWORD dwResult;
-		dwResult = WaitForSingleObject(g_hThread3,0);
+		dwResult = WaitForSingleObject(g_hThread[2],0);
 		if(dwResult != STATUS_WAIT_0){return;}
 	}
 
-	g_sFilePath3.Format(_T("%s\\Macro\\%s"),m_sDir, m_sEditFileName3);
+	g_sFilePath[2].Format(_T("%s\\Macro\\%s"),m_sDir, m_sEditFileName[2]);
 	int iParam;
 	iParam=(m_uiEditLoop<<4)+3;
-	g_hThread3 = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
+	g_hThread[2] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 }
+
+
+
+void CSAutomationDlg::Operate4()
+{
+	UpdateData(TRUE);
+	DWORD dwThreadID;
+
+	if(g_hThread[3] != NULL)
+	{
+		DWORD dwResult;
+		dwResult = WaitForSingleObject(g_hThread[3],0);
+		if(dwResult != STATUS_WAIT_0){return;}
+	}
+
+	g_sFilePath[3].Format(_T("%s\\Macro\\%s"),m_sDir, m_sEditFileName[3]);
+	int iParam;
+	iParam=(m_uiEditLoop<<4)+4;
+	g_hThread[3] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
+	while(iParam!=0){Sleep(10);}
+}
+
+
+
+
+void CSAutomationDlg::Operate5()
+{
+	UpdateData(TRUE);
+	DWORD dwThreadID;
+
+	if(g_hThread[4] != NULL)
+	{
+		DWORD dwResult;
+		dwResult = WaitForSingleObject(g_hThread[4],0);
+		if(dwResult != STATUS_WAIT_0){return;}
+	}
+
+	g_sFilePath[4].Format(_T("%s\\Macro\\%s"),m_sDir, m_sEditFileName[4]);
+	int iParam;
+	iParam=(m_uiEditLoop<<4)+5;
+	g_hThread[4] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
+	while(iParam!=0){Sleep(10);}
+}
+
+
+
+
+void CSAutomationDlg::Operate6()
+{
+	UpdateData(TRUE);
+	DWORD dwThreadID;
+
+	if(g_hThread[5] != NULL)
+	{
+		DWORD dwResult;
+		dwResult = WaitForSingleObject(g_hThread[5],0);
+		if(dwResult != STATUS_WAIT_0){return;}
+	}
+
+	g_sFilePath[5].Format(_T("%s\\Macro\\%s"),m_sDir, m_sEditFileName[5]);
+	int iParam;
+	iParam=(m_uiEditLoop<<4)+6;
+	g_hThread[5] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
+	while(iParam!=0){Sleep(10);}
+}
+
+
+
+
 
 void CSAutomationDlg::FileSelect(CString *sFileName)
 {
@@ -463,13 +574,13 @@ void CSAutomationDlg::FileSelect(CString *sFileName)
 
 void CSAutomationDlg::OnBnClickedButton1()
 {
-	FileSelect(&m_sEditFileName1);
+	FileSelect(&m_sEditFileName[0]);
 	UpdateData(FALSE);
 	SaveSettings();
 }
 void CSAutomationDlg::OnBnClickedButton2()
 {
-	FileSelect(&m_sEditFileName2);
+	FileSelect(&m_sEditFileName[1]);
 	UpdateData(FALSE);
 	SaveSettings();
 }
@@ -477,7 +588,28 @@ void CSAutomationDlg::OnBnClickedButton2()
 
 void CSAutomationDlg::OnBnClickedButton3()
 {
-	FileSelect(&m_sEditFileName3);
+	FileSelect(&m_sEditFileName[2]);
+	UpdateData(FALSE);
+	SaveSettings();
+}
+
+void CSAutomationDlg::OnBnClickedButton4()
+{
+	FileSelect(&m_sEditFileName[3]);
+	UpdateData(FALSE);
+	SaveSettings();
+}
+
+void CSAutomationDlg::OnBnClickedButton5()
+{
+	FileSelect(&m_sEditFileName[4]);
+	UpdateData(FALSE);
+	SaveSettings();
+}
+
+void CSAutomationDlg::OnBnClickedButton6()
+{
+	FileSelect(&m_sEditFileName[5]);
 	UpdateData(FALSE);
 	SaveSettings();
 }
@@ -488,9 +620,12 @@ void CSAutomationDlg::SaveSettings()
 	CString sFilePath;
 	sFilePath.Format(_T("%s\\SAutomation.ini"), m_sDir); 
 
-	WritePrivateProfileString(_T("FileName"),_T("1"),m_sEditFileName1,sFilePath);
-	WritePrivateProfileString(_T("FileName"),_T("2"),m_sEditFileName2,sFilePath);
-	WritePrivateProfileString(_T("FileName"),_T("3"),m_sEditFileName3,sFilePath);
+	WritePrivateProfileString(_T("FileName"),_T("1"),m_sEditFileName[0],sFilePath);
+	WritePrivateProfileString(_T("FileName"),_T("2"),m_sEditFileName[1],sFilePath);
+	WritePrivateProfileString(_T("FileName"),_T("3"),m_sEditFileName[2],sFilePath);
+	WritePrivateProfileString(_T("FileName"),_T("3"),m_sEditFileName[3],sFilePath);
+	WritePrivateProfileString(_T("FileName"),_T("4"),m_sEditFileName[4],sFilePath);
+	WritePrivateProfileString(_T("FileName"),_T("5"),m_sEditFileName[5],sFilePath);
 	
 	CString sData;
 	TCHAR tch[8];
@@ -505,6 +640,19 @@ void CSAutomationDlg::SaveSettings()
 	if(m_combo3.GetCurSel()>=0){sData.Format(_T("d"));}
 	else{m_combo3.GetLBText(m_combo1.GetCurSel(),tch); sData.Format(_T("%s"), tch);}
 	WritePrivateProfileString(_T("Hotkey"),_T("3"),sData,sFilePath);
+	
+	if(m_combo4.GetCurSel()>=0){sData.Format(_T("e"));}
+	else{m_combo3.GetLBText(m_combo1.GetCurSel(),tch); sData.Format(_T("%s"), tch);}
+	WritePrivateProfileString(_T("Hotkey"),_T("4"),sData,sFilePath);
+	
+	if(m_combo5.GetCurSel()>=0){sData.Format(_T("f"));}
+	else{m_combo3.GetLBText(m_combo1.GetCurSel(),tch); sData.Format(_T("%s"), tch);}
+	WritePrivateProfileString(_T("Hotkey"),_T("5"),sData,sFilePath);
+	
+	if(m_combo6.GetCurSel()>=0){sData.Format(_T("g"));}
+	else{m_combo3.GetLBText(m_combo1.GetCurSel(),tch); sData.Format(_T("%s"), tch);}
+	WritePrivateProfileString(_T("Hotkey"),_T("6"),sData,sFilePath);
+
 }
 
 BOOL CSAutomationDlg::DestroyWindow()
@@ -512,6 +660,36 @@ BOOL CSAutomationDlg::DestroyWindow()
 	if(g_hhook != NULL){UnhookWindowsHookEx(g_hhook);}
 	SaveSettings();
 	return CDialogEx::DestroyWindow();
+}
+
+
+
+
+void CSAutomationDlg::OnSelchangeCombo1()
+{
+	UnregisterHotKey(NULL, 1);
+
+	UpdateData(TRUE);
+	TCHAR tch[8];
+	if(m_combo1.GetCurSel()<0){return;}
+	m_combo1.GetLBText(m_combo1.GetCurSel(),tch);
+
+	m_dwHotKey[0] = char(tch[0])-'a'+0x41;
+	RegisterHotKey(NULL, 1, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[0]);
+}
+
+
+void CSAutomationDlg::OnSelchangeCombo2()
+{
+	UnregisterHotKey(NULL, 2);
+
+	UpdateData(TRUE);
+	TCHAR tch[8];
+	if(m_combo2.GetCurSel()<0){return;}
+	m_combo2.GetLBText(m_combo2.GetCurSel(),tch);
+
+	m_dwHotKey[1] = char(tch[0])-'a'+0x41;
+	RegisterHotKey(NULL, 2, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[1]);
 }
 
 
@@ -524,6 +702,48 @@ void CSAutomationDlg::OnSelchangeCombo3()
 	if(m_combo3.GetCurSel()<0){return;}
 	m_combo3.GetLBText(m_combo3.GetCurSel(),tch);
 
-	m_dwHotKey3 = char(tch[0])-'a'+0x41;
-	RegisterHotKey(NULL, 3, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey3);
+	m_dwHotKey[2] = char(tch[0])-'a'+0x41;
+	RegisterHotKey(NULL, 3, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[2]);
+}
+
+
+void CSAutomationDlg::OnSelchangeCombo4()
+{
+	UnregisterHotKey(NULL, 4);
+
+	UpdateData(TRUE);
+	TCHAR tch[8];
+	if(m_combo4.GetCurSel()<0){return;}
+	m_combo4.GetLBText(m_combo4.GetCurSel(),tch);
+
+	m_dwHotKey[3] = char(tch[0])-'a'+0x41;
+	RegisterHotKey(NULL, 4, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[3]);
+}
+
+
+void CSAutomationDlg::OnSelchangeCombo5()
+{
+	UnregisterHotKey(NULL, 5);
+
+	UpdateData(TRUE);
+	TCHAR tch[8];
+	if(m_combo5.GetCurSel()<0){return;}
+	m_combo5.GetLBText(m_combo5.GetCurSel(),tch);
+
+	m_dwHotKey[4] = char(tch[0])-'a'+0x41;
+	RegisterHotKey(NULL, 5, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[4]);
+}
+
+
+void CSAutomationDlg::OnSelchangeCombo6()
+{
+	UnregisterHotKey(NULL, 6);
+
+	UpdateData(TRUE);
+	TCHAR tch[8];
+	if(m_combo6.GetCurSel()<0){return;}
+	m_combo6.GetLBText(m_combo6.GetCurSel(),tch);
+
+	m_dwHotKey[5] = char(tch[0])-'a'+0x41;
+	RegisterHotKey(NULL, 6, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[5]);
 }

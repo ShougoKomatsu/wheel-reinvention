@@ -4,6 +4,7 @@
 
 #pragma once
 #include "afxwin.h"
+#include "thread.h"
 
 
 // CSAutomationDlg ダイアログ
@@ -18,13 +19,15 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV サポート
-
+	
 	void Operate1();
 	void Operate2();
 	void Operate3();
-	DWORD m_dwHotKey1;
-	DWORD m_dwHotKey2;
-	DWORD m_dwHotKey3;
+	void Operate4();
+	void Operate5();
+	void Operate6();
+	DWORD m_dwHotKey[MAX_THREAD];
+
 	CString m_sDir;
 	void FileSelect(CString *sFileName);
 	void SaveSettings();
@@ -42,22 +45,33 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedButton2();
+	afx_msg void OnBnClickedButton3();
+	afx_msg void OnBnClickedButton4();
+	afx_msg void OnBnClickedButton5();
+	afx_msg void OnBnClickedButton6();
+
 	afx_msg void OnEnChangeEdit1();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	CString m_sEditMousePosC;
 	CString m_sEditMousePosR;
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnBnClickedButton2();
 	UINT m_uiEditLoop;
-	afx_msg void OnBnClickedButton3();
 	virtual BOOL DestroyWindow();
-	CString m_sEditFileName1;
-	CString m_sEditFileName2;
-	CString m_sEditFileName3;
+	CString m_sEditFileName[MAX_THREAD];
+
 	afx_msg LRESULT OnOperate(WPARAM wParam, LPARAM lParam);
 	CComboBox m_combo1;
 	CComboBox m_combo2;
 	CComboBox m_combo3;
+	CComboBox m_combo4;
+	CComboBox m_combo5;
+	CComboBox m_combo6;
+	afx_msg void OnSelchangeCombo1();
+	afx_msg void OnSelchangeCombo2();
 	afx_msg void OnSelchangeCombo3();
+	afx_msg void OnSelchangeCombo4();
+	afx_msg void OnSelchangeCombo5();
+	afx_msg void OnSelchangeCombo6();
 };

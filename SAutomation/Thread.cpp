@@ -3,18 +3,13 @@
 #include "Common.h"
 #include "Automation.h"
 
-HANDLE g_hThread1;
-HANDLE g_hThread2;
-HANDLE g_hThread3;
+HANDLE g_hThread[MAX_THREAD];
 
-int g_iSceneData1;
-int g_iSceneData2;
-int g_iSceneData3;
+int g_iSceneData[MAX_THREAD];
 
 
-CString g_sFilePath1;
-CString g_sFilePath2;
-CString g_sFilePath3;
+CString g_sFilePath[MAX_THREAD];
+
 BOOL g_bHalt;
 BOOL g_bSuspend = FALSE;
 LONGLONG g_llStepIn = 0;
@@ -73,25 +68,13 @@ DWORD WINAPI CommandThread(LPVOID arg)
 	hGetKey = CreateThread(NULL, 0, GetKeyThread, NULL, 0, &dwThreadID);
 	hGetStepKey = CreateThread(NULL, 0, GetStepKeyThread, NULL, 0, &dwThreadID);
 	CStringArray saCommands;
-	if(((*(int*)arg)&0x03) ==1)
-	{
-		ReadTextFile(g_sFilePath1,&saCommands);
-		g_iSceneData1=0;
-		iSceneData=&g_iSceneData1;
-	} 
-	if(((*(int*)arg)&0x03) ==2)
-	{
-		ReadTextFile(g_sFilePath2,&saCommands);
-		g_iSceneData2=2;
-		iSceneData=&g_iSceneData2;
-	}
-	if(((*(int*)arg)&0x03) ==3)
-	{
-		ReadTextFile(g_sFilePath3,&saCommands);
-		g_iSceneData3=3;
-		iSceneData=&g_iSceneData3;
-	}
 
+		int iScene;
+		iScene = ((*(int*)arg)&0x03-1);
+
+		ReadTextFile(g_sFilePath[iScene],&saCommands);
+		g_iSceneData[iScene]=iScene;
+		iSceneData=&g_iSceneData[iScene];
 
 	int iLoop;
 	iLoop = (*(int*)arg)>>4;
