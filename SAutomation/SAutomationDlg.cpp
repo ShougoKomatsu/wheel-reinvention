@@ -247,23 +247,13 @@ BOOL CSAutomationDlg::OnInitDialog()
 
 	for(int i= 0 ; i<6; i++)
 	{
-	SetComboItem(&m_combo[i],sHotkey[i], i+2);
+		SetComboItem(&m_combo[i],sHotkey[i], i+2);
+		g_hThread[i] = NULL;
+		m_dwHotKey[i] = char(sHotkey[i].GetAt(0))-'a'+0x41;
 	}
 
 	g_bHalt = FALSE;
-	g_hThread[0] = NULL;
-	g_hThread[1] = NULL;
-	g_hThread[2] = NULL;
-	g_hThread[3] = NULL;
-	g_hThread[4] = NULL;
-	g_hThread[5] = NULL;
-	
-	m_dwHotKey[0] = char(sHotkey[0].GetAt(0))-'a'+0x41;
-	m_dwHotKey[1] = char(sHotkey[1].GetAt(0))-'a'+0x41;
-	m_dwHotKey[2] = char(sHotkey[2].GetAt(0))-'a'+0x41;
-	m_dwHotKey[3] = char(sHotkey[3].GetAt(0))-'a'+0x41;
-	m_dwHotKey[4] = char(sHotkey[4].GetAt(0))-'a'+0x41;
-	m_dwHotKey[5] = char(sHotkey[5].GetAt(0))-'a'+0x41;
+
 
 	RegisterHotKey(NULL, HOTKEY_ID_0, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[0]);
 	RegisterHotKey(NULL, HOTKEY_ID_1, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[1]);
