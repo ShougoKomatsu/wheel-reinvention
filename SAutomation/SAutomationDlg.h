@@ -32,11 +32,15 @@ protected:
 	void Operate3();
 	void Operate4();
 	void Operate5();
+	
+	CString m_sHotkey[MAX_THREAD];
+
 	DWORD m_dwHotKey[MAX_THREAD];
 
 	CString m_sDir;
 	void FileSelect(CString *sFileName);
 	void SaveSettings();
+	void ReadSettings();
 	BOOL MouseMoveAndDisp(DWORD dwMoveDirection, int iDistance);
 	// ŽÀ‘•
 protected:
