@@ -66,8 +66,13 @@ public:
 	UINT m_uiEditLoop;
 	virtual BOOL DestroyWindow();
 	CString m_sEditFileName[MAX_THREAD];
+	CString m_sEditStatus[MAX_THREAD];
 
-	afx_msg LRESULT OnOperate(WPARAM wParam, LPARAM lParam);
+
+	
+
+
+	afx_msg LRESULT OnDispStandby(WPARAM wParam, LPARAM lParam);
 	CComboBox m_combo[6];
 	afx_msg void OnSelchangeCombo0();
 	afx_msg void OnSelchangeCombo1();
@@ -75,4 +80,5 @@ public:
 	afx_msg void OnSelchangeCombo3();
 	afx_msg void OnSelchangeCombo4();
 	afx_msg void OnSelchangeCombo5();
+
 };

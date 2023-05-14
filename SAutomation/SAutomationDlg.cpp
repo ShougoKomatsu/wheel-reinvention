@@ -15,6 +15,7 @@
 #include "Automation.h"
 #define TIMER_DISP_MOUSPOS (100)
 
+HWND g_hWnd;
 
 // アプリケーションのバージョン情報に使われる CAboutDlg ダイアログ
 
@@ -73,6 +74,14 @@ void CSAutomationDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_FILE_3, (m_sEditFileName[3]));
 	DDX_Text(pDX, IDC_EDIT_FILE_4, (m_sEditFileName[4]));
 	DDX_Text(pDX, IDC_EDIT_FILE_5, (m_sEditFileName[5]));
+
+	DDX_Text(pDX, IDC_EDIT_STATUS_0, (m_sEditStatus[0]));
+	DDX_Text(pDX, IDC_EDIT_STATUS_1, (m_sEditStatus[1]));
+	DDX_Text(pDX, IDC_EDIT_STATUS_2, (m_sEditStatus[2]));
+	DDX_Text(pDX, IDC_EDIT_STATUS_3, (m_sEditStatus[3]));
+	DDX_Text(pDX, IDC_EDIT_STATUS_4, (m_sEditStatus[4]));
+	DDX_Text(pDX, IDC_EDIT_STATUS_5, (m_sEditStatus[5]));
+
 	DDX_Control(pDX, IDC_COMBO0, (m_combo[0]));
 	DDX_Control(pDX, IDC_COMBO1, (m_combo[1]));
 	DDX_Control(pDX, IDC_COMBO2, (m_combo[2]));
@@ -100,6 +109,7 @@ BEGIN_MESSAGE_MAP(CSAutomationDlg, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_COMBO3, &CSAutomationDlg::OnSelchangeCombo3)
 	ON_CBN_SELCHANGE(IDC_COMBO4, &CSAutomationDlg::OnSelchangeCombo4)
 	ON_CBN_SELCHANGE(IDC_COMBO5, &CSAutomationDlg::OnSelchangeCombo5)
+	ON_MESSAGE(WM_DISP_STANDBY, &CSAutomationDlg::OnDispStandby)
 END_MESSAGE_MAP()
 
 
@@ -156,7 +166,7 @@ void SetComboItem(CComboBox* combo, CString sHotkey, int iDefault)
 	combo->AddString(_T("y"));
 	combo->AddString(_T("z"));
 
-	
+
 	BOOL bFound;
 	bFound = FALSE;
 	for(int i=0; i<combo->GetCount(); i++)
@@ -168,6 +178,16 @@ void SetComboItem(CComboBox* combo, CString sHotkey, int iDefault)
 	if(bFound != TRUE){combo->SetCurSel(iDefault);}
 }
 
+LRESULT CSAutomationDlg::OnDispStandby(WPARAM wParam, LPARAM lParam)
+{
+	UpdateData(TRUE);
+	if(wParam<0){return 0;}
+	if(wParam>=MAX_THREAD){return 0;}
+
+	m_sEditStatus[wParam].Format(_T("Stand by"));
+	UpdateData(FALSE);
+	return 0;
+}
 BOOL CSAutomationDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
@@ -191,7 +211,9 @@ BOOL CSAutomationDlg::OnInitDialog()
 			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
 		}
 	}
-	
+
+	g_hWnd = this->m_hWnd;
+
 	POINT p;
 	GetCursorPos(&p);
 	g_iR=p.y;
@@ -208,7 +230,7 @@ BOOL CSAutomationDlg::OnInitDialog()
 
 	CString sMacroFolderPath;
 	sMacroFolderPath.Format(_T("%s\\Macro"),m_sDir);
-	
+
 	CFileFind cf;
 	if(cf.FindFile(sMacroFolderPath) != TRUE){_tmkdir(sMacroFolderPath);}
 
@@ -227,7 +249,7 @@ BOOL CSAutomationDlg::OnInitDialog()
 	m_sEditFileName[4].Format(_T("%s"),szData);
 	GetPrivateProfileString(_T("FileName"),_T("6"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 	m_sEditFileName[5].Format(_T("%s"),szData);
-	
+
 	GetPrivateProfileString(_T("Mouse"),_T("ClickDulation"),_T("50"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 	g_iClickDulation = _ttoi(szData);
 
@@ -251,6 +273,7 @@ BOOL CSAutomationDlg::OnInitDialog()
 		SetComboItem(&m_combo[i],sHotkey[i], i+2);
 		g_hThread[i] = NULL;
 		m_dwHotKey[i] = char(sHotkey[i].GetAt(0))-'a'+0x41;
+		m_sEditStatus[i].Format(_T("Stand by"));
 	}
 
 	g_bHalt = FALSE;
@@ -439,6 +462,8 @@ void CSAutomationDlg::Operate0()
 	iParam=(m_uiEditLoop<<4)+0;
 	g_hThread[0] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
+	m_sEditStatus[0].Format(_T("Running"));
+	UpdateData(FALSE);
 
 }
 void CSAutomationDlg::Operate1()
@@ -458,6 +483,8 @@ void CSAutomationDlg::Operate1()
 	iParam=(m_uiEditLoop<<4)+1;
 	g_hThread[1] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
+	m_sEditStatus[1].Format(_T("Running"));
+	UpdateData(FALSE);
 }
 
 
@@ -478,6 +505,8 @@ void CSAutomationDlg::Operate2()
 	iParam=(m_uiEditLoop<<4)+2;
 	g_hThread[2] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
+	m_sEditStatus[2].Format(_T("Running"));
+	UpdateData(FALSE);
 }
 
 
@@ -499,6 +528,8 @@ void CSAutomationDlg::Operate3()
 	iParam=(m_uiEditLoop<<4)+3;
 	g_hThread[3] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
+	m_sEditStatus[3].Format(_T("Running"));
+	UpdateData(FALSE);
 }
 
 
@@ -521,6 +552,8 @@ void CSAutomationDlg::Operate4()
 	iParam=(m_uiEditLoop<<4)+4;
 	g_hThread[4] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
+	m_sEditStatus[4].Format(_T("Running"));
+	UpdateData(FALSE);
 }
 
 
@@ -543,6 +576,8 @@ void CSAutomationDlg::Operate5()
 	iParam=(m_uiEditLoop<<4)+5;
 	g_hThread[5] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
+	m_sEditStatus[5].Format(_T("Running"));
+	UpdateData(FALSE);
 }
 
 
@@ -615,29 +650,29 @@ void CSAutomationDlg::SaveSettings()
 	WritePrivateProfileString(_T("FileName"),_T("3"),m_sEditFileName[3],sFilePath);
 	WritePrivateProfileString(_T("FileName"),_T("4"),m_sEditFileName[4],sFilePath);
 	WritePrivateProfileString(_T("FileName"),_T("5"),m_sEditFileName[5],sFilePath);
-	
+
 	CString sData;
 	TCHAR tch[8];
 	if(m_combo[0].GetCurSel()<0){sData.Format(_T("b"));}
 	else{m_combo[0].GetLBText(m_combo[0].GetCurSel(),tch); sData.Format(_T("%s"), tch);}
 	WritePrivateProfileString(_T("Hotkey"),_T("1"),sData,sFilePath);
-	
+
 	if(m_combo[1].GetCurSel()<0){sData.Format(_T("c"));}
 	else{m_combo[1].GetLBText(m_combo[1].GetCurSel(),tch); sData.Format(_T("%s"), tch);}
 	WritePrivateProfileString(_T("Hotkey"),_T("2"),sData,sFilePath);
-	
+
 	if(m_combo[2].GetCurSel()<0){sData.Format(_T("d"));}
 	else{m_combo[2].GetLBText(m_combo[2].GetCurSel(),tch); sData.Format(_T("%s"), tch);}
 	WritePrivateProfileString(_T("Hotkey"),_T("3"),sData,sFilePath);
-	
+
 	if(m_combo[3].GetCurSel()<0){sData.Format(_T("e"));}
 	else{m_combo[3].GetLBText(m_combo[3].GetCurSel(),tch); sData.Format(_T("%s"), tch);}
 	WritePrivateProfileString(_T("Hotkey"),_T("4"),sData,sFilePath);
-	
+
 	if(m_combo[4].GetCurSel()<0){sData.Format(_T("f"));}
 	else{m_combo[4].GetLBText(m_combo[4].GetCurSel(),tch); sData.Format(_T("%s"), tch);}
 	WritePrivateProfileString(_T("Hotkey"),_T("5"),sData,sFilePath);
-	
+
 	int i;
 	i=m_combo[5].GetCurSel();
 	if(m_combo[5].GetCurSel()<0){sData.Format(_T("g"));}
