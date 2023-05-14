@@ -647,9 +647,9 @@ void CSAutomationDlg::SaveSettings()
 	WritePrivateProfileString(_T("FileName"),_T("1"),m_sEditFileName[0],sFilePath);
 	WritePrivateProfileString(_T("FileName"),_T("2"),m_sEditFileName[1],sFilePath);
 	WritePrivateProfileString(_T("FileName"),_T("3"),m_sEditFileName[2],sFilePath);
-	WritePrivateProfileString(_T("FileName"),_T("3"),m_sEditFileName[3],sFilePath);
-	WritePrivateProfileString(_T("FileName"),_T("4"),m_sEditFileName[4],sFilePath);
-	WritePrivateProfileString(_T("FileName"),_T("5"),m_sEditFileName[5],sFilePath);
+	WritePrivateProfileString(_T("FileName"),_T("4"),m_sEditFileName[3],sFilePath);
+	WritePrivateProfileString(_T("FileName"),_T("5"),m_sEditFileName[4],sFilePath);
+	WritePrivateProfileString(_T("FileName"),_T("6"),m_sEditFileName[5],sFilePath);
 
 	CString sData;
 	TCHAR tch[8];
