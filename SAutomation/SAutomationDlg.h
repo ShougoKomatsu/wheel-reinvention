@@ -6,6 +6,12 @@
 #include "afxwin.h"
 #include "thread.h"
 
+#define HOTKEY_ID_0 (10)
+#define HOTKEY_ID_1 (11)
+#define HOTKEY_ID_2 (12)
+#define HOTKEY_ID_3 (13)
+#define HOTKEY_ID_4 (14)
+#define HOTKEY_ID_5 (15)
 
 // CSAutomationDlg ダイアログ
 class CSAutomationDlg : public CDialogEx
@@ -20,12 +26,12 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV サポート
 	
+	void Operate0();
 	void Operate1();
 	void Operate2();
 	void Operate3();
 	void Operate4();
 	void Operate5();
-	void Operate6();
 	DWORD m_dwHotKey[MAX_THREAD];
 
 	CString m_sDir;
@@ -44,12 +50,12 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
+	afx_msg void OnBnClickedButton0();
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButton2();
 	afx_msg void OnBnClickedButton3();
 	afx_msg void OnBnClickedButton4();
 	afx_msg void OnBnClickedButton5();
-	afx_msg void OnBnClickedButton6();
 
 	afx_msg void OnEnChangeEdit1();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
@@ -62,16 +68,11 @@ public:
 	CString m_sEditFileName[MAX_THREAD];
 
 	afx_msg LRESULT OnOperate(WPARAM wParam, LPARAM lParam);
-	CComboBox m_combo1;
-	CComboBox m_combo2;
-	CComboBox m_combo3;
-	CComboBox m_combo4;
-	CComboBox m_combo5;
-	CComboBox m_combo6;
+	CComboBox m_combo[6];
+	afx_msg void OnSelchangeCombo0();
 	afx_msg void OnSelchangeCombo1();
 	afx_msg void OnSelchangeCombo2();
 	afx_msg void OnSelchangeCombo3();
 	afx_msg void OnSelchangeCombo4();
 	afx_msg void OnSelchangeCombo5();
-	afx_msg void OnSelchangeCombo6();
 };
