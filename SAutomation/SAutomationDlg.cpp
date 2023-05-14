@@ -118,7 +118,7 @@ HHOOK g_hhook=NULL;
 int g_iR=0;
 int g_iC=0;
 
-HANDLE g_hHotkey[6];
+HANDLE g_hHotkey[MAX_THREAD];
 
 LRESULT CALLBACK MouseHookProc(int code, WPARAM wParam, LPARAM lParam)
 {
@@ -268,12 +268,12 @@ BOOL CSAutomationDlg::OnInitDialog()
 	GetPrivateProfileString(_T("Hotkey"),_T("6"),_T("g"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 	sHotkey[5].Format(_T("%s"), szData);
 
-	for(int i= 0 ; i<6; i++)
+	for(int iID= 0 ; iID<MAX_THREAD; iID++)
 	{
-		SetComboItem(&m_combo[i],sHotkey[i], i+2);
-		g_hThread[i] = NULL;
-		m_dwHotKey[i] = char(sHotkey[i].GetAt(0))-'a'+0x41;
-		m_sEditStatus[i].Format(_T("Stand by"));
+		SetComboItem(&m_combo[iID],sHotkey[iID], iID+2);
+		g_hThread[iID] = NULL;
+		m_dwHotKey[iID] = char(sHotkey[iID].GetAt(0))-'a'+0x41;
+		m_sEditStatus[iID].Format(_T("Stand by"));
 	}
 
 	g_bHalt = FALSE;

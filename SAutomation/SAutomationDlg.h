@@ -65,15 +65,16 @@ public:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	UINT m_uiEditLoop;
 	virtual BOOL DestroyWindow();
+
 	CString m_sEditFileName[MAX_THREAD];
 	CString m_sEditStatus[MAX_THREAD];
+	CComboBox m_combo[MAX_THREAD];
 
 
 	
 
 
 	afx_msg LRESULT OnDispStandby(WPARAM wParam, LPARAM lParam);
-	CComboBox m_combo[6];
 	afx_msg void OnSelchangeCombo0();
 	afx_msg void OnSelchangeCombo1();
 	afx_msg void OnSelchangeCombo2();
