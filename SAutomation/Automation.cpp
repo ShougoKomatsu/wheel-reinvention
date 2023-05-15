@@ -67,6 +67,26 @@ int K_Sleep(LPVOID Halt, LPVOID Suspend, DWORD SleepMilliSec)
 
 	return 0;
 }
+
+int WaitForKey(LPVOID Halt, LPVOID Suspend, BYTE byKey)
+{
+	
+	short shKey;
+	while(1)
+	{
+		shKey = GetAsyncKeyState (byKey);
+		if((shKey>=0)) 
+		{
+			return 0;
+		}
+
+		
+		if(K_Sleep(Halt, Suspend, 1)<0){return -1;}
+	}
+	return 0;
+}
+
+
 int Break(LPVOID Halt, LONGLONG* Special1)
 {
 	while ((*(int*)Special1) == 0)
@@ -218,7 +238,7 @@ int KeyDownAndUp(CStringArray* saData)
 	if(saData->GetAt(0).Compare(_T("\""))==0){return KeyDownAndUpUnicode(L'\"');}
 	if(saData->GetAt(0).Compare(_T("#"))==0){return KeyDownAndUpUnicode(L'#');}
 	if(saData->GetAt(0).Compare(_T("$"))==0){return KeyDownAndUpUnicode(L'$');}
-	if(saData->GetAt(0).Compare(_T("%%"))==0){return KeyDownAndUpUnicode(L'%%');}
+	if(saData->GetAt(0).Compare(_T("%%"))==0){return KeyDownAndUpUnicode(L'%');}
 	if(saData->GetAt(0).Compare(_T("&"))==0){return KeyDownAndUpUnicode(L'&');}
 	if(saData->GetAt(0).Compare(_T("'"))==0){return KeyDownAndUpUnicode(L'\'');}
 	if(saData->GetAt(0).Compare(_T("("))==0){return KeyDownAndUpUnicode(L'(');}
@@ -372,6 +392,14 @@ int OperateCommand(int* iSceneData, LPVOID Halt, LPVOID Suspend, LONGLONG* Speci
 		{
 			iRet = KeyUp(&saData);
 			return iRet;
+		}
+	case COMMAND_WAIT_FOR_CTRL_RELEASED:
+		{
+			return WaitForKey(Halt, Suspend, VK_CONTROL);
+		}
+	case COMMAND_WAIT_FOR_SHIFT_RELEASED:
+		{
+			return WaitForKey(Halt, Suspend, VK_SHIFT);
 		}
 	case COMMAND_NOTING:{return 0;}
 	default:{return -1;}

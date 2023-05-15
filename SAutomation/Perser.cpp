@@ -31,6 +31,8 @@ BOOL GetCommand(CString sDataLine, int* iCommandType)
 	if(sDataTrimLower.Compare(_T("return"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
 	if(sDataTrimLower.Compare(_T("space"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
 	if(sDataTrimLower.Compare(_T("tab"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+	if(sDataTrimLower.Compare(_T("wait ctrl off"))==0){*iCommandType=COMMAND_WAIT_FOR_CTRL_RELEASED; return TRUE;}
+	if(sDataTrimLower.Compare(_T("wait shift off"))==0){*iCommandType=COMMAND_WAIT_FOR_SHIFT_RELEASED; return TRUE;}
 
 	if(sDataTrimLower.GetLength()==2)
 	{
@@ -302,6 +304,14 @@ BOOL PerseCommand(int* iSceneData, CString sDataLine, int* iCommandType, CString
 
 			saData->Add(sOut);
 
+			*iCommandType=iType;
+		}
+	case COMMAND_WAIT_FOR_CTRL_RELEASED:
+		{
+			*iCommandType=iType;
+		}
+	case COMMAND_WAIT_FOR_SHIFT_RELEASED:
+		{
 			*iCommandType=iType;
 		}
 	}
