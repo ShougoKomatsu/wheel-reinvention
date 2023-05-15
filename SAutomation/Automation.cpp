@@ -192,12 +192,37 @@ int KeyDownAndUp(CStringArray* saData)
 	if(saData->GetAt(0).Compare(_T("ª"))==0){return KeyDownAndUp(VK_UP);}
 	if(saData->GetAt(0).Compare(_T("¨"))==0){return KeyDownAndUp(VK_RIGHT);}
 	if(saData->GetAt(0).Compare(_T("«"))==0){return KeyDownAndUp(VK_DOWN);}
-	
-	if(saData->GetAt(0).Compare(_T("_"))==0)
-	{
-		return KeyDownAndUpUnicode(L'_');
-	}
 
+	if(saData->GetAt(0).Compare(_T("_"))==0){return KeyDownAndUpUnicode(L'_');}
+	if(saData->GetAt(0).Compare(_T("."))==0){return KeyDownAndUpUnicode(L'.');}
+	if(saData->GetAt(0).Compare(_T("/"))==0){return KeyDownAndUpUnicode(L'/');}
+	if(saData->GetAt(0).Compare(_T("*"))==0){return KeyDownAndUpUnicode(L'*');}
+	if(saData->GetAt(0).Compare(_T("-"))==0){return KeyDownAndUpUnicode(L'-');}
+	if(saData->GetAt(0).Compare(_T("@"))==0){return KeyDownAndUpUnicode(L'@');}
+	if(saData->GetAt(0).Compare(_T("["))==0){return KeyDownAndUpUnicode(L'[');}
+	if(saData->GetAt(0).Compare(_T("]"))==0){return KeyDownAndUpUnicode(L']');}
+	if(saData->GetAt(0).Compare(_T("{"))==0){return KeyDownAndUpUnicode(L'{');}
+	if(saData->GetAt(0).Compare(_T("}"))==0){return KeyDownAndUpUnicode(L'}');}
+	if(saData->GetAt(0).Compare(_T(";"))==0){return KeyDownAndUpUnicode(L';');}
+	if(saData->GetAt(0).Compare(_T(":"))==0){return KeyDownAndUpUnicode(L':');}
+	if(saData->GetAt(0).Compare(_T("|"))==0){return KeyDownAndUpUnicode(L'|');}
+	if(saData->GetAt(0).Compare(_T("\\"))==0){return KeyDownAndUpUnicode(L'\\');}
+	if(saData->GetAt(0).Compare(_T("^"))==0){return KeyDownAndUpUnicode(L'^');}
+	if(saData->GetAt(0).Compare(_T("="))==0){return KeyDownAndUpUnicode(L'=');}
+	if(saData->GetAt(0).Compare(_T("-"))==0){return KeyDownAndUpUnicode(L'-');}
+	if(saData->GetAt(0).Compare(_T("`"))==0){return KeyDownAndUpUnicode(L'`');}
+	if(saData->GetAt(0).Compare(_T(">"))==0){return KeyDownAndUpUnicode(L'>');}
+	if(saData->GetAt(0).Compare(_T("<"))==0){return KeyDownAndUpUnicode(L'<');}
+	if(saData->GetAt(0).Compare(_T("?"))==0){return KeyDownAndUpUnicode(L'?');}
+	if(saData->GetAt(0).Compare(_T("!"))==0){return KeyDownAndUpUnicode(L'!');}
+	if(saData->GetAt(0).Compare(_T("\""))==0){return KeyDownAndUpUnicode(L'\"');}
+	if(saData->GetAt(0).Compare(_T("#"))==0){return KeyDownAndUpUnicode(L'#');}
+	if(saData->GetAt(0).Compare(_T("$"))==0){return KeyDownAndUpUnicode(L'$');}
+	if(saData->GetAt(0).Compare(_T("%%"))==0){return KeyDownAndUpUnicode(L'%%');}
+	if(saData->GetAt(0).Compare(_T("&"))==0){return KeyDownAndUpUnicode(L'&');}
+	if(saData->GetAt(0).Compare(_T("'"))==0){return KeyDownAndUpUnicode(L'\'');}
+	if(saData->GetAt(0).Compare(_T("("))==0){return KeyDownAndUpUnicode(L'(');}
+	if(saData->GetAt(0).Compare(_T(")"))==0){return KeyDownAndUpUnicode(L')');}
 	bySendKey = (BYTE)(saData->GetAt(0).GetAt(0));
 
 
