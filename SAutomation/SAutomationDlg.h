@@ -13,6 +13,8 @@
 #define HOTKEY_ID_4 (14)
 #define HOTKEY_ID_5 (15)
 
+#define HOTKEY_ID_ESCAPE (100)
+
 // CSAutomationDlg ダイアログ
 class CSAutomationDlg : public CDialogEx
 {

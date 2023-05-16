@@ -14,6 +14,7 @@
 
 #include "Automation.h"
 #define TIMER_DISP_MOUSPOS (100)
+#define TIMER_THREAD_WATCH (101)
 
 HWND g_hWnd;
 
@@ -183,7 +184,7 @@ LRESULT CSAutomationDlg::OnDispStandby(WPARAM wParam, LPARAM lParam)
 	UpdateData(TRUE);
 	if(wParam<0){return 0;}
 	if(wParam>=MAX_THREAD){return 0;}
-
+	g_hThread[wParam]=0;
 	m_sEditStatus[wParam].Format(_T("Stand by"));
 	UpdateData(FALSE);
 	return 0;
@@ -260,6 +261,7 @@ BOOL CSAutomationDlg::OnInitDialog()
 
 
 	SetTimer(TIMER_DISP_MOUSPOS,200, NULL);
+	SetTimer(TIMER_THREAD_WATCH,200, NULL);
 
 	m_uiEditLoop=1;
 	TCHAR szData[MAX_PATH];
@@ -292,7 +294,6 @@ BOOL CSAutomationDlg::OnInitDialog()
 	RegisterHotKey(NULL, HOTKEY_ID_4, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[4]);
 	RegisterHotKey(NULL, HOTKEY_ID_5, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[5]);
 
-	RegisterHotKey(NULL, 10, MOD_NOREPEAT, VK_ESCAPE);
 
 	UpdateData(FALSE);
 
@@ -429,7 +430,7 @@ BOOL CSAutomationDlg::PreTranslateMessage(MSG* pMsg)
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
 
-
+int g_iWatching=0;
 void CSAutomationDlg::OnTimer(UINT_PTR nIDEvent)
 {
 
@@ -439,6 +440,25 @@ void CSAutomationDlg::OnTimer(UINT_PTR nIDEvent)
 		m_sEditMousePosR.Format(_T("%d"),g_iR);
 		m_sEditMousePosC.Format(_T("%d"),g_iC);
 		UpdateData(FALSE);
+	}
+	if(nIDEvent == TIMER_THREAD_WATCH)
+	{
+		BOOL bAnyArrive = FALSE;
+		for(int iID = 0; iID< MAX_THREAD; iID++)
+		{
+			if(g_hThread[iID] != NULL)
+			{
+				if(g_iWatching==0)
+				{
+					RegisterHotKey(NULL, HOTKEY_ID_ESCAPE, MOD_NOREPEAT, VK_ESCAPE);
+					g_iWatching=1;
+				}
+				return;
+			}
+		}
+		if(g_iWatching==1){
+			UnregisterHotKey(NULL, HOTKEY_ID_ESCAPE); g_iWatching=0;
+		}
 	}
 	CDialogEx::OnTimer(nIDEvent);
 }
