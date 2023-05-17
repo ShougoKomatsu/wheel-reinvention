@@ -76,15 +76,15 @@ DWORD WINAPI CommandThread(LPVOID arg)
 	iData = *((int*)arg);
 	(*(int*)arg) = 0;  
 
-		int iScene;
-		iScene = (iData&0x07);
+	int iScene;
+	iScene = (iData&0x07);
 
-		ReadTextFile(g_sFilePath[iScene],&saCommands);
-		g_iSceneData[iScene]=iScene;
-		iSceneData=&g_iSceneData[iScene];
+	ReadTextFile(g_sFilePath[iScene],&saCommands);
+	g_iSceneData[iScene]=iScene;
+	iSceneData=&g_iSceneData[iScene];
 
 	int iLoop;
-	iLoop =iData>>4;
+	iLoop =(iData>>4)&0x01;
 
 	int iListLength;
 	int iRet;

@@ -484,7 +484,8 @@ void CSAutomationDlg::Operate0()
 	int iParam;
 	int iChecked;
 	iChecked = ((CButton*)GetDlgItem(IDC_CHECK_REPEAT_0))->GetCheck();
-	iParam=(iChecked<<4)+iID;
+	iParam = 1<<5;
+	iParam+=(iChecked<<4)+iID;
 	g_hThread[iID] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 
@@ -507,7 +508,8 @@ void CSAutomationDlg::Operate1()
 	int iParam;
 	int iChecked;
 	iChecked = ((CButton*)GetDlgItem(IDC_CHECK_REPEAT_1))->GetCheck();
-	iParam=(iChecked<<4)+iID;
+	iParam = 1<<5;
+	iParam+=(iChecked<<4)+iID;
 	g_hThread[iID] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 
@@ -531,7 +533,8 @@ void CSAutomationDlg::Operate2()
 	int iParam;
 	int iChecked;
 	iChecked = ((CButton*)GetDlgItem(IDC_CHECK_REPEAT_2))->GetCheck();
-	iParam=(iChecked<<4)+iID;
+	iParam = 1<<5;
+	iParam+=(iChecked<<4)+iID;
 	g_hThread[iID] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 
@@ -556,7 +559,8 @@ void CSAutomationDlg::Operate3()
 	int iParam;
 	int iChecked;
 	iChecked = ((CButton*)GetDlgItem(IDC_CHECK_REPEAT_3))->GetCheck();
-	iParam=(iChecked<<4)+iID;
+	iParam = 1<<5;
+	iParam+=(iChecked<<4)+iID;
 	g_hThread[iID] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 
@@ -582,7 +586,8 @@ void CSAutomationDlg::Operate4()
 	int iParam;
 	int iChecked;
 	iChecked = ((CButton*)GetDlgItem(IDC_CHECK_REPEAT_4))->GetCheck();
-	iParam=(iChecked<<4)+iID;
+	iParam = 1<<5;
+	iParam+=(iChecked<<4)+iID;
 	g_hThread[iID] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 
@@ -608,7 +613,8 @@ void CSAutomationDlg::Operate5()
 	int iParam;
 	int iChecked;
 	iChecked = ((CButton*)GetDlgItem(IDC_CHECK_REPEAT_5))->GetCheck();
-	iParam=(iChecked<<4)+iID;
+	iParam = 1<<5;
+	iParam+=(iChecked<<4)+iID;
 	g_hThread[iID] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 
