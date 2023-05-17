@@ -679,46 +679,20 @@ void CSAutomationDlg::SaveSettings()
 	UpdateData(TRUE);
 	CString sFilePath;
 	sFilePath.Format(_T("%s\\SAutomation.ini"), m_sDir); 
-
-	WritePrivateProfileString(_T("FileName"),_T("1"),m_sEditFileName[0],sFilePath);
-	WritePrivateProfileString(_T("FileName"),_T("2"),m_sEditFileName[1],sFilePath);
-	WritePrivateProfileString(_T("FileName"),_T("3"),m_sEditFileName[2],sFilePath);
-	WritePrivateProfileString(_T("FileName"),_T("4"),m_sEditFileName[3],sFilePath);
-	WritePrivateProfileString(_T("FileName"),_T("5"),m_sEditFileName[4],sFilePath);
-	WritePrivateProfileString(_T("FileName"),_T("6"),m_sEditFileName[5],sFilePath);
-
-	CString sData;
-	TCHAR tch[8];
-	if(m_combo[0].GetCurSel()<0){sData.Format(_T("b"));}
-	else{m_combo[0].GetLBText(m_combo[0].GetCurSel(),tch); sData.Format(_T("%s"), tch);}
-	WritePrivateProfileString(_T("Hotkey"),_T("1"),sData,sFilePath);
-
-	if(m_combo[1].GetCurSel()<0){sData.Format(_T("c"));}
-	else{m_combo[1].GetLBText(m_combo[1].GetCurSel(),tch); sData.Format(_T("%s"), tch);}
-	WritePrivateProfileString(_T("Hotkey"),_T("2"),sData,sFilePath);
-
-	if(m_combo[2].GetCurSel()<0){sData.Format(_T("d"));}
-	else{m_combo[2].GetLBText(m_combo[2].GetCurSel(),tch); sData.Format(_T("%s"), tch);}
-	WritePrivateProfileString(_T("Hotkey"),_T("3"),sData,sFilePath);
-
-	if(m_combo[3].GetCurSel()<0){sData.Format(_T("e"));}
-	else{m_combo[3].GetLBText(m_combo[3].GetCurSel(),tch); sData.Format(_T("%s"), tch);}
-	WritePrivateProfileString(_T("Hotkey"),_T("4"),sData,sFilePath);
-
-	if(m_combo[4].GetCurSel()<0){sData.Format(_T("f"));}
-	else{m_combo[4].GetLBText(m_combo[4].GetCurSel(),tch); sData.Format(_T("%s"), tch);}
-	WritePrivateProfileString(_T("Hotkey"),_T("5"),sData,sFilePath);
-
-	int i;
-	i=m_combo[5].GetCurSel();
-	if(m_combo[5].GetCurSel()<0){sData.Format(_T("g"));}
-	else{m_combo[5].GetLBText(m_combo[5].GetCurSel(),tch); sData.Format(_T("%s"), tch);}
-	WritePrivateProfileString(_T("Hotkey"),_T("6"),sData,sFilePath);
 	
 	for(int iID = 0; iID<MAX_THREAD; iID++)
 	{
 		CString sKey;
 		sKey.Format(_T("%d"), iID+1);
+
+		WritePrivateProfileString(_T("FileName"),sKey,m_sEditFileName[iID],sFilePath);
+
+		CString sData;
+		TCHAR tch[8];
+		if(m_combo[iID].GetCurSel()<0){sData.Format(_T("b"));}
+		else{m_combo[iID].GetLBText(m_combo[iID].GetCurSel(),tch); sData.Format(_T("%s"), tch);}
+		WritePrivateProfileString(_T("Hotkey"),sKey,sData,sFilePath);
+
 		sData.Format(_T("%d"),((CButton*)GetDlgItem(IDC_CHECK_REPEAT_0+iID))->GetCheck());	
 		WritePrivateProfileString(_T("Loop"),sKey,sData,sFilePath);
 	}
