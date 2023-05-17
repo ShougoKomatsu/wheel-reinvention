@@ -34,6 +34,7 @@ protected:
 	void Operate3();
 	void Operate4();
 	void Operate5();
+	BOOL m_bLoop[MAX_THREAD];
 	
 	CString m_sHotkey[MAX_THREAD];
 

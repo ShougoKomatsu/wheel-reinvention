@@ -231,6 +231,21 @@ void CSAutomationDlg::ReadSettings()
 	m_sHotkey[4].Format(_T("%s"), szData);
 	GetPrivateProfileString(_T("Hotkey"),_T("6"),_T("g"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 	m_sHotkey[5].Format(_T("%s"), szData);
+
+	
+	GetPrivateProfileString(_T("Loop"),_T("1"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	m_bLoop[0]=_ttoi(szData);
+	GetPrivateProfileString(_T("Loop"),_T("2"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	m_bLoop[1]=_ttoi(szData);
+	GetPrivateProfileString(_T("Loop"),_T("3"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	m_bLoop[2]=_ttoi(szData);
+	GetPrivateProfileString(_T("Loop"),_T("4"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	m_bLoop[3]=_ttoi(szData);
+	GetPrivateProfileString(_T("Loop"),_T("5"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	m_bLoop[4]=_ttoi(szData);
+	GetPrivateProfileString(_T("Loop"),_T("6"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	m_bLoop[5]=_ttoi(szData);
+
 }
 
 BOOL CSAutomationDlg::OnInitDialog()
@@ -288,6 +303,7 @@ BOOL CSAutomationDlg::OnInitDialog()
 		g_hThread[iID] = NULL;
 		m_dwHotKey[iID] = char(m_sHotkey[iID].GetAt(0))-'a'+0x41;
 		m_sEditStatus[iID].Format(_T("Stand by"));
+		((CButton*)GetDlgItem(IDC_CHECK_REPEAT_0 + iID))->SetCheck(m_bLoop[iID]);
 	}
 
 	g_bHalt = FALSE;
@@ -723,7 +739,14 @@ void CSAutomationDlg::SaveSettings()
 	if(m_combo[5].GetCurSel()<0){sData.Format(_T("g"));}
 	else{m_combo[5].GetLBText(m_combo[5].GetCurSel(),tch); sData.Format(_T("%s"), tch);}
 	WritePrivateProfileString(_T("Hotkey"),_T("6"),sData,sFilePath);
-
+	
+	for(int iID = 0; iID<MAX_THREAD; iID++)
+	{
+		CString sKey;
+		sKey.Format(_T("%d"), iID+1);
+		sData.Format(_T("%d"),((CButton*)GetDlgItem(IDC_CHECK_REPEAT_0+iID))->GetCheck());	
+		WritePrivateProfileString(_T("Loop"),sKey,sData,sFilePath);
+	}
 }
 
 BOOL CSAutomationDlg::DestroyWindow()

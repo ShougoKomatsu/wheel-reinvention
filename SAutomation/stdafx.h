@@ -38,6 +38,7 @@
 #include <afxcontrolbars.h>     // MFC におけるリボンとコントロール バーのサポート
 
 
+#define WM_DISP_STANDBY (WM_APP + 10)
 
 
 extern HWND g_hWnd;
