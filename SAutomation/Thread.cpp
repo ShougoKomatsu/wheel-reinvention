@@ -71,21 +71,24 @@ DWORD WINAPI CommandThread(LPVOID arg)
 	hGetKey = CreateThread(NULL, 0, GetKeyThread, NULL, 0, &dwThreadID);
 	hGetStepKey = CreateThread(NULL, 0, GetStepKeyThread, NULL, 0, &dwThreadID);
 	CStringArray saCommands;
+	
+	int iData;
+	iData = *((int*)arg);
+	(*(int*)arg) = 0;  
 
 		int iScene;
-		iScene = ((*(int*)arg)&0x07);
+		iScene = (iData&0x07);
 
 		ReadTextFile(g_sFilePath[iScene],&saCommands);
 		g_iSceneData[iScene]=iScene;
 		iSceneData=&g_iSceneData[iScene];
 
 	int iLoop;
-	iLoop = (*(int*)arg)>>4;
-	(*(int*)arg) = 0;  
+	iLoop =iData>>4;
 
 	int iListLength;
 	int iRet;
-	for(int j=0; j<iLoop; j++)
+	while(1)
 	{
 		iListLength =(int) saCommands.GetCount();
 		for(int i=0; i<iListLength; i++)
@@ -96,6 +99,7 @@ DWORD WINAPI CommandThread(LPVOID arg)
 			g_llStepOut=1;
 			g_llStepIn=0;
 		}
+		if(iLoop==0){break;}
 	}
 	PostMessage(g_hWnd,WM_DISP_STANDBY,iScene,0);
 	TerminateThread(hGetKey, 0);

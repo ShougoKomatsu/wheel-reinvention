@@ -491,7 +491,9 @@ void CSAutomationDlg::Operate0()
 	}
 	g_sFilePath[iID].Format(_T("%s\\Macro\\%s"),m_sDir, m_sEditFileName[iID]);
 	int iParam;
-	iParam=(m_uiEditLoop<<4)+iID;
+	int iChecked;
+	iChecked = ((CButton*)GetDlgItem(IDC_CHECK_REPEAT_0))->GetCheck();
+	iParam=(iChecked<<4)+iID;
 	g_hThread[iID] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 
@@ -512,7 +514,9 @@ void CSAutomationDlg::Operate1()
 	}
 	g_sFilePath[iID].Format(_T("%s\\Macro\\%s"),m_sDir, m_sEditFileName[iID]);
 	int iParam;
-	iParam=(m_uiEditLoop<<4)+iID;
+	int iChecked;
+	iChecked = ((CButton*)GetDlgItem(IDC_CHECK_REPEAT_1))->GetCheck();
+	iParam=(iChecked<<4)+iID;
 	g_hThread[iID] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 
@@ -534,7 +538,9 @@ void CSAutomationDlg::Operate2()
 	}
 	g_sFilePath[iID].Format(_T("%s\\Macro\\%s"),m_sDir, m_sEditFileName[iID]);
 	int iParam;
-	iParam=(m_uiEditLoop<<4)+iID;
+	int iChecked;
+	iChecked = ((CButton*)GetDlgItem(IDC_CHECK_REPEAT_2))->GetCheck();
+	iParam=(iChecked<<4)+iID;
 	g_hThread[iID] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 
@@ -557,7 +563,9 @@ void CSAutomationDlg::Operate3()
 	}
 	g_sFilePath[iID].Format(_T("%s\\Macro\\%s"),m_sDir, m_sEditFileName[iID]);
 	int iParam;
-	iParam=(m_uiEditLoop<<4)+iID;
+	int iChecked;
+	iChecked = ((CButton*)GetDlgItem(IDC_CHECK_REPEAT_3))->GetCheck();
+	iParam=(iChecked<<4)+iID;
 	g_hThread[iID] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 
@@ -581,7 +589,9 @@ void CSAutomationDlg::Operate4()
 	}
 	g_sFilePath[iID].Format(_T("%s\\Macro\\%s"),m_sDir, m_sEditFileName[iID]);
 	int iParam;
-	iParam=(m_uiEditLoop<<4)+iID;
+	int iChecked;
+	iChecked = ((CButton*)GetDlgItem(IDC_CHECK_REPEAT_4))->GetCheck();
+	iParam=(iChecked<<4)+iID;
 	g_hThread[iID] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 
@@ -605,7 +615,9 @@ void CSAutomationDlg::Operate5()
 	}
 	g_sFilePath[iID].Format(_T("%s\\Macro\\%s"),m_sDir, m_sEditFileName[iID]);
 	int iParam;
-	iParam=(m_uiEditLoop<<4)+iID;
+	int iChecked;
+	iChecked = ((CButton*)GetDlgItem(IDC_CHECK_REPEAT_5))->GetCheck();
+	iParam=(iChecked<<4)+iID;
 	g_hThread[iID] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 
