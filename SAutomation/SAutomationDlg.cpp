@@ -111,6 +111,12 @@ BEGIN_MESSAGE_MAP(CSAutomationDlg, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_COMBO4, &CSAutomationDlg::OnSelchangeCombo4)
 	ON_CBN_SELCHANGE(IDC_COMBO5, &CSAutomationDlg::OnSelchangeCombo5)
 	ON_MESSAGE(WM_DISP_STANDBY, &CSAutomationDlg::OnDispStandby)
+	ON_BN_CLICKED(IDC_BUTTON_OPERATE_0, &CSAutomationDlg::OnBnClickedButtonOperate0)
+	ON_BN_CLICKED(IDC_BUTTON_OPERATE_1, &CSAutomationDlg::OnBnClickedButtonOperate1)
+	ON_BN_CLICKED(IDC_BUTTON_OPERATE_2, &CSAutomationDlg::OnBnClickedButtonOperate2)
+	ON_BN_CLICKED(IDC_BUTTON_OPERATE_3, &CSAutomationDlg::OnBnClickedButtonOperate3)
+	ON_BN_CLICKED(IDC_BUTTON_OPERATE_4, &CSAutomationDlg::OnBnClickedButtonOperate4)
+	ON_BN_CLICKED(IDC_BUTTON_OPERATE_5, &CSAutomationDlg::OnBnClickedButtonOperate5)
 END_MESSAGE_MAP()
 
 
@@ -800,3 +806,11 @@ void CSAutomationDlg::OnSelchangeCombo5()
 	m_dwHotKey[5] = char(tch[0])-'a'+0x41;
 	RegisterHotKey(NULL, HOTKEY_ID_5, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[5]);
 }
+
+
+void CSAutomationDlg::OnBnClickedButtonOperate0(){Operate0();}
+void CSAutomationDlg::OnBnClickedButtonOperate1(){Operate1();}
+void CSAutomationDlg::OnBnClickedButtonOperate2(){Operate2();}
+void CSAutomationDlg::OnBnClickedButtonOperate3(){Operate3();}
+void CSAutomationDlg::OnBnClickedButtonOperate4(){Operate4();}
+void CSAutomationDlg::OnBnClickedButtonOperate5(){Operate5();}

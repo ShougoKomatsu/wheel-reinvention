@@ -88,4 +88,10 @@ public:
 	afx_msg void OnSelchangeCombo4();
 	afx_msg void OnSelchangeCombo5();
 
+	afx_msg void OnBnClickedButtonOperate0();
+	afx_msg void OnBnClickedButtonOperate1();
+	afx_msg void OnBnClickedButtonOperate2();
+	afx_msg void OnBnClickedButtonOperate3();
+	afx_msg void OnBnClickedButtonOperate4();
+	afx_msg void OnBnClickedButtonOperate5();
 };
