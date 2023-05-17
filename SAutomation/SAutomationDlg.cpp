@@ -198,54 +198,29 @@ LRESULT CSAutomationDlg::OnDispStandby(WPARAM wParam, LPARAM lParam)
 
 void CSAutomationDlg::ReadSettings()
 {
-	
+
 	TCHAR szData[MAX_PATH];
 	CString sFilePath;
+
 	sFilePath.Format(_T("%s\\SAutomation.ini"), m_sDir); 
-	GetPrivateProfileString(_T("FileName"),_T("1"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_sEditFileName[0].Format(_T("%s"),szData);
-	GetPrivateProfileString(_T("FileName"),_T("2"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_sEditFileName[1].Format(_T("%s"),szData);
-	GetPrivateProfileString(_T("FileName"),_T("3"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_sEditFileName[2].Format(_T("%s"),szData);
-	GetPrivateProfileString(_T("FileName"),_T("4"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_sEditFileName[3].Format(_T("%s"),szData);
-	GetPrivateProfileString(_T("FileName"),_T("5"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_sEditFileName[4].Format(_T("%s"),szData);
-	GetPrivateProfileString(_T("FileName"),_T("6"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_sEditFileName[5].Format(_T("%s"),szData);
 
 	GetPrivateProfileString(_T("Mouse"),_T("ClickDulation"),_T("50"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 	g_iClickDulation = _ttoi(szData);
+	for(int iID=0; iID<MAX_THREAD; iID++)
+	{
+		CString sKey;
+		sKey.Format(_T("%d"), iID+1);
+		GetPrivateProfileString(_T("FileName"),sKey,_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+		m_sEditFileName[iID].Format(_T("%s"),szData);
 
+		CString sDefault;
+		sDefault.Format(_T("%c"), 'a'+iID+1);
+		GetPrivateProfileString(_T("Hotkey"),sKey,sDefault,szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+		m_sHotkey[iID].Format(_T("%s"), szData);
 
-	GetPrivateProfileString(_T("Hotkey"),_T("1"),_T("b"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_sHotkey[0].Format(_T("%s"), szData);
-	GetPrivateProfileString(_T("Hotkey"),_T("2"),_T("c"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_sHotkey[1].Format(_T("%s"), szData);
-	GetPrivateProfileString(_T("Hotkey"),_T("3"),_T("d"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_sHotkey[2].Format(_T("%s"), szData);
-	GetPrivateProfileString(_T("Hotkey"),_T("4"),_T("e"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_sHotkey[3].Format(_T("%s"), szData);
-	GetPrivateProfileString(_T("Hotkey"),_T("5"),_T("f"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_sHotkey[4].Format(_T("%s"), szData);
-	GetPrivateProfileString(_T("Hotkey"),_T("6"),_T("g"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_sHotkey[5].Format(_T("%s"), szData);
-
-	
-	GetPrivateProfileString(_T("Loop"),_T("1"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_bLoop[0]=_ttoi(szData);
-	GetPrivateProfileString(_T("Loop"),_T("2"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_bLoop[1]=_ttoi(szData);
-	GetPrivateProfileString(_T("Loop"),_T("3"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_bLoop[2]=_ttoi(szData);
-	GetPrivateProfileString(_T("Loop"),_T("4"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_bLoop[3]=_ttoi(szData);
-	GetPrivateProfileString(_T("Loop"),_T("5"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_bLoop[4]=_ttoi(szData);
-	GetPrivateProfileString(_T("Loop"),_T("6"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-	m_bLoop[5]=_ttoi(szData);
-
+		GetPrivateProfileString(_T("Loop"),sKey,_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+		m_bLoop[iID]=_ttoi(szData);
+	}
 }
 
 BOOL CSAutomationDlg::OnInitDialog()
