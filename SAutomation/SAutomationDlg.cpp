@@ -58,7 +58,6 @@ CSAutomationDlg::CSAutomationDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CSAutomationDlg::IDD, pParent)
 	, m_sEditMousePosC(_T(""))
 	, m_sEditMousePosR(_T(""))
-	, m_uiEditLoop(0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -68,7 +67,6 @@ void CSAutomationDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_EDIT_MOUSEPOS_C, m_sEditMousePosC);
 	DDX_Text(pDX, IDC_EDIT_MOUSEPOS_R, m_sEditMousePosR);
-	DDX_Text(pDX, IDC_EDIT2, m_uiEditLoop);
 	DDX_Text(pDX, IDC_EDIT_FILE_0, (m_sEditFileName[0]));
 	DDX_Text(pDX, IDC_EDIT_FILE_1, (m_sEditFileName[1]));
 	DDX_Text(pDX, IDC_EDIT_FILE_2, (m_sEditFileName[2]));
@@ -222,6 +220,9 @@ void CSAutomationDlg::ReadSettings()
 		GetPrivateProfileString(_T("Loop"),sKey,_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 		m_bLoop[iID]=_ttoi(szData);
 	}
+	GetPrivateProfileString(_T("Hotkey"),_T("Enable"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	if(wcscmp(szData,_T("1"))==0){m_bEnableHotkey=TRUE;}
+	else{m_bEnableHotkey=FALSE;}
 }
 
 BOOL CSAutomationDlg::OnInitDialog()
@@ -260,7 +261,6 @@ BOOL CSAutomationDlg::OnInitDialog()
 	SetTimer(TIMER_DISP_MOUSPOS,200, NULL);
 	SetTimer(TIMER_THREAD_WATCH,200, NULL);
 
-	m_uiEditLoop=1;
 	TCHAR szData[MAX_PATH];
 	GetCurrentDirectory(sizeof(szData)/sizeof(TCHAR),szData);
 	m_sDir.Format(_T("%s"),szData);
@@ -284,14 +284,20 @@ BOOL CSAutomationDlg::OnInitDialog()
 
 	g_bHalt = FALSE;
 
-
+	if(m_bEnableHotkey==TRUE)
+	{
+		((CButton*)GetDlgItem(IDC_CHECK_ENABLE_HOTKEY))->SetCheck(1);
 	RegisterHotKey(NULL, HOTKEY_ID_0, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[0]);
 	RegisterHotKey(NULL, HOTKEY_ID_1, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[1]);
 	RegisterHotKey(NULL, HOTKEY_ID_2, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[2]);
 	RegisterHotKey(NULL, HOTKEY_ID_3, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[3]);
 	RegisterHotKey(NULL, HOTKEY_ID_4, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[4]);
 	RegisterHotKey(NULL, HOTKEY_ID_5, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[5]);
-
+	}
+	else
+	{
+		((CButton*)GetDlgItem(IDC_CHECK_ENABLE_HOTKEY))->SetCheck(0);
+	}
 
 	UpdateData(FALSE);
 
@@ -709,6 +715,15 @@ void CSAutomationDlg::SaveSettings()
 
 		sData.Format(_T("%d"),((CButton*)GetDlgItem(IDC_CHECK_REPEAT_0+iID))->GetCheck());	
 		WritePrivateProfileString(_T("Loop"),sKey,sData,sFilePath);
+	}
+
+	if(((CButton*)GetDlgItem(IDC_CHECK_ENABLE_HOTKEY))->GetCheck()==1)
+	{
+		WritePrivateProfileString(_T("Hotkey"),_T("Enable"),_T("1"),sFilePath);
+	}
+	else
+	{
+		WritePrivateProfileString(_T("Hotkey"),_T("Enable"),_T("0"),sFilePath);
 	}
 }
 

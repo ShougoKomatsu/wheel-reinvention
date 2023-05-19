@@ -34,6 +34,7 @@ protected:
 	void Operate3();
 	void Operate4();
 	void Operate5();
+	BOOL m_bEnableHotkey;
 	BOOL m_bLoop[MAX_THREAD];
 	
 	CString m_sHotkey[MAX_THREAD];
@@ -70,7 +71,6 @@ public:
 	CString m_sEditMousePosC;
 	CString m_sEditMousePosR;
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	UINT m_uiEditLoop;
 	virtual BOOL DestroyWindow();
 
 	CString m_sEditFileName[MAX_THREAD];
