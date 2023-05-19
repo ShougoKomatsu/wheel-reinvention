@@ -117,6 +117,7 @@ BEGIN_MESSAGE_MAP(CSAutomationDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_OPERATE_3, &CSAutomationDlg::OnBnClickedButtonOperate3)
 	ON_BN_CLICKED(IDC_BUTTON_OPERATE_4, &CSAutomationDlg::OnBnClickedButtonOperate4)
 	ON_BN_CLICKED(IDC_BUTTON_OPERATE_5, &CSAutomationDlg::OnBnClickedButtonOperate5)
+	ON_BN_CLICKED(IDC_CHECK_ENABLE_HOTKEY, &CSAutomationDlg::OnBnClickedCheckEnableHotkey)
 END_MESSAGE_MAP()
 
 
@@ -294,6 +295,7 @@ BOOL CSAutomationDlg::OnInitDialog()
 
 	UpdateData(FALSE);
 
+	TrayNotifyIconMessage(NIM_ADD);
 
 	// このダイアログのアイコンを設定します。アプリケーションのメイン ウィンドウがダイアログでない場合、
 	//  Framework は、この設定を自動的に行います。
@@ -302,7 +304,13 @@ BOOL CSAutomationDlg::OnInitDialog()
 
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }
+BOOL CSAutomationDlg::TrayNotifyIconMessage(DWORD dwMessage)
+{
+	NOTIFYICONDATA nid;
+	nid.cbSize = sizeof(NOTIFYICONDATA);
 
+	return Shell_NotifyIcon(dwMessage,&nid);
+}
 void CSAutomationDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
 	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
@@ -804,3 +812,26 @@ void CSAutomationDlg::OnBnClickedButtonOperate2(){Operate2();}
 void CSAutomationDlg::OnBnClickedButtonOperate3(){Operate3();}
 void CSAutomationDlg::OnBnClickedButtonOperate4(){Operate4();}
 void CSAutomationDlg::OnBnClickedButtonOperate5(){Operate5();}
+
+
+void CSAutomationDlg::OnBnClickedCheckEnableHotkey()
+{
+	UpdateData(TRUE);
+	UnregisterHotKey(NULL, HOTKEY_ID_0);
+	UnregisterHotKey(NULL, HOTKEY_ID_1);
+	UnregisterHotKey(NULL, HOTKEY_ID_2);
+	UnregisterHotKey(NULL, HOTKEY_ID_3);
+	UnregisterHotKey(NULL, HOTKEY_ID_4);
+	UnregisterHotKey(NULL, HOTKEY_ID_5);
+	if(((CButton*)GetDlgItem(IDC_CHECK_ENABLE_HOTKEY))->GetCheck()==1)
+	{
+		RegisterHotKey(NULL, HOTKEY_ID_0, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[0]);
+		RegisterHotKey(NULL, HOTKEY_ID_1, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[1]);
+		RegisterHotKey(NULL, HOTKEY_ID_2, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[2]);
+		RegisterHotKey(NULL, HOTKEY_ID_3, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[3]);
+		RegisterHotKey(NULL, HOTKEY_ID_4, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[4]);
+		RegisterHotKey(NULL, HOTKEY_ID_5, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[5]);
+	}
+
+	return;
+}

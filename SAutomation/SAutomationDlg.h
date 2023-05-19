@@ -27,7 +27,7 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV サポート
-	
+	BOOL TrayNotifyIconMessage(DWORD dwMessage);
 	void Operate0();
 	void Operate1();
 	void Operate2();
@@ -95,4 +95,5 @@ public:
 	afx_msg void OnBnClickedButtonOperate3();
 	afx_msg void OnBnClickedButtonOperate4();
 	afx_msg void OnBnClickedButtonOperate5();
+	afx_msg void OnBnClickedCheckEnableHotkey();
 };
