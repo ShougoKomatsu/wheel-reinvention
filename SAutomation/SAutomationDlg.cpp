@@ -81,33 +81,33 @@ void CSAutomationDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_STATUS_4, (m_sEditStatus[4]));
 	DDX_Text(pDX, IDC_EDIT_STATUS_5, (m_sEditStatus[5]));
 
-	DDX_Control(pDX, IDC_COMBO0, (m_combo[0]));
-	DDX_Control(pDX, IDC_COMBO1, (m_combo[1]));
-	DDX_Control(pDX, IDC_COMBO2, (m_combo[2]));
-	DDX_Control(pDX, IDC_COMBO3, (m_combo[3]));
-	DDX_Control(pDX, IDC_COMBO4, (m_combo[4]));
-	DDX_Control(pDX, IDC_COMBO5, (m_combo[5]));
+	DDX_Control(pDX, IDC_COMBO_HOTKEY_0, (m_combo[0]));
+	DDX_Control(pDX, IDC_COMBO_HOTKEY_1, (m_combo[1]));
+	DDX_Control(pDX, IDC_COMBO_HOTKEY_2, (m_combo[2]));
+	DDX_Control(pDX, IDC_COMBO_HOTKEY_3, (m_combo[3]));
+	DDX_Control(pDX, IDC_COMBO_HOTKEY_4, (m_combo[4]));
+	DDX_Control(pDX, IDC_COMBO_HOTKEY_5, (m_combo[5]));
 }
 
 BEGIN_MESSAGE_MAP(CSAutomationDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
-	ON_BN_CLICKED(IDC_BUTTON0, &CSAutomationDlg::OnBnClickedButton0)
-	ON_BN_CLICKED(IDC_BUTTON1, &CSAutomationDlg::OnBnClickedButton1)
-	ON_BN_CLICKED(IDC_BUTTON2, &CSAutomationDlg::OnBnClickedButton2)
-	ON_BN_CLICKED(IDC_BUTTON3, &CSAutomationDlg::OnBnClickedButton3)
-	ON_BN_CLICKED(IDC_BUTTON4, &CSAutomationDlg::OnBnClickedButton4)
-	ON_BN_CLICKED(IDC_BUTTON5, &CSAutomationDlg::OnBnClickedButton5)
+	ON_BN_CLICKED(IDC_BUTTON_SELECT_FILE_0, &CSAutomationDlg::OnBnClickedButton0)
+	ON_BN_CLICKED(IDC_BUTTON_SELECT_FILE_1, &CSAutomationDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON_SELECT_FILE_2, &CSAutomationDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON_SELECT_FILE_3, &CSAutomationDlg::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON_SELECT_FILE_4, &CSAutomationDlg::OnBnClickedButton4)
+	ON_BN_CLICKED(IDC_BUTTON_SELECT_FILE_5, &CSAutomationDlg::OnBnClickedButton5)
 	ON_EN_CHANGE(IDC_EDIT1, &CSAutomationDlg::OnEnChangeEdit1)
 	ON_WM_TIMER()
 	ON_WM_MOUSEMOVE()
-	ON_CBN_SELCHANGE(IDC_COMBO0, &CSAutomationDlg::OnSelchangeCombo0)
-	ON_CBN_SELCHANGE(IDC_COMBO1, &CSAutomationDlg::OnSelchangeCombo1)
-	ON_CBN_SELCHANGE(IDC_COMBO2, &CSAutomationDlg::OnSelchangeCombo2)
-	ON_CBN_SELCHANGE(IDC_COMBO3, &CSAutomationDlg::OnSelchangeCombo3)
-	ON_CBN_SELCHANGE(IDC_COMBO4, &CSAutomationDlg::OnSelchangeCombo4)
-	ON_CBN_SELCHANGE(IDC_COMBO5, &CSAutomationDlg::OnSelchangeCombo5)
+	ON_CBN_SELCHANGE(IDC_COMBO_HOTKEY_0, &CSAutomationDlg::OnSelchangeCombo0)
+	ON_CBN_SELCHANGE(IDC_COMBO_HOTKEY_1, &CSAutomationDlg::OnSelchangeCombo1)
+	ON_CBN_SELCHANGE(IDC_COMBO_HOTKEY_2, &CSAutomationDlg::OnSelchangeCombo2)
+	ON_CBN_SELCHANGE(IDC_COMBO_HOTKEY_3, &CSAutomationDlg::OnSelchangeCombo3)
+	ON_CBN_SELCHANGE(IDC_COMBO_HOTKEY_4, &CSAutomationDlg::OnSelchangeCombo4)
+	ON_CBN_SELCHANGE(IDC_COMBO_HOTKEY_5, &CSAutomationDlg::OnSelchangeCombo5)
 	ON_MESSAGE(WM_DISP_STANDBY, &CSAutomationDlg::OnDispStandby)
 	ON_BN_CLICKED(IDC_BUTTON_OPERATE_0, &CSAutomationDlg::OnBnClickedButtonOperate0)
 	ON_BN_CLICKED(IDC_BUTTON_OPERATE_1, &CSAutomationDlg::OnBnClickedButtonOperate1)
@@ -830,7 +830,7 @@ void CSAutomationDlg::OnSelchangeCombo4()
 
 void CSAutomationDlg::OnSelchangeCombo5()
 {
-	int iID = 5;
+	int iID = 5	;
 	UnregisterHotKey(NULL, HOTKEY_ID_0 + iID);
 
 	UpdateData(TRUE);
