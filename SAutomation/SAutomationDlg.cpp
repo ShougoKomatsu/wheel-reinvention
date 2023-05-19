@@ -145,6 +145,17 @@ LRESULT CALLBACK MouseHookProc(int code, WPARAM wParam, LPARAM lParam)
 void SetComboItem(CComboBox* combo, CString m_sHotkey, int iDefault)
 {
 	combo->ResetContent();
+	combo->AddString(_T(" "));
+	combo->AddString(_T("0"));
+	combo->AddString(_T("1"));
+	combo->AddString(_T("2"));
+	combo->AddString(_T("3"));
+	combo->AddString(_T("4"));
+	combo->AddString(_T("5"));
+	combo->AddString(_T("6"));
+	combo->AddString(_T("7"));
+	combo->AddString(_T("8"));
+	combo->AddString(_T("9"));
 	combo->AddString(_T("a"));
 	combo->AddString(_T("b"));
 	combo->AddString(_T("c"));
@@ -739,85 +750,97 @@ BOOL CSAutomationDlg::DestroyWindow()
 
 void CSAutomationDlg::OnSelchangeCombo0()
 {
-	UnregisterHotKey(NULL, HOTKEY_ID_0);
+	int iID = 0;
+	UnregisterHotKey(NULL, HOTKEY_ID_0 + iID);
 
 	UpdateData(TRUE);
 	TCHAR tch[8];
-	if(m_combo[0].GetCurSel()<0){return;}
-	m_combo[0].GetLBText(m_combo[0].GetCurSel(),tch);
-
-	m_dwHotKey[0] = char(tch[0])-'a'+0x41;
-	RegisterHotKey(NULL, HOTKEY_ID_0, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[0]);
+	if(m_combo[iID].GetCurSel()<0){return;}
+	m_combo[iID].GetLBText(m_combo[iID].GetCurSel(),tch);
+	if(wcscmp(tch,_T(" "))==0){return;}
+	if((tch[0]>='a') && (tch[0]<='z')){m_dwHotKey[iID] = char(tch[0])-'a'+0x41;}
+	if((tch[0]>='0') && (tch[0]<='9')){m_dwHotKey[iID] = char(tch[0])-'0'+0x30;}
+	RegisterHotKey(NULL, HOTKEY_ID_0+iID, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[iID]);
 }
 
 
 void CSAutomationDlg::OnSelchangeCombo1()
 {
-	UnregisterHotKey(NULL, HOTKEY_ID_1);
+	int iID = 1;
+	UnregisterHotKey(NULL, HOTKEY_ID_0 + iID);
 
 	UpdateData(TRUE);
 	TCHAR tch[8];
-	if(m_combo[1].GetCurSel()<0){return;}
-	m_combo[1].GetLBText(m_combo[1].GetCurSel(),tch);
-
-	m_dwHotKey[1] = char(tch[0])-'a'+0x41;
-	RegisterHotKey(NULL, HOTKEY_ID_1, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[1]);
+	if(m_combo[iID].GetCurSel()<0){return;}
+	m_combo[iID].GetLBText(m_combo[iID].GetCurSel(),tch);
+	if(wcscmp(tch,_T(" "))==0){return;}
+	if((tch[0]>='a') && (tch[0]<='z')){m_dwHotKey[iID] = char(tch[0])-'a'+0x41;}
+	if((tch[0]>='0') && (tch[0]<='9')){m_dwHotKey[iID] = char(tch[0])-'0'+0x30;}
+	RegisterHotKey(NULL, HOTKEY_ID_0+iID, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[iID]);
 }
 
 
 void CSAutomationDlg::OnSelchangeCombo2()
 {
-	UnregisterHotKey(NULL, HOTKEY_ID_2);
+	int iID = 2;
+	UnregisterHotKey(NULL, HOTKEY_ID_0 + iID);
 
 	UpdateData(TRUE);
 	TCHAR tch[8];
-	if(m_combo[2].GetCurSel()<0){return;}
-	m_combo[2].GetLBText(m_combo[2].GetCurSel(),tch);
-
-	m_dwHotKey[2] = char(tch[0])-'a'+0x41;
-	RegisterHotKey(NULL, HOTKEY_ID_2, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[2]);
+	if(m_combo[iID].GetCurSel()<0){return;}
+	m_combo[iID].GetLBText(m_combo[iID].GetCurSel(),tch);
+	if(wcscmp(tch,_T(" "))==0){return;}
+	if((tch[0]>='a') && (tch[0]<='z')){m_dwHotKey[iID] = char(tch[0])-'a'+0x41;}
+	if((tch[0]>='0') && (tch[0]<='9')){m_dwHotKey[iID] = char(tch[0])-'0'+0x30;}
+	RegisterHotKey(NULL, HOTKEY_ID_0+iID, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[iID]);
 }
 
 
 void CSAutomationDlg::OnSelchangeCombo3()
 {
-	UnregisterHotKey(NULL, HOTKEY_ID_3);
+	int iID = 3;
+	UnregisterHotKey(NULL, HOTKEY_ID_0 + iID);
 
 	UpdateData(TRUE);
 	TCHAR tch[8];
-	if(m_combo[3].GetCurSel()<0){return;}
-	m_combo[3].GetLBText(m_combo[3].GetCurSel(),tch);
-
-	m_dwHotKey[3] = char(tch[0])-'a'+0x41;
-	RegisterHotKey(NULL, HOTKEY_ID_3, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[3]);
+	if(m_combo[iID].GetCurSel()<0){return;}
+	m_combo[iID].GetLBText(m_combo[iID].GetCurSel(),tch);
+	if(wcscmp(tch,_T(" "))==0){return;}
+	if((tch[0]>='a') && (tch[0]<='z')){m_dwHotKey[iID] = char(tch[0])-'a'+0x41;}
+	if((tch[0]>='0') && (tch[0]<='9')){m_dwHotKey[iID] = char(tch[0])-'0'+0x30;}
+	RegisterHotKey(NULL, HOTKEY_ID_0+iID, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[iID]);
 }
 
 
 void CSAutomationDlg::OnSelchangeCombo4()
 {
-	UnregisterHotKey(NULL, HOTKEY_ID_4);
+	int iID = 4;
+	UnregisterHotKey(NULL, HOTKEY_ID_0 + iID);
 
 	UpdateData(TRUE);
 	TCHAR tch[8];
-	if(m_combo[4].GetCurSel()<0){return;}
-	m_combo[4].GetLBText(m_combo[4].GetCurSel(),tch);
-
-	m_dwHotKey[4] = char(tch[0])-'a'+0x41;
-	RegisterHotKey(NULL, HOTKEY_ID_4, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[4]);
+	if(m_combo[iID].GetCurSel()<0){return;}
+	m_combo[iID].GetLBText(m_combo[iID].GetCurSel(),tch);
+	if(wcscmp(tch,_T(" "))==0){return;}
+	if((tch[0]>='a') && (tch[0]<='z')){m_dwHotKey[iID] = char(tch[0])-'a'+0x41;}
+	if((tch[0]>='0') && (tch[0]<='9')){m_dwHotKey[iID] = char(tch[0])-'0'+0x30;}
+	RegisterHotKey(NULL, HOTKEY_ID_0+iID, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[iID]);
 }
 
 
 void CSAutomationDlg::OnSelchangeCombo5()
 {
-	UnregisterHotKey(NULL, HOTKEY_ID_5);
+	int iID = 5;
+	UnregisterHotKey(NULL, HOTKEY_ID_0 + iID);
 
 	UpdateData(TRUE);
 	TCHAR tch[8];
-	if(m_combo[5].GetCurSel()<0){return;}
-	m_combo[5].GetLBText(m_combo[5].GetCurSel(),tch);
-
-	m_dwHotKey[5] = char(tch[0])-'a'+0x41;
-	RegisterHotKey(NULL, HOTKEY_ID_5, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[5]);
+	if(m_combo[iID].GetCurSel()<0){return;}
+	m_combo[iID].GetLBText(m_combo[iID].GetCurSel(),tch);
+	if(wcscmp(tch,_T(" "))==0){return;}
+	if((tch[0]>='a') && (tch[0]<='z')){m_dwHotKey[iID] = char(tch[0])-'a'+0x41;}
+	if((tch[0]>='0') && (tch[0]<='9')){m_dwHotKey[iID] = char(tch[0])-'0'+0x30;}
+	RegisterHotKey(NULL, HOTKEY_ID_0+iID, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKey[iID]);
 }
 
 
