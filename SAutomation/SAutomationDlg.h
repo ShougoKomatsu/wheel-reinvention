@@ -13,6 +13,8 @@
 #define HOTKEY_ID_4 (14)
 #define HOTKEY_ID_5 (15)
 
+#define HOTKEY_ENABLE (20)
+
 #define HOTKEY_ID_ESCAPE (100)
 
 // CSAutomationDlg ダイアログ
@@ -34,11 +36,16 @@ protected:
 	void Operate3();
 	void Operate4();
 	void Operate5();
+
+	void ToggleEnable();
+
 	BOOL m_bEnableHotkey;
 	BOOL m_bLoop[MAX_THREAD];
 	
+	CString m_sHotkeyEnable;
 	CString m_sHotkey[MAX_THREAD];
-
+	
+	DWORD m_dwHotKeyEnable;
 	DWORD m_dwHotKey[MAX_THREAD];
 
 	CString m_sDir;
@@ -76,6 +83,7 @@ public:
 	CString m_sEditFileName[MAX_THREAD];
 	CString m_sEditStatus[MAX_THREAD];
 	CComboBox m_combo[MAX_THREAD];
+	CComboBox m_comboEnable;
 
 
 	
@@ -88,6 +96,7 @@ public:
 	afx_msg void OnSelchangeCombo3();
 	afx_msg void OnSelchangeCombo4();
 	afx_msg void OnSelchangeCombo5();
+	afx_msg void OnSelchangeComboEnable();
 
 	afx_msg void OnBnClickedButtonOperate0();
 	afx_msg void OnBnClickedButtonOperate1();
