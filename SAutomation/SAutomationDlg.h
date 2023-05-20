@@ -44,6 +44,8 @@ protected:
 	
 	CString m_sHotkeyEnable;
 	CString m_sHotkey[MAX_THREAD];
+	BOOL m_bUseCtrl[MAX_THREAD];
+	BOOL m_bUseShift[MAX_THREAD];
 	
 	DWORD m_dwHotKeyEnable;
 	DWORD m_dwHotKey[MAX_THREAD];
@@ -83,6 +85,8 @@ public:
 	CString m_sEditFileName[MAX_THREAD];
 	CString m_sEditStatus[MAX_THREAD];
 	CComboBox m_combo[MAX_THREAD];
+	CComboBox m_comboUseCtrl[MAX_THREAD];
+	CComboBox m_comboUseShift[MAX_THREAD];
 	CComboBox m_comboEnable;
 
 
