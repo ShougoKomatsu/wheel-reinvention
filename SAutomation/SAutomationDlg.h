@@ -17,6 +17,16 @@
 
 #define HOTKEY_ID_ESCAPE (100)
 
+struct OperationInfo
+{
+	BOOL bLoop;
+	
+	CString sHotkey;
+	BOOL bUseCtrl;
+	BOOL bUseShift;
+	DWORD dwHotKey;
+};
+
 // CSAutomationDlg ダイアログ
 class CSAutomationDlg : public CDialogEx
 {
@@ -37,18 +47,17 @@ protected:
 	void Operate4();
 	void Operate5();
 
+	void ResetHotkey();
+
 	void ToggleEnable();
 
+	OperationInfo m_OpeInfo[MAX_THREAD];
+
 	BOOL m_bEnableHotkey;
-	BOOL m_bLoop[MAX_THREAD];
-	
 	CString m_sHotkeyEnable;
-	CString m_sHotkey[MAX_THREAD];
-	BOOL m_bUseCtrl[MAX_THREAD];
-	BOOL m_bUseShift[MAX_THREAD];
+
 	
 	DWORD m_dwHotKeyEnable;
-	DWORD m_dwHotKey[MAX_THREAD];
 
 	CString m_sDir;
 	void FileSelect(CString *sFileName);
