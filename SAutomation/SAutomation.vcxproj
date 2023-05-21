@@ -14,6 +14,7 @@
     <ProjectGuid>{5C724143-2ECE-427F-9984-A663517DD9DE}</ProjectGuid>
     <RootNamespace>SAutomation</RootNamespace>
     <Keyword>MFCProj</Keyword>
+    <ProjectName />
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -95,6 +96,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
+    <None Include="res\ico00001.ico" />
+    <None Include="res\icon1.ico" />
     <None Include="res\SAutomation.ico" />
     <None Include="res\SAutomation.rc2" />
   </ItemGroup>

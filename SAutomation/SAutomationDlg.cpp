@@ -59,7 +59,8 @@ CSAutomationDlg::CSAutomationDlg(CWnd* pParent /*=NULL*/)
 	, m_sEditMousePosC(_T(""))
 	, m_sEditMousePosR(_T(""))
 {
-	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	m_hIconStandby = AfxGetApp()->LoadIcon(IDI_ICON_STANDBY);
+	m_hIconRunning = AfxGetApp()->LoadIcon(IDI_ICON_RUNNING);
 }
 
 void CSAutomationDlg::DoDataExchange(CDataExchange* pDX)
@@ -148,6 +149,9 @@ BEGIN_MESSAGE_MAP(CSAutomationDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_OPERATE_5, &CSAutomationDlg::OnBnClickedButtonOperate5)
 	ON_BN_CLICKED(IDC_CHECK_ENABLE_HOTKEY, &CSAutomationDlg::OnBnClickedCheckEnableHotkey)
 	ON_CBN_SELCHANGE(IDC_COMBO_ENABLE_HOTKEY, &CSAutomationDlg::OnSelchangeComboEnable)
+	
+    ON_MESSAGE(WM_TRAYNOTIFY, OnTrayNotify)
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 
@@ -173,6 +177,28 @@ LRESULT CALLBACK MouseHookProc(int code, WPARAM wParam, LPARAM lParam)
 	return CallNextHookEx(g_hhook, code, wParam, lParam);
 }
 
+LRESULT CSAutomationDlg::OnTrayNotify(WPARAM wParam, LPARAM lParam)
+{
+    switch (lParam)
+    {
+	case WM_LBUTTONUP: 
+		{
+        if (wParam == IDI_ICON_STANDBY)
+        {
+            ShowWindow(SW_NORMAL);
+            SetForegroundWindow();
+            SetFocus();
+        } 
+        break;
+		}
+    default:
+		{
+        break;
+		}
+    } 
+
+    return 0;
+}
 
 void SetComboItemCtrl(CComboBox* combo, BOOL bUse)
 {
@@ -256,6 +282,13 @@ LRESULT CSAutomationDlg::OnDispStandby(WPARAM wParam, LPARAM lParam)
 	g_hThread[wParam]=0;
 	m_sEditStatus[wParam].Format(_T("Stand by"));
 	UpdateData(FALSE);
+	
+	m_OpeInfo[wParam].m_bRunning=FALSE;
+
+	m_bRunningAny=FALSE;
+	for(int iID=0; iID<MAX_THREAD; iID++){if(m_OpeInfo[iID].m_bRunning==TRUE){m_bRunningAny=TRUE;break;}}
+	if(m_bRunningAny==FALSE){ChangeIcon(IDI_ICON_STANDBY);}
+
 	return 0;
 }
 
@@ -442,17 +475,61 @@ BOOL CSAutomationDlg::OnInitDialog()
 
 	// このダイアログのアイコンを設定します。アプリケーションのメイン ウィンドウがダイアログでない場合、
 	//  Framework は、この設定を自動的に行います。
-	SetIcon(m_hIcon, TRUE);			// 大きいアイコンの設定
-	SetIcon(m_hIcon, FALSE);		// 小さいアイコンの設定
+	SetIcon(m_hIconStandby, TRUE);			// 大きいアイコンの設定
+	SetIcon(m_hIconStandby, FALSE);		// 小さいアイコンの設定
 
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }
+BOOL CSAutomationDlg::ChangeIcon(int iIcon)
+{
+	switch(iIcon)
+	{
+	case IDI_ICON_STANDBY:
+		{
+			SetIcon(m_hIconStandby, TRUE);
+			SetIcon(m_hIconStandby, FALSE);	
+			break;
+		}
+	case IDI_ICON_RUNNING:
+		{
+			SetIcon(m_hIconRunning, TRUE);
+			SetIcon(m_hIconRunning, FALSE);	
+			break;
+		}
+	}
+
+
+    CString sTip = _T("SAutomation.exe");
+    NOTIFYICONDATA nid;
+
+    nid.cbSize = sizeof(NOTIFYICONDATA);
+    nid.hWnd   = GetSafeHwnd();
+    nid.uID    = IDI_ICON_STANDBY;
+    nid.uFlags = NIF_MESSAGE | NIF_ICON;
+    nid.uCallbackMessage = WM_TRAYNOTIFY;
+    nid.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
+    nid.hIcon  = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(iIcon));
+    _tcscpy_s(nid.szTip, _countof(nid.szTip), (LPCTSTR)sTip);
+    
+
+    return Shell_NotifyIcon(NIM_MODIFY , &nid);
+}
+
 BOOL CSAutomationDlg::TrayNotifyIconMessage(DWORD dwMessage)
 {
-	NOTIFYICONDATA nid;
-	nid.cbSize = sizeof(NOTIFYICONDATA);
+    CString sTip = _T("SAutomation.exe");
+    NOTIFYICONDATA nid;
 
-	return Shell_NotifyIcon(dwMessage,&nid);
+    nid.cbSize = sizeof(NOTIFYICONDATA);
+    nid.hWnd   = GetSafeHwnd();
+    nid.uID    = IDI_ICON_STANDBY;
+    nid.uFlags = NIF_MESSAGE | NIF_ICON;
+    nid.uCallbackMessage = WM_TRAYNOTIFY;
+    nid.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
+    nid.hIcon  = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON_STANDBY));
+    _tcscpy_s(nid.szTip, _countof(nid.szTip), (LPCTSTR)sTip);
+    
+    return Shell_NotifyIcon(dwMessage, &nid);
 }
 void CSAutomationDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
@@ -488,7 +565,7 @@ void CSAutomationDlg::OnPaint()
 		int y = (rect.Height() - cyIcon + 1) / 2;
 
 		// アイコンの描画
-		dc.DrawIcon(x, y, m_hIcon);
+		dc.DrawIcon(x, y, m_hIconStandby);
 	}
 	else
 	{
@@ -500,7 +577,7 @@ void CSAutomationDlg::OnPaint()
 //  システムがこの関数を呼び出します。
 HCURSOR CSAutomationDlg::OnQueryDragIcon()
 {
-	return static_cast<HCURSOR>(m_hIcon);
+	return static_cast<HCURSOR>(m_hIconStandby);
 }
 
 void CSAutomationDlg::OnEnChangeEdit1()
@@ -640,11 +717,13 @@ void CSAutomationDlg::Operate0()
 	iChecked = ((CButton*)GetDlgItem(IDC_CHECK_REPEAT_0))->GetCheck();
 	iParam = 1<<5;
 	iParam+=(iChecked<<4)+iID;
+	m_OpeInfo[iID].m_bRunning=TRUE;
 	g_hThread[iID] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 
 	m_sEditStatus[iID].Format(_T("Running"));
 	UpdateData(FALSE);
+	ChangeIcon(IDI_ICON_RUNNING);
 }
 
 void CSAutomationDlg::Operate1()
@@ -664,11 +743,13 @@ void CSAutomationDlg::Operate1()
 	iChecked = ((CButton*)GetDlgItem(IDC_CHECK_REPEAT_1))->GetCheck();
 	iParam = 1<<5;
 	iParam+=(iChecked<<4)+iID;
+	m_OpeInfo[iID].m_bRunning=TRUE;
 	g_hThread[iID] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 
 	m_sEditStatus[iID].Format(_T("Running"));
 	UpdateData(FALSE);
+	ChangeIcon(IDI_ICON_RUNNING);
 }
 
 
@@ -689,11 +770,13 @@ void CSAutomationDlg::Operate2()
 	iChecked = ((CButton*)GetDlgItem(IDC_CHECK_REPEAT_2))->GetCheck();
 	iParam = 1<<5;
 	iParam+=(iChecked<<4)+iID;
+	m_OpeInfo[iID].m_bRunning=TRUE;
 	g_hThread[iID] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 
 	m_sEditStatus[iID].Format(_T("Running"));
 	UpdateData(FALSE);
+	ChangeIcon(IDI_ICON_RUNNING);
 }
 
 
@@ -715,11 +798,13 @@ void CSAutomationDlg::Operate3()
 	iChecked = ((CButton*)GetDlgItem(IDC_CHECK_REPEAT_3))->GetCheck();
 	iParam = 1<<5;
 	iParam+=(iChecked<<4)+iID;
+	m_OpeInfo[iID].m_bRunning=TRUE;
 	g_hThread[iID] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 
 	m_sEditStatus[iID].Format(_T("Running"));
 	UpdateData(FALSE);
+	ChangeIcon(IDI_ICON_RUNNING);
 }
 
 
@@ -742,11 +827,13 @@ void CSAutomationDlg::Operate4()
 	iChecked = ((CButton*)GetDlgItem(IDC_CHECK_REPEAT_4))->GetCheck();
 	iParam = 1<<5;
 	iParam+=(iChecked<<4)+iID;
+	m_OpeInfo[iID].m_bRunning=TRUE;
 	g_hThread[iID] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 
 	m_sEditStatus[iID].Format(_T("Running"));
 	UpdateData(FALSE);
+	ChangeIcon(IDI_ICON_RUNNING);
 }
 
 
@@ -769,11 +856,13 @@ void CSAutomationDlg::Operate5()
 	iChecked = ((CButton*)GetDlgItem(IDC_CHECK_REPEAT_5))->GetCheck();
 	iParam = 1<<5;
 	iParam+=(iChecked<<4)+iID;
+	m_OpeInfo[iID].m_bRunning=TRUE;
 	g_hThread[iID] = CreateThread(NULL, 0, CommandThread, (LPVOID)(&iParam), 0, &dwThreadID);
 	while(iParam!=0){Sleep(10);}
 
 	m_sEditStatus[iID].Format(_T("Running"));
 	UpdateData(FALSE);
+	ChangeIcon(IDI_ICON_RUNNING);
 }
 
 
@@ -797,6 +886,8 @@ BOOL CSAutomationDlg::DestroyWindow()
 {
 	if(g_hhook != NULL){UnhookWindowsHookEx(g_hhook);}
 	SaveSettings();
+	
+    TrayNotifyIconMessage(NIM_DELETE);
 	return CDialogEx::DestroyWindow();
 }
 
@@ -857,7 +948,10 @@ void CSAutomationDlg::OnBnClickedButtonOperate1(){Operate1();}
 void CSAutomationDlg::OnBnClickedButtonOperate2(){Operate2();}
 void CSAutomationDlg::OnBnClickedButtonOperate3(){Operate3();}
 void CSAutomationDlg::OnBnClickedButtonOperate4(){Operate4();}
-void CSAutomationDlg::OnBnClickedButtonOperate5(){Operate5();}
+void CSAutomationDlg::OnBnClickedButtonOperate5()
+{
+	Operate5();
+}
 
 void CSAutomationDlg::ResetHotkey(int iID)
 {
@@ -904,4 +998,15 @@ void CSAutomationDlg::ToggleEnable()
 	}
 	UpdateData(TRUE);
 	OnBnClickedCheckEnableHotkey();
+}
+
+
+void CSAutomationDlg::OnSize(UINT nType, int cx, int cy)
+{
+	CDialogEx::OnSize(nType, cx, cy);
+	
+    if (nType == SIZE_MINIMIZED)
+    {
+        ShowWindow(SW_HIDE);
+    }
 }

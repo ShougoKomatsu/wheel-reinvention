@@ -25,6 +25,7 @@ struct OperationInfo
 	BOOL bUseCtrl;
 	BOOL bUseShift;
 	DWORD dwHotKey;
+	BOOL m_bRunning;
 };
 
 // CSAutomationDlg ダイアログ
@@ -40,6 +41,8 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV サポート
 	BOOL TrayNotifyIconMessage(DWORD dwMessage);
+	BOOL ChangeIcon(int iIcon);
+
 	void Operate0();
 	void Operate1();
 	void Operate2();
@@ -63,10 +66,12 @@ protected:
 	void FileSelect(CString *sFileName);
 	void SaveSettings();
 	void ReadSettings();
+	BOOL m_bRunningAny;
 	BOOL MouseMoveAndDisp(DWORD dwMoveDirection, int iDistance);
 	// 実装
 protected:
-	HICON m_hIcon;
+	HICON m_hIconStandby;
+	HICON m_hIconRunning;
 
 	// 生成された、メッセージ割り当て関数
 	virtual BOOL OnInitDialog();
@@ -100,7 +105,7 @@ public:
 
 
 	
-
+	afx_msg LRESULT OnTrayNotify(WPARAM wParam, LPARAM lParam);
 
 	afx_msg LRESULT OnDispStandby(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnSelchangeCombo0();
@@ -133,4 +138,5 @@ public:
 	afx_msg void OnBnClickedButtonOperate4();
 	afx_msg void OnBnClickedButtonOperate5();
 	afx_msg void OnBnClickedCheckEnableHotkey();
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };

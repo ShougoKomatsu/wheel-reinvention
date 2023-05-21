@@ -39,6 +39,7 @@
 
 
 #define WM_DISP_STANDBY (WM_APP + 10)
+#define WM_TRAYNOTIFY (WM_APP + 11)
 
 
 extern HWND g_hWnd;
