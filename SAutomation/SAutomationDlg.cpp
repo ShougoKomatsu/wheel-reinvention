@@ -243,27 +243,28 @@ void CSAutomationDlg::ReadSettings()
 
 	GetPrivateProfileString(_T("Mouse"),_T("ClickDulation"),_T("50"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 	g_iClickDulation = _ttoi(szData);
+
 	for(int iID=0; iID<MAX_THREAD; iID++)
 	{
-		CString sKey;
-		sKey.Format(_T("%d"), iID+1);
-		GetPrivateProfileString(_T("FileName"),sKey,_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+		CString sSection;
+		sSection.Format(_T("Operation %d"), iID+1);
+		GetPrivateProfileString(sSection,_T("FileName"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 		m_sEditFileName[iID].Format(_T("%s"),szData);
 
 		CString sDefault;
 		sDefault.Format(_T("%c"), 'a'+iID+1);
-		GetPrivateProfileString(_T("Hotkey"),sKey,sDefault,szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+		GetPrivateProfileString(sSection,_T("Hotkey"),sDefault,szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 		m_sHotkey[iID].Format(_T("%s"), szData);
 
-		GetPrivateProfileString(_T("UseCtrl"),sKey,_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+		GetPrivateProfileString(sSection,_T("UseCtrl"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 		if(wcscmp(szData,_T("1"))==0){m_bUseCtrl[iID]=TRUE;}
 		else{m_bUseCtrl[iID]=FALSE;}
 		
-		GetPrivateProfileString(_T("UseShift"),sKey,_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+		GetPrivateProfileString(sSection,_T("UseShift"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 		if(wcscmp(szData,_T("1"))==0){m_bUseShift[iID]=TRUE;}
 		else{m_bUseShift[iID]=FALSE;}
 
-		GetPrivateProfileString(_T("Loop"),sKey,_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+		GetPrivateProfileString(sSection,_T("Loop"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 		m_bLoop[iID]=_ttoi(szData);
 	}
 
@@ -283,32 +284,33 @@ void CSAutomationDlg::SaveSettings()
 	
 	for(int iID = 0; iID<MAX_THREAD; iID++)
 	{
-		CString sKey;
-		sKey.Format(_T("%d"), iID+1);
+		CString sSection;
+		sSection.Format(_T("Operation %d"), iID+1);
 
-		WritePrivateProfileString(_T("FileName"),sKey,m_sEditFileName[iID],sFilePath);
+		WritePrivateProfileString(sSection,_T("FileName"),m_sEditFileName[iID],sFilePath);
 
 		CString sData;
 		TCHAR tch[8];
 		if(m_combo[iID].GetCurSel()<0){sData.Format(_T("b"));}
 		else{m_combo[iID].GetLBText(m_combo[iID].GetCurSel(),tch); sData.Format(_T("%s"), tch);}
-		WritePrivateProfileString(_T("Hotkey"),sKey,sData,sFilePath);
+		WritePrivateProfileString(sSection,_T("Hotkey"),sData,sFilePath);
 
 		sData.Format(_T("%d"),((CButton*)GetDlgItem(IDC_CHECK_REPEAT_0+iID))->GetCheck());	
-		WritePrivateProfileString(_T("Loop"),sKey,sData,sFilePath);
+		WritePrivateProfileString(sSection,_T("Loop"),sData,sFilePath);
+
+		if(m_comboUseCtrl[0].GetCurSel()<0){sData.Format(_T("0"));}
+		else{m_comboUseCtrl[0].GetLBText(m_comboUseCtrl[0].GetCurSel(),tch); if(wcscmp(tch,_T("Ctrl"))==0){ sData.Format(_T("1"));}else{sData.Format(_T("0"));}}
+		WritePrivateProfileString(sSection,_T("UseCtrl"),sData,sFilePath);
+
+
+		if(m_comboUseShift[0].GetCurSel()<0){sData.Format(_T("0"));}
+		else{m_comboUseShift[0].GetLBText(m_comboUseShift[0].GetCurSel(),tch); if(wcscmp(tch,_T("Shift"))==0){ sData.Format(_T("1"));}else{sData.Format(_T("0"));}}
+		WritePrivateProfileString(sSection,_T("UseShift"),sData,sFilePath);
 	}
 
 	CString sData;
 	TCHAR tch[8];
 
-	if(m_comboUseCtrl[0].GetCurSel()<0){sData.Format(_T("0"));}
-	else{m_comboUseCtrl[0].GetLBText(m_comboUseCtrl[0].GetCurSel(),tch); if(wcscmp(tch,_T("Ctrl"))==0){ sData.Format(_T("1"));}else{sData.Format(_T("0"));}}
-	WritePrivateProfileString(_T("UseCtrl"),_T("1"),sData,sFilePath);
-
-
-	if(m_comboUseShift[0].GetCurSel()<0){sData.Format(_T("0"));}
-	else{m_comboUseShift[0].GetLBText(m_comboUseShift[0].GetCurSel(),tch); if(wcscmp(tch,_T("Shift"))==0){ sData.Format(_T("1"));}else{sData.Format(_T("0"));}}
-	WritePrivateProfileString(_T("UseShift"),_T("1"),sData,sFilePath);
 
 
 	if(m_comboEnable.GetCurSel()<0){sData.Format(_T("b"));}
