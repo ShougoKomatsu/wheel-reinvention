@@ -47,7 +47,7 @@ protected:
 	void Operate4();
 	void Operate5();
 
-	void ResetHotkey();
+	void ResetHotkey(int iID);
 
 	void ToggleEnable();
 
@@ -109,6 +109,21 @@ public:
 	afx_msg void OnSelchangeCombo3();
 	afx_msg void OnSelchangeCombo4();
 	afx_msg void OnSelchangeCombo5();
+
+	afx_msg void OnSelchangeComboCtrl0();
+	afx_msg void OnSelchangeComboCtrl1();
+	afx_msg void OnSelchangeComboCtrl2();
+	afx_msg void OnSelchangeComboCtrl3();
+	afx_msg void OnSelchangeComboCtrl4();
+	afx_msg void OnSelchangeComboCtrl5();
+
+	afx_msg void OnSelchangeComboShift0();
+	afx_msg void OnSelchangeComboShift1();
+	afx_msg void OnSelchangeComboShift2();
+	afx_msg void OnSelchangeComboShift3();
+	afx_msg void OnSelchangeComboShift4();
+	afx_msg void OnSelchangeComboShift5();
+
 	afx_msg void OnSelchangeComboEnable();
 
 	afx_msg void OnBnClickedButtonOperate0();
