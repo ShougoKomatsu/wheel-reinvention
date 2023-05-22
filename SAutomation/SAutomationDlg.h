@@ -26,6 +26,7 @@ struct OperationInfo
 	BOOL bUseShift;
 	DWORD dwHotKey;
 	BOOL m_bRunning;
+	CString sFileName;
 };
 
 // CSAutomationDlg ダイアログ

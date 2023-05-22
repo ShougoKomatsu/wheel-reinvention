@@ -308,7 +308,7 @@ void CSAutomationDlg::ReadSettings()
 		CString sSection;
 		sSection.Format(_T("Operation %d"), iID+1);
 		GetPrivateProfileString(sSection,_T("FileName"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
-		m_sEditFileName[iID].Format(_T("%s"),szData);
+		m_OpeInfo[iID].sFileName.Format(_T("%s"),szData);
 
 		CString sDefault;
 		sDefault.Format(_T("%c"), 'a'+iID+1);
@@ -358,12 +358,12 @@ void CSAutomationDlg::SaveSettings()
 		WritePrivateProfileString(sSection,_T("Loop"),sData,sFilePath);
 
 		if(m_comboUseCtrl[iID].GetCurSel()<0){sData.Format(_T("0"));}
-		else{m_comboUseCtrl[0].GetLBText(m_comboUseCtrl[0].GetCurSel(),tch); if(wcscmp(tch,_T("Ctrl"))==0){ sData.Format(_T("1"));}else{sData.Format(_T("0"));}}
+		else{m_comboUseCtrl[iID].GetLBText(m_comboUseCtrl[iID].GetCurSel(),tch); if(wcscmp(tch,_T("Ctrl"))==0){ sData.Format(_T("1"));}else{sData.Format(_T("0"));}}
 		WritePrivateProfileString(sSection,_T("UseCtrl"),sData,sFilePath);
 
 
 		if(m_comboUseShift[iID].GetCurSel()<0){sData.Format(_T("0"));}
-		else{m_comboUseShift[0].GetLBText(m_comboUseShift[0].GetCurSel(),tch); if(wcscmp(tch,_T("Shift"))==0){ sData.Format(_T("1"));}else{sData.Format(_T("0"));}}
+		else{m_comboUseShift[iID].GetLBText(m_comboUseShift[iID].GetCurSel(),tch); if(wcscmp(tch,_T("Shift"))==0){ sData.Format(_T("1"));}else{sData.Format(_T("0"));}}
 		WritePrivateProfileString(sSection,_T("UseShift"),sData,sFilePath);
 	}
 
@@ -438,16 +438,17 @@ BOOL CSAutomationDlg::OnInitDialog()
 	SetComboItem(&m_comboEnable,m_sHotkeyEnable, 1);
 	for(int iID= 0 ; iID<MAX_THREAD; iID++)
 	{
-		SetComboItem(&m_combo[iID],m_OpeInfo[iID].sHotkey, iID+2);
 		g_hThread[iID] = NULL;
 		if((char(m_OpeInfo[iID].sHotkey.GetAt(0))>='a') && (char(m_OpeInfo[iID].sHotkey.GetAt(0))<='z')){m_OpeInfo[iID].dwHotKey = char(m_OpeInfo[iID].sHotkey.GetAt(0))-'a'+0x41;}
 		if((char(m_OpeInfo[iID].sHotkey.GetAt(0))>='0') && (char(m_OpeInfo[iID].sHotkey.GetAt(0))<='9')){m_OpeInfo[iID].dwHotKey = char(m_OpeInfo[iID].sHotkey.GetAt(0))-'0'+0x30;}
 		m_sEditStatus[iID].Format(_T("Stand by"));
 		((CButton*)GetDlgItem(IDC_CHECK_REPEAT_0 + iID))->SetCheck(m_OpeInfo[iID].bLoop);
+		m_sEditFileName[iID].Format(_T("%s"),m_OpeInfo[iID].sFileName);
+		UpdateData(FALSE);
 
+		SetComboItem(&m_combo[iID],m_OpeInfo[iID].sHotkey, iID+2);
 		SetComboItemCtrl(&m_comboUseCtrl[iID],m_OpeInfo[iID].bUseCtrl);
 		SetComboItemShift(&m_comboUseShift[iID],m_OpeInfo[iID].bUseShift);
-
 	}
 
 	g_bHalt = FALSE;
