@@ -221,7 +221,7 @@ void SetComboItemShift(CComboBox* combo, BOOL bUse)
 }
 
 
-void SetComboItem(CComboBox* combo, CString m_sHotkey, int iDefault)
+void SetComboItem(CComboBox* combo, CString m_sHotkey)
 {
 	combo->ResetContent();
 	combo->AddString(_T(" "));
@@ -271,7 +271,7 @@ void SetComboItem(CComboBox* combo, CString m_sHotkey, int iDefault)
 		combo->GetLBText(i, tch);
 		if(m_sHotkey.Compare(tch)==0){combo->SetCurSel(i); bFound = TRUE;break;}
 	}
-	if(bFound != TRUE){combo->SetCurSel(iDefault);}
+	if(bFound != TRUE){combo->SetCurSel(0);}
 }
 
 LRESULT CSAutomationDlg::OnDispStandby(WPARAM wParam, LPARAM lParam)
@@ -310,16 +310,14 @@ void CSAutomationDlg::ReadSettings()
 		GetPrivateProfileString(sSection,_T("FileName"),_T(""),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 		m_OpeInfo[iID].sFileName.Format(_T("%s"),szData);
 
-		CString sDefault;
-		sDefault.Format(_T("%c"), 'a'+iID+1);
-		GetPrivateProfileString(sSection,_T("Hotkey"),sDefault,szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+		GetPrivateProfileString(sSection,_T("Hotkey"),_T(" "),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 		m_OpeInfo[iID].sHotkey.Format(_T("%s"), szData);
 
-		GetPrivateProfileString(sSection,_T("UseCtrl"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+		GetPrivateProfileString(sSection,_T("UseCtrl"),_T("1"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 		if(wcscmp(szData,_T("1"))==0){m_OpeInfo[iID].bUseCtrl=TRUE;}
 		else{m_OpeInfo[iID].bUseCtrl=FALSE;}
 
-		GetPrivateProfileString(sSection,_T("UseShift"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+		GetPrivateProfileString(sSection,_T("UseShift"),_T("1"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 		if(wcscmp(szData,_T("1"))==0){m_OpeInfo[iID].bUseShift=TRUE;}
 		else{m_OpeInfo[iID].bUseShift=FALSE;}
 
@@ -327,7 +325,7 @@ void CSAutomationDlg::ReadSettings()
 		m_OpeInfo[iID].bLoop=_ttoi(szData);
 	}
 
-	GetPrivateProfileString(_T("Hotkey"),_T("EnableKey"),_T("a"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	GetPrivateProfileString(_T("Hotkey"),_T("EnableKey"),_T(" "),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 	m_sHotkeyEnable.Format(_T("%s"), szData);
 
 	GetPrivateProfileString(_T("Hotkey"),_T("Enable"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
@@ -435,7 +433,7 @@ BOOL CSAutomationDlg::OnInitDialog()
 
 	ReadSettings();
 
-	SetComboItem(&m_comboEnable,m_sHotkeyEnable, 1);
+	SetComboItem(&m_comboEnable,m_sHotkeyEnable);
 	for(int iID= 0 ; iID<MAX_THREAD; iID++)
 	{
 		g_hThread[iID] = NULL;
@@ -446,7 +444,7 @@ BOOL CSAutomationDlg::OnInitDialog()
 		m_sEditFileName[iID].Format(_T("%s"),m_OpeInfo[iID].sFileName);
 		UpdateData(FALSE);
 
-		SetComboItem(&m_combo[iID],m_OpeInfo[iID].sHotkey, iID+2);
+		SetComboItem(&m_combo[iID],m_OpeInfo[iID].sHotkey);
 		SetComboItemCtrl(&m_comboUseCtrl[iID],m_OpeInfo[iID].bUseCtrl);
 		SetComboItemShift(&m_comboUseShift[iID],m_OpeInfo[iID].bUseShift);
 	}
