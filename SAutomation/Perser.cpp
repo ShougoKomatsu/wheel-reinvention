@@ -26,6 +26,9 @@ BOOL GetCommand(CString sDataLine, int* iCommandType)
 
 	if((sDataTrimLower.Left(4).Compare(_T("dim "))==0)){*iCommandType=COMMAND_DECRARE; return TRUE;}
 	if(sDataTrimLower.Left(4).Compare(_T("wait"))==0){*iCommandType=COMMAND_WAIT; return TRUE;}
+
+	if(sDataTrimLower.Left(13).Compare(_T("windowforward"))==0){*iCommandType=COMMAND_WINDOW_FORWARD; return TRUE;}
+
 	//-------------------------------------------------------
 	if(sDataTrimLower.Compare(_T("_"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
 	if(sDataTrimLower.Compare(_T("enter"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
@@ -352,6 +355,13 @@ BOOL PerseCommand(int* iSceneData, CString sDataLine, int* iCommandType, CString
 	case COMMAND_MINIMIZE:
 		{
 			*iCommandType=iType;
+			break;
+		}
+	case COMMAND_WINDOW_FORWARD:
+		{
+			*iCommandType=iType;
+			ExtractData(sDataLine, _T(" "), &sArg, &sDataLocal);
+			saData->Add(sDataLocal);
 			break;
 		}
 

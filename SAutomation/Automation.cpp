@@ -16,6 +16,22 @@ int Minimize()
 	return 0;
 }
 
+
+int SetWindowForward(CString sWindowName)
+{
+	HWND hwnd;
+	hwnd = FindWindow(nullptr,sWindowName);
+	if(hwnd <=0){return -1;}
+	
+//	CRect	rect ;
+//	GetWindowRect(hwnd,&rect) ;
+//	SetWindowPos(hwnd, HWND_TOPMOST,rect.left,rect.top,0,0,SWP_NOSIZE) ;
+	//SetWindowPos(hwnd, HWND_NOTOPMOST,rect.left,rect.top,0,0,SWP_NOSIZE) ;
+
+
+	if(SetForegroundWindow(hwnd) == FALSE){return -1;};
+	return 0;
+}
 int K_Sleep(LPVOID Halt, LPVOID Suspend, DWORD SleepMilliSec)
 {
 	if((Halt==NULL)&&(Suspend == NULL)){Sleep(SleepMilliSec);return 0;}
@@ -153,7 +169,7 @@ int KeyUp(BYTE bySendKey)
 }
 
 
-int atoi_hex(CString sData, BYTE* byData)
+int GetKeyCode(CString sData, BYTE* byData)
 {
 	BYTE byDataLocal;
 	byDataLocal = 0;
@@ -203,7 +219,7 @@ int WaitForKey(LPVOID Halt, LPVOID Suspend, CStringArray* saData)
 
 	BYTE byKey;
 	int iRet;
-	iRet = atoi_hex(saData->GetAt(0),&byKey);
+	iRet = GetKeyCode(saData->GetAt(0),&byKey);
 	if(iRet < 0){return iRet;}
 
 	if(saData->GetAt(1).Compare(_T("on"))==0){iWaitOn=1;}
@@ -238,7 +254,7 @@ int KeyDownAndUp(CStringArray* saData)
 
 	if(saData->GetAt(0).Left(2).Compare(_T("0x"))==0)
 	{
-		atoi_hex(saData->GetAt(0), &bySendKey);
+		GetKeyCode(saData->GetAt(0), &bySendKey);
 		return KeyDownAndUp(bySendKey);
 	}
 	
@@ -309,7 +325,7 @@ int KeyDown(CStringArray* saData)
 
 	if(saData->GetAt(0).Left(2).Compare(_T("0x"))==0)
 	{
-		atoi_hex(saData->GetAt(0), &bySendKey);
+		GetKeyCode(saData->GetAt(0), &bySendKey);
 		return KeyDown(bySendKey);
 	}
 
@@ -338,7 +354,7 @@ int KeyUp(CStringArray* saData)
 
 	if(saData->GetAt(0).Left(2).Compare(_T("0x"))==0)
 	{
-		atoi_hex(saData->GetAt(0), &bySendKey);
+		GetKeyCode(saData->GetAt(0), &bySendKey);
 		return KeyUp(bySendKey);
 	}
 
@@ -438,6 +454,10 @@ int OperateCommand(int* iSceneData, LPVOID Halt, LPVOID Suspend, LONGLONG* Speci
 	case COMMAND_MINIMIZE:
 		{
 			return Minimize();
+		}
+	case COMMAND_WINDOW_FORWARD:
+		{
+			return SetWindowForward(saData.GetAt(0));
 		}
 
 	case COMMAND_NOTING:{return 0;}
