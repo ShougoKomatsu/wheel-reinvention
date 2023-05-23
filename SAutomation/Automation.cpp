@@ -68,24 +68,6 @@ int K_Sleep(LPVOID Halt, LPVOID Suspend, DWORD SleepMilliSec)
 	return 0;
 }
 
-int WaitForKey(LPVOID Halt, LPVOID Suspend, BYTE byKey)
-{
-	
-	short shKey;
-	while(1)
-	{
-		shKey = GetAsyncKeyState (byKey);
-		if((shKey>=0)) 
-		{
-			return 0;
-		}
-
-		
-		if(K_Sleep(Halt, Suspend, 1)<0){return -1;}
-	}
-	return 0;
-}
-
 
 int Break(LPVOID Halt, LONGLONG* Special1)
 {
@@ -161,6 +143,8 @@ int atoi_hex(CString sData, BYTE* byData)
 {
 	BYTE byDataLocal;
 	byDataLocal = 0;
+	if(sData.Compare(_T("ctrl"))==0){*byData= VK_CONTROL;return 0;}
+	if(sData.Compare(_T("shift"))==0){*byData= VK_SHIFT;return 0;}
 
 	if(sData.Left(2).Compare(_T("0x"))!=0){return -1;}
 	if(sData.GetLength()!=4){return -1;}
@@ -195,6 +179,42 @@ int atoi_hex(CString sData, BYTE* byData)
 		return -1;
 	}
 	*byData = byDataLocal;
+	return 0;
+}
+
+int WaitForKey(LPVOID Halt, LPVOID Suspend, CStringArray* saData)
+{
+	
+	int iWaitOn;
+
+	BYTE byKey;
+	int iRet;
+	iRet = atoi_hex(saData->GetAt(0),&byKey);
+	if(iRet < 0){return iRet;}
+
+	if(saData->GetAt(1).Compare(_T("on"))==0){iWaitOn=1;}
+	else if(saData->GetAt(1).Compare(_T("off"))==0){iWaitOn=0;}
+	else{return -1;}
+
+
+
+	short shKey;
+	while(1)
+	{
+		shKey = GetAsyncKeyState (byKey);
+		if(iWaitOn==1)
+		{
+			if((shKey<0)) {return 0;}
+
+		}
+		else
+		{
+			if((shKey>=0)) {return 0;}
+		}
+
+
+		if(K_Sleep(Halt, Suspend, 1)<0){return -1;}
+	}
 	return 0;
 }
 
@@ -393,14 +413,11 @@ int OperateCommand(int* iSceneData, LPVOID Halt, LPVOID Suspend, LONGLONG* Speci
 			iRet = KeyUp(&saData);
 			return iRet;
 		}
-	case COMMAND_WAIT_FOR_CTRL_RELEASED:
+	case COMMAND_WAIT:
 		{
-			return WaitForKey(Halt, Suspend, VK_CONTROL);
+			return WaitForKey(Halt, Suspend, &saData);
 		}
-	case COMMAND_WAIT_FOR_SHIFT_RELEASED:
-		{
-			return WaitForKey(Halt, Suspend, VK_SHIFT);
-		}
+
 	case COMMAND_NOTING:{return 0;}
 	default:{return -1;}
 	}

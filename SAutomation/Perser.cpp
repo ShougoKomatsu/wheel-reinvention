@@ -25,14 +25,13 @@ BOOL GetCommand(CString sDataLine, int* iCommandType)
 	if(sDataTrimLower.SpanIncluding(_T("0123456789")).Compare(sDataTrimLower)==0){*iCommandType = COMMAND_DELAY; return TRUE;}
 
 	if((sDataTrimLower.Left(4).Compare(_T("dim "))==0)){*iCommandType=COMMAND_DECRARE; return TRUE;}
+	if(sDataTrimLower.Left(4).Compare(_T("wait"))==0){*iCommandType=COMMAND_WAIT; return TRUE;}
 	//-------------------------------------------------------
 	if(sDataTrimLower.Compare(_T("_"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
 	if(sDataTrimLower.Compare(_T("enter"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
 	if(sDataTrimLower.Compare(_T("return"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
 	if(sDataTrimLower.Compare(_T("space"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
 	if(sDataTrimLower.Compare(_T("tab"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
-	if(sDataTrimLower.Compare(_T("wait ctrl off"))==0){*iCommandType=COMMAND_WAIT_FOR_CTRL_RELEASED; return TRUE;}
-	if(sDataTrimLower.Compare(_T("wait shift off"))==0){*iCommandType=COMMAND_WAIT_FOR_SHIFT_RELEASED; return TRUE;}
 
 	if(sDataTrimLower.GetLength()==2)
 	{
@@ -120,6 +119,34 @@ BOOL ExtractData(const CString sInput, const CString sDelim, CString* sOut, CStr
 		sRemin->Format(_T("%s"),sInputLocal.Right(sInputLocal.GetLength()-iIndex-1).Trim(_T(" ")).Trim(_T("\t")));
 	}
 	return TRUE;
+}
+
+BOOL GetWaitParameter(CString sInput, CStringArray* saOut)
+{
+	CString sRemind;
+
+	CString sInputLower;
+	sInputLower.Format(_T("%s"), sInput);
+	sInputLower.MakeLower().Trim(_T(" ")).Trim(_T("\t"));
+
+	if(sInputLower.Left(4).Compare(_T("wait"))!=0){return FALSE;}
+	sRemind.Format(_T("%s"), sInputLower.Right(sInputLower.GetLength()-4));
+	sRemind.Trim(_T(" ")).Trim(_T("\t"));
+	saOut->RemoveAll();
+	if(sRemind.Right(2).Compare(_T("on"))==0)
+	{
+		saOut->Add(sRemind.Left(sRemind.GetLength()-2).Trim(_T(" ")).Trim(_T("\t")));
+		saOut->Add(_T("on"));
+		return TRUE;
+	}
+	if(sRemind.Right(3).Compare(_T("off"))==0)
+	{
+		saOut->Add(sRemind.Left(sRemind.GetLength()-3).Trim(_T(" ")).Trim(_T("\t")));
+		saOut->Add(_T("off"));
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 BOOL GetKeyType(CString sInput, CString* sOut)
@@ -306,14 +333,12 @@ BOOL PerseCommand(int* iSceneData, CString sDataLine, int* iCommandType, CString
 
 			*iCommandType=iType;
 		}
-	case COMMAND_WAIT_FOR_CTRL_RELEASED:
+	case COMMAND_WAIT:
 		{
+			GetWaitParameter(sDataLocal, saData);
 			*iCommandType=iType;
 		}
-	case COMMAND_WAIT_FOR_SHIFT_RELEASED:
-		{
-			*iCommandType=iType;
-		}
+
 	}
 
 	return TRUE;
