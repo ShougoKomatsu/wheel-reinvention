@@ -16,5 +16,7 @@
 #define COMMAND_DECRARE (COMMAND_COMMON + 9)
 
 #define COMMAND_WAIT (COMMAND_COMMON + 10)
+#define COMMAND_MAXIMIZE (COMMAND_COMMON + 11)
+#define COMMAND_MINIMIZE (COMMAND_COMMON + 12)
 
 int OperateCommand(int* iSceneData, LPVOID Halt, LPVOID Suspend, LONGLONG* Special1, CString sDataLine);

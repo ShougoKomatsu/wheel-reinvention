@@ -32,6 +32,8 @@ BOOL GetCommand(CString sDataLine, int* iCommandType)
 	if(sDataTrimLower.Compare(_T("return"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
 	if(sDataTrimLower.Compare(_T("space"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
 	if(sDataTrimLower.Compare(_T("tab"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
+	if(sDataTrimLower.Compare(_T("maximize"))==0){*iCommandType=COMMAND_MAXIMIZE; return TRUE;}
+	if(sDataTrimLower.Compare(_T("minimize"))==0){*iCommandType=COMMAND_MINIMIZE; return TRUE;}
 
 	if(sDataTrimLower.GetLength()==2)
 	{
@@ -313,6 +315,7 @@ BOOL PerseCommand(int* iSceneData, CString sDataLine, int* iCommandType, CString
 			saData->Add(sOut);
 
 			*iCommandType=iType;
+			break;
 		}
 	case COMMAND_KEY_DOWN:
 		{
@@ -322,6 +325,7 @@ BOOL PerseCommand(int* iSceneData, CString sDataLine, int* iCommandType, CString
 			saData->Add(sOut);
 
 			*iCommandType=iType;
+			break;
 		}
 
 	case COMMAND_KEY_UP:
@@ -332,12 +336,25 @@ BOOL PerseCommand(int* iSceneData, CString sDataLine, int* iCommandType, CString
 			saData->Add(sOut);
 
 			*iCommandType=iType;
+			break;
 		}
 	case COMMAND_WAIT:
 		{
 			GetWaitParameter(sDataLocal, saData);
 			*iCommandType=iType;
+			break;
 		}
+	case COMMAND_MAXIMIZE:
+		{
+			*iCommandType=iType;
+			break;
+		}
+	case COMMAND_MINIMIZE:
+		{
+			*iCommandType=iType;
+			break;
+		}
+
 
 	}
 

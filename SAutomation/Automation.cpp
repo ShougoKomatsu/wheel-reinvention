@@ -2,6 +2,20 @@
 #include "Automation.h"
 #include "windows.h"
 
+int Maximize()
+{
+	HWND hwnd = GetForegroundWindow();
+	ShowWindow( hwnd, SW_MAXIMIZE );
+	return 0;
+}
+
+int Minimize()
+{
+	HWND hwnd = GetForegroundWindow();
+	ShowWindow( hwnd, SW_MINIMIZE );
+	return 0;
+}
+
 int K_Sleep(LPVOID Halt, LPVOID Suspend, DWORD SleepMilliSec)
 {
 	if((Halt==NULL)&&(Suspend == NULL)){Sleep(SleepMilliSec);return 0;}
@@ -416,6 +430,14 @@ int OperateCommand(int* iSceneData, LPVOID Halt, LPVOID Suspend, LONGLONG* Speci
 	case COMMAND_WAIT:
 		{
 			return WaitForKey(Halt, Suspend, &saData);
+		}
+	case COMMAND_MAXIMIZE:
+		{
+			return Maximize();
+		}
+	case COMMAND_MINIMIZE:
+		{
+			return Minimize();
 		}
 
 	case COMMAND_NOTING:{return 0;}
