@@ -176,6 +176,52 @@ int GetKeyCode(CString sData, BYTE* byData)
 	if(sData.Compare(_T("ctrl"))==0){*byData= VK_CONTROL;return 0;}
 	if(sData.Compare(_T("shift"))==0){*byData= VK_SHIFT;return 0;}
 
+			if(sData.GetLength()==2)
+	{
+		if(sData.Compare(_T("f1"))==0){*byData = VK_F1;return 0;}
+		if(sData.Compare(_T("f2"))==0){*byData = VK_F2;return 0;}
+		if(sData.Compare(_T("f3"))==0){*byData = VK_F3;return 0;}
+		if(sData.Compare(_T("f4"))==0){*byData = VK_F4;return 0;}
+		if(sData.Compare(_T("f5"))==0){*byData = VK_F5;return 0;}
+		if(sData.Compare(_T("f6"))==0){*byData = VK_F6;return 0;}
+		if(sData.Compare(_T("f7"))==0){*byData = VK_F7;return 0;}
+		if(sData.Compare(_T("f8"))==0){*byData = VK_F8;return 0;}
+		if(sData.Compare(_T("f9"))==0){*byData = VK_F9;return 0;}
+	}
+
+	if(sData.GetLength()==3)
+	{
+		if(sData.Compare(_T("f10"))==0){*byData = VK_F10;return 0;}
+		if(sData.Compare(_T("f11"))==0){*byData = VK_F11;return 0;}
+		if(sData.Compare(_T("f12"))==0){*byData = VK_F12;return 0;}
+		if(sData.Compare(_T("f13"))==0){*byData = VK_F13;return 0;}
+		if(sData.Compare(_T("f14"))==0){*byData = VK_F14;return 0;}
+		if(sData.Compare(_T("f15"))==0){*byData = VK_F15;return 0;}
+		if(sData.Compare(_T("f16"))==0){*byData = VK_F16;return 0;}
+		if(sData.Compare(_T("f17"))==0){*byData = VK_F17;return 0;}
+		if(sData.Compare(_T("f18"))==0){*byData = VK_F18;return 0;}
+		if(sData.Compare(_T("f19"))==0){*byData = VK_F19;return 0;}
+
+		if(sData.Compare(_T("f20"))==0){*byData = VK_F20;return 0;}
+		if(sData.Compare(_T("f21"))==0){*byData = VK_F21;return 0;}
+		if(sData.Compare(_T("f22"))==0){*byData = VK_F22;return 0;}
+		if(sData.Compare(_T("f23"))==0){*byData = VK_F23;return 0;}
+		if(sData.Compare(_T("f24"))==0){*byData = VK_F24;return 0;}
+	}
+
+	if(sData.Compare(_T("lshift"))==0){*byData = VK_SHIFT;return 0;}
+	if(sData.Compare(_T("rshift"))==0){*byData = VK_SHIFT;return 0;}
+	if(sData.Compare(_T("lctrl"))==0){*byData = VK_CONTROL;return 0;}
+	if(sData.Compare(_T("rctrl"))==0){*byData = VK_CONTROL;return 0;}
+	if(sData.Compare(_T("lalt"))==0){*byData = VK_MENU;return 0;}
+	if(sData.Compare(_T("ralt"))==0){*byData = VK_MENU;return 0;}
+
+	if(sData.Compare(_T("tab"))==0){*byData = VK_TAB;return 0;}
+	if(sData.Compare(_T("enter"))==0){*byData = VK_RETURN;return 0;}
+	if(sData.Compare(_T("return"))==0){*byData = VK_RETURN;return 0;}
+	if(sData.Compare(_T("space"))==0){*byData = VK_SPACE;return 0;}
+
+
 	if(sData.Left(2).Compare(_T("0x"))!=0){return -1;}
 	if(sData.GetLength()!=4){return -1;}
 		
