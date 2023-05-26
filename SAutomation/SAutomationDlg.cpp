@@ -152,6 +152,7 @@ BEGIN_MESSAGE_MAP(CSAutomationDlg, CDialogEx)
 	
     ON_MESSAGE(WM_TRAYNOTIFY, OnTrayNotify)
 	ON_WM_SIZE()
+	ON_BN_CLICKED(IDC_BUTTON_OPEN_FOLDER, &CSAutomationDlg::OnBnClickedButtonOpenFolder)
 END_MESSAGE_MAP()
 
 
@@ -1008,4 +1009,12 @@ void CSAutomationDlg::OnSize(UINT nType, int cx, int cy)
     {
         ShowWindow(SW_HIDE);
     }
+}
+
+
+void CSAutomationDlg::OnBnClickedButtonOpenFolder()
+{
+	CString sMacroFolder;
+	sMacroFolder.Format(_T("%s\\Macro"),m_sDir);
+	ShellExecute(NULL, NULL, sMacroFolder, NULL, NULL, SW_SHOWNORMAL);
 }
