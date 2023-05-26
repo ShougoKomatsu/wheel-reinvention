@@ -3,6 +3,7 @@
 //
 
 #include "stdafx.h"
+#include "psapi.h"
 #include "SAutomation.h"
 #include "SAutomationDlg.h"
 #include "afxdialogex.h"
@@ -385,6 +386,44 @@ void CSAutomationDlg::SaveSettings()
 	}
 }
 
+VOID GetExeOtherProcessIds(CString sTargetExeName, DWORD* dwExeProcessIds, DWORD dwIgnoreProcessId)
+{
+	DWORD dwAllProcessIds[1024] = { 0 };
+	DWORD cbNeeded = 0;
+	BOOL bRet;
+	bRet = EnumProcesses(dwAllProcessIds, sizeof(dwAllProcessIds), &cbNeeded);
+	if (bRet != TRUE){return;}
+
+	int j = 0;
+	int nProc = cbNeeded / sizeof(DWORD);
+	for (int i = 0; i < nProc; i++)
+	{
+		if (dwAllProcessIds[i] == dwIgnoreProcessId){continue;}
+
+		TCHAR szProcessName[MAX_PATH] = TEXT("<unknown>");
+
+		HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,FALSE,dwAllProcessIds[i]);
+
+		if (hProcess != NULL)
+		{
+			HMODULE hMod;
+			DWORD cbNeeded;
+
+			if (EnumProcessModules(hProcess, &hMod, sizeof(hMod),&cbNeeded))
+			{
+				GetModuleBaseName(hProcess, hMod, szProcessName,sizeof(szProcessName) / sizeof(TCHAR));
+
+				CString sProcName = CString(szProcessName).MakeUpper();
+				if (sProcName.Compare(sTargetExeName.MakeUpper())==0)
+				{
+					dwExeProcessIds[j] = dwAllProcessIds[i];
+					j++;
+				}
+			}
+			CloseHandle(hProcess);
+		}
+	}
+}
 
 BOOL CSAutomationDlg::OnInitDialog()
 {
@@ -409,6 +448,24 @@ BOOL CSAutomationDlg::OnInitDialog()
 			pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
 		}
 	}
+
+	// 自分のプロセスIDから自分のexe名を取得
+	DWORD dwCurrentProcessId = GetCurrentProcessId();
+	HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,FALSE,dwCurrentProcessId);
+	TCHAR szModuleName[MAX_PATH];
+	GetModuleBaseName(hProcess, NULL, szModuleName, MAX_PATH);
+
+	// 自分のexe名と同じプロセスのプロセスIDを取得(自分のプロセスIDは除く)
+	DWORD dwExeProcessIds[1024] = { 0 };
+	GetExeOtherProcessIds(szModuleName, dwExeProcessIds, dwCurrentProcessId);
+
+	if (dwExeProcessIds[0]>0)
+	{
+		AfxMessageBox(_T("多重軌道はできません"));
+		return CDialogEx::DestroyWindow();
+	}
+	
+
 
 	g_hWnd = this->m_hWnd;
 

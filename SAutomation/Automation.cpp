@@ -22,10 +22,10 @@ int SetWindowForward(CString sWindowName)
 	HWND hwnd;
 	hwnd = FindWindow(nullptr,sWindowName);
 	if(hwnd <=0){return -1;}
-	
-//	CRect	rect ;
-//	GetWindowRect(hwnd,&rect) ;
-//	SetWindowPos(hwnd, HWND_TOPMOST,rect.left,rect.top,0,0,SWP_NOSIZE) ;
+
+	//	CRect	rect ;
+	//	GetWindowRect(hwnd,&rect) ;
+	//	SetWindowPos(hwnd, HWND_TOPMOST,rect.left,rect.top,0,0,SWP_NOSIZE) ;
 	//SetWindowPos(hwnd, HWND_NOTOPMOST,rect.left,rect.top,0,0,SWP_NOSIZE) ;
 
 
@@ -176,7 +176,7 @@ int GetKeyCode(CString sData, BYTE* byData)
 	if(sData.Compare(_T("ctrl"))==0){*byData= VK_CONTROL;return 0;}
 	if(sData.Compare(_T("shift"))==0){*byData= VK_SHIFT;return 0;}
 
-			if(sData.GetLength()==2)
+	if(sData.GetLength()==2)
 	{
 		if(sData.Compare(_T("f1"))==0){*byData = VK_F1;return 0;}
 		if(sData.Compare(_T("f2"))==0){*byData = VK_F2;return 0;}
@@ -224,7 +224,7 @@ int GetKeyCode(CString sData, BYTE* byData)
 
 	if(sData.Left(2).Compare(_T("0x"))!=0){return -1;}
 	if(sData.GetLength()!=4){return -1;}
-		
+
 	char cChar;
 	cChar = sData.GetAt(2);
 	if((cChar >= '0') && (cChar<= '9'))
@@ -260,7 +260,7 @@ int GetKeyCode(CString sData, BYTE* byData)
 
 int WaitForKey(LPVOID Halt, LPVOID Suspend, CStringArray* saData)
 {
-	
+
 	int iWaitOn;
 
 	BYTE byKey;
@@ -303,7 +303,7 @@ int KeyDownAndUp(CStringArray* saData)
 		GetKeyCode(saData->GetAt(0), &bySendKey);
 		return KeyDownAndUp(bySendKey);
 	}
-	
+
 	if(saData->GetAt(0).Compare(_T("Å©"))==0){return KeyDownAndUp(VK_LEFT);}
 	if(saData->GetAt(0).Compare(_T("Å™"))==0){return KeyDownAndUp(VK_UP);}
 	if(saData->GetAt(0).Compare(_T("Å®"))==0){return KeyDownAndUp(VK_RIGHT);}
