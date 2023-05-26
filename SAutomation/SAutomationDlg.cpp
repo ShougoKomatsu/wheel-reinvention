@@ -16,6 +16,7 @@
 #include "Automation.h"
 #define TIMER_DISP_MOUSPOS (100)
 #define TIMER_THREAD_WATCH (101)
+#define TIMER_WAKE_UP (102)
 
 HWND g_hWnd;
 
@@ -449,19 +450,17 @@ BOOL CSAutomationDlg::OnInitDialog()
 		}
 	}
 
-	// 自分のプロセスIDから自分のexe名を取得
 	DWORD dwCurrentProcessId = GetCurrentProcessId();
 	HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,FALSE,dwCurrentProcessId);
 	TCHAR szModuleName[MAX_PATH];
 	GetModuleBaseName(hProcess, NULL, szModuleName, MAX_PATH);
 
-	// 自分のexe名と同じプロセスのプロセスIDを取得(自分のプロセスIDは除く)
 	DWORD dwExeProcessIds[1024] = { 0 };
 	GetExeOtherProcessIds(szModuleName, dwExeProcessIds, dwCurrentProcessId);
 
 	if (dwExeProcessIds[0]>0)
 	{
-		AfxMessageBox(_T("多重軌道はできません"));
+		AfxMessageBox(_T("多重起動はできません"));
 		return CDialogEx::DestroyWindow();
 	}
 	
@@ -534,7 +533,7 @@ BOOL CSAutomationDlg::OnInitDialog()
 	//  Framework は、この設定を自動的に行います。
 	SetIcon(m_hIconStandby, TRUE);			// 大きいアイコンの設定
 	SetIcon(m_hIconStandby, FALSE);		// 小さいアイコンの設定
-
+	SetTimer(TIMER_WAKE_UP, 100, NULL);
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }
 BOOL CSAutomationDlg::ChangeIcon(int iIcon)
@@ -744,6 +743,11 @@ void CSAutomationDlg::OnTimer(UINT_PTR nIDEvent)
 		if(g_iWatching==1){
 			UnregisterHotKey(NULL, HOTKEY_ID_ESCAPE); g_iWatching=0;
 		}
+	}
+	if(nIDEvent == TIMER_WAKE_UP)
+	{
+		ShowWindow( SW_MINIMIZE );
+		KillTimer(TIMER_WAKE_UP);
 	}
 	CDialogEx::OnTimer(nIDEvent);
 }
