@@ -1,2 +1,6 @@
-
-windowforward Macro
+wait shift off
+wait ctrl off
+f1 down
+100
+f1 up
+1000

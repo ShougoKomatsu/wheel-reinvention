@@ -948,10 +948,7 @@ void CSAutomationDlg::OnBnClickedButtonOperate1(){Operate1();}
 void CSAutomationDlg::OnBnClickedButtonOperate2(){Operate2();}
 void CSAutomationDlg::OnBnClickedButtonOperate3(){Operate3();}
 void CSAutomationDlg::OnBnClickedButtonOperate4(){Operate4();}
-void CSAutomationDlg::OnBnClickedButtonOperate5()
-{
-	Operate5();
-}
+void CSAutomationDlg::OnBnClickedButtonOperate5(){Operate5();}
 
 void CSAutomationDlg::ResetHotkey(int iID)
 {
@@ -1014,6 +1011,8 @@ void CSAutomationDlg::OnSize(UINT nType, int cx, int cy)
 
 void CSAutomationDlg::OnBnClickedButtonOpenFolder()
 {
+	
+
 	CString sMacroFolder;
 	sMacroFolder.Format(_T("%s\\Macro"),m_sDir);
 	ShellExecute(NULL, NULL, sMacroFolder, NULL, NULL, SW_SHOWNORMAL);

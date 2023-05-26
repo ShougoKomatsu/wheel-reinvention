@@ -153,24 +153,19 @@ BOOL GetWaitParameter(CString sInput, CStringArray* saOut)
 
 	return FALSE;
 }
-
 BOOL GetKeyType(CString sInput, CString* sOut)
 {
 	CString sRemind;
-
 	CString sInputLower;
 	sInputLower.Format(_T("%s"), sInput);
 	sInputLower.MakeLower().Trim(_T(" ")).Trim(_T("\t"));
-
 	if(sInputLower.Right(4).Compare(_T("down"))==0){sRemind.Format(_T("%s"), sInput.Left(sInput.GetLength()-5));}
 	else if(sInputLower.Right(2).Compare(_T("up"))==0){sRemind.Format(_T("%s"), sInput.Left(sInput.GetLength()-2));}
 	else{sRemind.Format(_T("%s"), sInput);}
 	sRemind.Trim(_T(" ")).Trim(_T("\t"));
-
 	CString sRemaindLower;
 	sRemaindLower.Format(_T("%s"), sRemind);
 	sRemaindLower.MakeLower();
-
 	if(sRemaindLower.GetLength()==2)
 	{
 		if(sRemaindLower.Compare(_T("f1"))==0){sOut->Format(_T("0x%02x"),VK_F1);return TRUE;}
@@ -183,7 +178,6 @@ BOOL GetKeyType(CString sInput, CString* sOut)
 		if(sRemaindLower.Compare(_T("f8"))==0){sOut->Format(_T("0x%02x"),VK_F8);return TRUE;}
 		if(sRemaindLower.Compare(_T("f9"))==0){sOut->Format(_T("0x%02x"),VK_F9);return TRUE;}
 	}
-
 	if(sRemaindLower.GetLength()==3)
 	{
 		if(sRemaindLower.Compare(_T("f10"))==0){sOut->Format(_T("0x%02x"),VK_F10);return TRUE;}
@@ -196,21 +190,18 @@ BOOL GetKeyType(CString sInput, CString* sOut)
 		if(sRemaindLower.Compare(_T("f17"))==0){sOut->Format(_T("0x%02x"),VK_F17);return TRUE;}
 		if(sRemaindLower.Compare(_T("f18"))==0){sOut->Format(_T("0x%02x"),VK_F18);return TRUE;}
 		if(sRemaindLower.Compare(_T("f19"))==0){sOut->Format(_T("0x%02x"),VK_F19);return TRUE;}
-
 		if(sRemaindLower.Compare(_T("f20"))==0){sOut->Format(_T("0x%02x"),VK_F20);return TRUE;}
 		if(sRemaindLower.Compare(_T("f21"))==0){sOut->Format(_T("0x%02x"),VK_F21);return TRUE;}
 		if(sRemaindLower.Compare(_T("f22"))==0){sOut->Format(_T("0x%02x"),VK_F22);return TRUE;}
 		if(sRemaindLower.Compare(_T("f23"))==0){sOut->Format(_T("0x%02x"),VK_F23);return TRUE;}
 		if(sRemaindLower.Compare(_T("f24"))==0){sOut->Format(_T("0x%02x"),VK_F24);return TRUE;}
 	}
-
 	if(sRemaindLower.Compare(_T("lshift"))==0){sOut->Format(_T("0x%02x"),VK_SHIFT);return TRUE;}
 	if(sRemaindLower.Compare(_T("rshift"))==0){sOut->Format(_T("0x%02x"),VK_SHIFT);return TRUE;}
 	if(sRemaindLower.Compare(_T("lctrl"))==0){sOut->Format(_T("0x%02x"),VK_CONTROL);return TRUE;}
 	if(sRemaindLower.Compare(_T("rctrl"))==0){sOut->Format(_T("0x%02x"),VK_CONTROL);return TRUE;}
 	if(sRemaindLower.Compare(_T("lalt"))==0){sOut->Format(_T("0x%02x"),VK_MENU);return TRUE;}
 	if(sRemaindLower.Compare(_T("ralt"))==0){sOut->Format(_T("0x%02x"),VK_MENU);return TRUE;}
-
 	if(sRemaindLower.Compare(_T("tab"))==0){sOut->Format(_T("0x%02x"),VK_TAB);return TRUE;}
 	if(sRemaindLower.Compare(_T("enter"))==0){sOut->Format(_T("0x%02x"),VK_RETURN);return TRUE;}
 	if(sRemaindLower.Compare(_T("return"))==0){sOut->Format(_T("0x%02x"),VK_RETURN);return TRUE;}
@@ -218,7 +209,6 @@ BOOL GetKeyType(CString sInput, CString* sOut)
 	sOut->Format(_T("%s"), sRemind);
 	return TRUE;
 }
-
 BOOL PerseCommand(int* iSceneData, CString sDataLine, int* iCommandType, CStringArray* saData)
 {
 	int iType;
