@@ -45,7 +45,7 @@ int K_Sleep(LPVOID Halt, LPVOID Suspend, DWORD SleepMilliSec)
 		ULONGLONG ullSuspendedMilliSec;
 		ullStartMilliSec = GetTickCount64();
 		ullSuspendedMilliSec=0;
-		while(GetTickCount64()<ullStartMilliSec+SleepMilliSec+ullSuspendedMilliSec)
+		while(GetTickCount64()<ullStartMilliSec+SleepMilliSec/g_dSpeedMult+ullSuspendedMilliSec)
 		{
 			if((*(int*)Suspend) == 1)
 			{
@@ -65,7 +65,7 @@ int K_Sleep(LPVOID Halt, LPVOID Suspend, DWORD SleepMilliSec)
 	{
 		ULONGLONG ullStartMilliSec;
 		ullStartMilliSec = GetTickCount64();
-		while(GetTickCount64()<ullStartMilliSec+SleepMilliSec)
+		while(GetTickCount64()<ullStartMilliSec+SleepMilliSec/g_dSpeedMult)
 		{
 			if((*(int*)Halt) == 1){return -1;}
 			Sleep(1);
@@ -78,7 +78,7 @@ int K_Sleep(LPVOID Halt, LPVOID Suspend, DWORD SleepMilliSec)
 	ULONGLONG ullSuspendedMilliSec;
 	ullStartMilliSec = GetTickCount64();
 	ullSuspendedMilliSec=0;
-	while(GetTickCount64()<ullStartMilliSec+SleepMilliSec+ullSuspendedMilliSec)
+	while(GetTickCount64()<ullStartMilliSec+SleepMilliSec/g_dSpeedMult+ullSuspendedMilliSec)
 	{
 		if((*(int*)Halt) == 1){return -1;}
 		if((*(int*)Suspend) == 1)

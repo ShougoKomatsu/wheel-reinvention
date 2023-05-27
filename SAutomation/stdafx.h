@@ -43,6 +43,7 @@
 
 
 extern HWND g_hWnd;
+extern double g_dSpeedMult;
 
 
 

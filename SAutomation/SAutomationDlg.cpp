@@ -8,6 +8,7 @@
 #include "SAutomationDlg.h"
 #include "afxdialogex.h"
 #include "Thread.h"
+#include "math.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -19,6 +20,7 @@
 #define TIMER_WAKE_UP (102)
 
 HWND g_hWnd;
+double g_dSpeedMult=1.0;
 
 // アプリケーションのバージョン情報に使われる CAboutDlg ダイアログ
 
@@ -60,6 +62,7 @@ CSAutomationDlg::CSAutomationDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CSAutomationDlg::IDD, pParent)
 	, m_sEditMousePosC(_T(""))
 	, m_sEditMousePosR(_T(""))
+	, m_sEditSpeed(_T(""))
 {
 	m_hIconStandby = AfxGetApp()->LoadIcon(IDI_ICON_STANDBY);
 	m_hIconRunning = AfxGetApp()->LoadIcon(IDI_ICON_RUNNING);
@@ -106,6 +109,8 @@ void CSAutomationDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_HOTKEY_SHIFT_3, (m_comboUseShift[3]));
 	DDX_Control(pDX, IDC_COMBO_HOTKEY_SHIFT_4, (m_comboUseShift[4]));
 	DDX_Control(pDX, IDC_COMBO_HOTKEY_SHIFT_5, (m_comboUseShift[5]));
+	DDX_Text(pDX, IDC_EDIT_SPEED, m_sEditSpeed);
+	DDX_Control(pDX, IDC_SLIDER_SPEED, m_sliderSpeed);
 }
 
 BEGIN_MESSAGE_MAP(CSAutomationDlg, CDialogEx)
@@ -155,6 +160,9 @@ BEGIN_MESSAGE_MAP(CSAutomationDlg, CDialogEx)
     ON_MESSAGE(WM_TRAYNOTIFY, OnTrayNotify)
 	ON_WM_SIZE()
 	ON_BN_CLICKED(IDC_BUTTON_OPEN_FOLDER, &CSAutomationDlg::OnBnClickedButtonOpenFolder)
+	ON_EN_CHANGE(IDC_EDIT_SPEED, &CSAutomationDlg::OnChangeEditSpeed)
+	ON_EN_KILLFOCUS(IDC_EDIT_SPEED, &CSAutomationDlg::OnKillfocusEditSpeed)
+	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER_SPEED, &CSAutomationDlg::OnCustomdrawSliderSpeed)
 END_MESSAGE_MAP()
 
 
@@ -524,7 +532,10 @@ BOOL CSAutomationDlg::OnInitDialog()
 	{
 		((CButton*)GetDlgItem(IDC_CHECK_ENABLE_HOTKEY))->SetCheck(0);
 	}
-
+	m_sEditSpeed.Format(_T("1.00"));
+	m_sliderSpeed.SetRangeMin(0);	
+	m_sliderSpeed.SetRangeMax(100);
+	m_sliderSpeed.SetPos(50);
 	UpdateData(FALSE);
 
 	TrayNotifyIconMessage(NIM_ADD);
@@ -1072,9 +1083,42 @@ void CSAutomationDlg::OnSize(UINT nType, int cx, int cy)
 
 void CSAutomationDlg::OnBnClickedButtonOpenFolder()
 {
-	
-
 	CString sMacroFolder;
 	sMacroFolder.Format(_T("%s\\Macro"),m_sDir);
 	ShellExecute(NULL, NULL, sMacroFolder, NULL, NULL, SW_SHOWNORMAL);
+}
+
+
+void CSAutomationDlg::OnChangeEditSpeed()
+{
+
+}
+
+
+
+void CSAutomationDlg::OnKillfocusEditSpeed()
+{
+	UpdateData(TRUE);
+
+	g_dSpeedMult=_ttof(m_sEditSpeed);
+	if(g_dSpeedMult==0){g_dSpeedMult=1;m_sEditSpeed.Format(_T("1.00"));}
+
+	if(g_dSpeedMult<1){m_sliderSpeed.SetPos(int(( g_dSpeedMult-0.2)/0.016));}
+	else{m_sliderSpeed.SetPos(int(sqrt(g_dSpeedMult)*50));}
+
+	UpdateData(FALSE);
+}
+
+
+void CSAutomationDlg::OnCustomdrawSliderSpeed(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMCUSTOMDRAW pNMCD = reinterpret_cast<LPNMCUSTOMDRAW>(pNMHDR);
+	UpdateData(TRUE);
+	int iPos;
+	iPos = m_sliderSpeed.GetPos();
+	if(iPos<50){g_dSpeedMult = iPos*0.016+0.2;}
+	else{g_dSpeedMult = iPos*iPos/2500.0;}
+	m_sEditSpeed.Format(_T("%.02f"), g_dSpeedMult);
+	UpdateData(FALSE);
+	*pResult = 0;
 }

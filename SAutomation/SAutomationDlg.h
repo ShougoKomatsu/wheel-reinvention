@@ -5,6 +5,7 @@
 #pragma once
 #include "afxwin.h"
 #include "thread.h"
+#include "afxcmn.h"
 
 #define HOTKEY_ID_0 (10)
 #define HOTKEY_ID_1 (11)
@@ -141,4 +142,9 @@ public:
 	afx_msg void OnBnClickedCheckEnableHotkey();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnBnClickedButtonOpenFolder();
+	CString m_sEditSpeed;
+	afx_msg void OnChangeEditSpeed();
+	CSliderCtrl m_sliderSpeed;
+	afx_msg void OnKillfocusEditSpeed();
+	afx_msg void OnCustomdrawSliderSpeed(NMHDR *pNMHDR, LRESULT *pResult);
 };
