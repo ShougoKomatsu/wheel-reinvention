@@ -1035,10 +1035,10 @@ void CSAutomationDlg::ResetHotkey(int iID)
 	if((tch[0]>='0') && (tch[0]<='9')){m_OpeInfo[iID].dwHotKey = char(tch[0])-'0'+0x30;}
 
 	if(m_comboUseCtrl[iID].GetCurSel()<0){m_OpeInfo[iID].bUseCtrl=FALSE;}
-	else{m_comboUseCtrl[0].GetLBText(m_comboUseCtrl[0].GetCurSel(),tch); if(wcscmp(tch,_T("Ctrl"))==0){m_OpeInfo[iID].bUseCtrl=TRUE;}else{m_OpeInfo[iID].bUseCtrl=FALSE;}}
+	else{m_comboUseCtrl[iID].GetLBText(m_comboUseCtrl[iID].GetCurSel(),tch); if(wcscmp(tch,_T("Ctrl"))==0){m_OpeInfo[iID].bUseCtrl=TRUE;}else{m_OpeInfo[iID].bUseCtrl=FALSE;}}
 
 	if(m_comboUseShift[iID].GetCurSel()<0){m_OpeInfo[iID].bUseShift=FALSE;}
-	else{m_comboUseShift[0].GetLBText(m_comboUseShift[0].GetCurSel(),tch); if(wcscmp(tch,_T("Shift"))==0){m_OpeInfo[iID].bUseShift=TRUE;}else{m_OpeInfo[iID].bUseShift=FALSE;}}
+	else{m_comboUseShift[iID].GetLBText(m_comboUseShift[iID].GetCurSel(),tch); if(wcscmp(tch,_T("Shift"))==0){m_OpeInfo[iID].bUseShift=TRUE;}else{m_OpeInfo[iID].bUseShift=FALSE;}}
 
 	if(((CButton*)GetDlgItem(IDC_CHECK_ENABLE_HOTKEY))->GetCheck()==1)
 	{
