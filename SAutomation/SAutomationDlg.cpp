@@ -163,6 +163,7 @@ BEGIN_MESSAGE_MAP(CSAutomationDlg, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT_SPEED, &CSAutomationDlg::OnChangeEditSpeed)
 	ON_EN_KILLFOCUS(IDC_EDIT_SPEED, &CSAutomationDlg::OnKillfocusEditSpeed)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER_SPEED, &CSAutomationDlg::OnCustomdrawSliderSpeed)
+	ON_BN_CLICKED(IDC_BUTTON_CONFING, &CSAutomationDlg::OnBnClickedButtonConfing)
 END_MESSAGE_MAP()
 
 
@@ -342,6 +343,10 @@ void CSAutomationDlg::ReadSettings()
 	GetPrivateProfileString(_T("Hotkey"),_T("Enable"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 	if(wcscmp(szData,_T("1"))==0){m_bEnableHotkey=TRUE;}
 	else{m_bEnableHotkey=FALSE;}
+	
+	GetPrivateProfileString(_T("Common"),_T("AutoMnimize"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	if(wcscmp(szData,_T("1"))==0){m_bAutoMinimize=TRUE;}
+	else{m_bAutoMinimize=FALSE;}
 }
 
 void CSAutomationDlg::SaveSettings()
@@ -392,6 +397,16 @@ void CSAutomationDlg::SaveSettings()
 	else
 	{
 		WritePrivateProfileString(_T("Hotkey"),_T("Enable"),_T("0"),sFilePath);
+	}
+	
+
+	if(((CButton*)GetDlgItem(IDC_CHECK_AUTO_MINIMIZE))->GetCheck()==1)
+	{
+		WritePrivateProfileString(_T("Common"),_T("AutoMnimize"),_T("1"),sFilePath);
+	}
+	else
+	{
+		WritePrivateProfileString(_T("Common"),_T("AutoMnimize"),_T("0"),sFilePath);
 	}
 }
 
@@ -521,6 +536,16 @@ BOOL CSAutomationDlg::OnInitDialog()
 		if((char(m_sHotkeyEnable.GetAt(0))>='a') && (char(m_sHotkeyEnable.GetAt(0))<='z')){m_dwHotKeyEnable = char(m_sHotkeyEnable.GetAt(0))-'a'+0x41;}
 		if((char(m_sHotkeyEnable.GetAt(0))>='0') && (char(m_sHotkeyEnable.GetAt(0))<='9')){m_dwHotKeyEnable = char(m_sHotkeyEnable.GetAt(0))-'0'+0x30;}
 		RegisterHotKey(NULL, HOTKEY_ENABLE, MOD_SHIFT | MOD_CONTROL | MOD_NOREPEAT, m_dwHotKeyEnable);
+	}
+
+
+	if(m_bAutoMinimize==TRUE)
+	{
+		((CButton*)GetDlgItem(IDC_CHECK_AUTO_MINIMIZE))->SetCheck(1);
+	}
+	else
+	{
+		((CButton*)GetDlgItem(IDC_CHECK_AUTO_MINIMIZE))->SetCheck(0);
 	}
 
 	if(m_bEnableHotkey==TRUE)
@@ -757,7 +782,10 @@ void CSAutomationDlg::OnTimer(UINT_PTR nIDEvent)
 	}
 	if(nIDEvent == TIMER_WAKE_UP)
 	{
+		if(m_bAutoMinimize==TRUE)
+		{
 		ShowWindow( SW_MINIMIZE );
+		}
 		KillTimer(TIMER_WAKE_UP);
 	}
 	CDialogEx::OnTimer(nIDEvent);
@@ -1121,4 +1149,10 @@ void CSAutomationDlg::OnCustomdrawSliderSpeed(NMHDR *pNMHDR, LRESULT *pResult)
 	m_sEditSpeed.Format(_T("%.02f"), g_dSpeedMult);
 	UpdateData(FALSE);
 	*pResult = 0;
+}
+
+
+void CSAutomationDlg::OnBnClickedButtonConfing()
+{
+	// TODO: ここにコントロール通知ハンドラー コードを追加します。
 }

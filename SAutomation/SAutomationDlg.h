@@ -59,6 +59,7 @@ protected:
 	OperationInfo m_OpeInfo[MAX_THREAD];
 
 	BOOL m_bEnableHotkey;
+	BOOL m_bAutoMinimize;
 	CString m_sHotkeyEnable;
 
 	
@@ -147,4 +148,5 @@ public:
 	CSliderCtrl m_sliderSpeed;
 	afx_msg void OnKillfocusEditSpeed();
 	afx_msg void OnCustomdrawSliderSpeed(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedButtonConfing();
 };
