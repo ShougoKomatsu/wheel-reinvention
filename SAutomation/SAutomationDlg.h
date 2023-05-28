@@ -13,6 +13,10 @@
 #define HOTKEY_ID_3 (13)
 #define HOTKEY_ID_4 (14)
 #define HOTKEY_ID_5 (15)
+#define HOTKEY_ID_6 (16)
+#define HOTKEY_ID_7 (17)
+#define HOTKEY_ID_8 (18)
+#define HOTKEY_ID_9 (19)
 
 #define HOTKEY_ENABLE (20)
 
@@ -45,12 +49,7 @@ protected:
 	BOOL TrayNotifyIconMessage(DWORD dwMessage);
 	BOOL ChangeIcon(int iIcon);
 
-	void Operate0();
-	void Operate1();
-	void Operate2();
-	void Operate3();
-	void Operate4();
-	void Operate5();
+	void Operate(int iID);
 
 	void ResetHotkey(int iID);
 
@@ -90,6 +89,10 @@ public:
 	afx_msg void OnBnClickedButton3();
 	afx_msg void OnBnClickedButton4();
 	afx_msg void OnBnClickedButton5();
+	afx_msg void OnBnClickedButton6();
+	afx_msg void OnBnClickedButton7();
+	afx_msg void OnBnClickedButton8();
+	afx_msg void OnBnClickedButton9();
 
 	afx_msg void OnEnChangeEdit1();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
@@ -117,6 +120,10 @@ public:
 	afx_msg void OnSelchangeCombo3();
 	afx_msg void OnSelchangeCombo4();
 	afx_msg void OnSelchangeCombo5();
+	afx_msg void OnSelchangeCombo6();
+	afx_msg void OnSelchangeCombo7();
+	afx_msg void OnSelchangeCombo8();
+	afx_msg void OnSelchangeCombo9();
 
 	afx_msg void OnSelchangeComboCtrl0();
 	afx_msg void OnSelchangeComboCtrl1();
@@ -124,6 +131,10 @@ public:
 	afx_msg void OnSelchangeComboCtrl3();
 	afx_msg void OnSelchangeComboCtrl4();
 	afx_msg void OnSelchangeComboCtrl5();
+	afx_msg void OnSelchangeComboCtrl6();
+	afx_msg void OnSelchangeComboCtrl7();
+	afx_msg void OnSelchangeComboCtrl8();
+	afx_msg void OnSelchangeComboCtrl9();
 
 	afx_msg void OnSelchangeComboShift0();
 	afx_msg void OnSelchangeComboShift1();
@@ -131,6 +142,10 @@ public:
 	afx_msg void OnSelchangeComboShift3();
 	afx_msg void OnSelchangeComboShift4();
 	afx_msg void OnSelchangeComboShift5();
+	afx_msg void OnSelchangeComboShift6();
+	afx_msg void OnSelchangeComboShift7();
+	afx_msg void OnSelchangeComboShift8();
+	afx_msg void OnSelchangeComboShift9();
 
 	afx_msg void OnSelchangeComboEnable();
 
@@ -140,6 +155,11 @@ public:
 	afx_msg void OnBnClickedButtonOperate3();
 	afx_msg void OnBnClickedButtonOperate4();
 	afx_msg void OnBnClickedButtonOperate5();
+	afx_msg void OnBnClickedButtonOperate6();
+	afx_msg void OnBnClickedButtonOperate7();
+	afx_msg void OnBnClickedButtonOperate8();
+	afx_msg void OnBnClickedButtonOperate9();
+
 	afx_msg void OnBnClickedCheckEnableHotkey();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnBnClickedButtonOpenFolder();
