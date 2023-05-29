@@ -332,14 +332,18 @@ LRESULT CSAutomationDlg::OnDispStandby(WPARAM wParam, LPARAM lParam)
 	UpdateData(TRUE);
 	if(wParam<0){return 0;}
 	if(wParam>=MAX_THREAD){return 0;}
-	g_hThread[wParam]=0;
+	g_hThread[wParam]=NULL;
 	m_sEditStatus[wParam].Format(_T("Stand by"));
 	UpdateData(FALSE);
 	
 	m_OpeInfo[wParam].m_bRunning=FALSE;
 
 	m_bRunningAny=FALSE;
-	for(int iID=0; iID<MAX_THREAD; iID++){if(m_OpeInfo[iID].m_bRunning==TRUE){m_bRunningAny=TRUE;break;}}
+	for(int iID=0; iID<MAX_THREAD; iID++)
+	{
+		if(m_OpeInfo[iID].m_bRunning==TRUE){m_bRunningAny=TRUE;break;}
+	}
+
 	if(m_bRunningAny==FALSE){ChangeIcon(IDI_ICON_STANDBY);}
 
 	return 0;

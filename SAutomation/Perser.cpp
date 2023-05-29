@@ -16,7 +16,6 @@ BOOL GetCommand(CString sDataLine, int* iCommandType)
 	if(sDataTrimLower.Right(4).Compare(_T("down"))==0){*iCommandType=COMMAND_KEY_DOWN; return TRUE;}
 	if(sDataTrimLower.Right(2).Compare(_T("up"))==0){*iCommandType=COMMAND_KEY_UP; return TRUE;}
 
-	if(sDataTrimLower.Left(5).Compare(_T("break"))==0){*iCommandType=COMMAND_BREAK; return TRUE;}
 	if(sDataTrimLower.Left(12).Compare(_T("lmouse click"))==0){		*iCommandType=COMMAND_MOUSE_L_CLICK; 		return TRUE;}
 	if(sDataTrimLower.Left(11).Compare(_T("lmouse down"))==0){*iCommandType=COMMAND_MOUSE_L_DOWN; return TRUE;}
 	if(sDataTrimLower.Left(9).Compare(_T("lmouse up"))==0){*iCommandType=COMMAND_MOUSE_L_UP; return TRUE;}
@@ -292,11 +291,6 @@ BOOL PerseCommand(int* iSceneData, CString sDataLine, int* iCommandType, CString
 	case COMMAND_DELAY:
 		{
 			saData->Add(sDataLocal);
-			*iCommandType=iType;
-			break;
-		}
-	case COMMAND_BREAK:
-		{
 			*iCommandType=iType;
 			break;
 		}

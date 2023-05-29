@@ -467,11 +467,6 @@ int OperateCommand(int* iSceneData, LPVOID Halt, LPVOID Suspend, LONGLONG* Speci
 			MouseLClick(&saData);
 			return 0;
 		}
-	case COMMAND_BREAK:
-		{
-			iRet = Break(Halt, Special1);
-			return iRet;
-		}
 	case COMMAND_KEY_DOWN_UP:
 		{
 			iRet = KeyDownAndUp(&saData);
