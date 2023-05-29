@@ -44,6 +44,8 @@
 
 extern HWND g_hWnd;
 extern double g_dSpeedMult;
+extern int g_iR;
+extern int g_iC;
 
 
 

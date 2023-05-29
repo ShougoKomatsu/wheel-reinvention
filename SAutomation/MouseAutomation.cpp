@@ -13,7 +13,14 @@ void MouseLDown(UINT nX, UINT nY)
 }
 void MouseLDown(CStringArray* saData)
 {
-	MouseLDown(_ttoi(saData->GetAt(0)),_ttoi(saData->GetAt(1)));
+	if(saData->GetCount()==0)
+	{
+		MouseLDown(g_iC, g_iR);
+	}
+	else
+	{
+		MouseLDown(_ttoi(saData->GetAt(0)),_ttoi(saData->GetAt(1)));
+	}
 }
 
 void MouseLUp(UINT nX, UINT nY)
@@ -25,7 +32,14 @@ void MouseLUp(UINT nX, UINT nY)
 }
 void MouseLUp(CStringArray* saData)
 {
-	MouseLUp(_ttoi(saData->GetAt(0)),_ttoi(saData->GetAt(1)));
+	if(saData->GetCount()==0)
+	{
+		MouseLUp(g_iC, g_iR);
+	}
+	else
+	{
+		MouseLUp(_ttoi(saData->GetAt(0)),_ttoi(saData->GetAt(1)));
+	}
 }
 
 void MouseLClick(UINT nX, UINT nY)
@@ -38,7 +52,14 @@ void MouseLClick(UINT nX, UINT nY)
 
 void MouseLClick(CStringArray* saData)
 {
-	MouseLClick(_ttoi(saData->GetAt(0)),_ttoi(saData->GetAt(1)));
+	if(saData->GetCount()==0)
+	{
+		MouseLClick(g_iC, g_iR);
+	}
+	else
+	{
+		MouseLClick(_ttoi(saData->GetAt(0)),_ttoi(saData->GetAt(1)));
+	}
 }
 
 void MoveMouse(UINT nX, UINT nY)

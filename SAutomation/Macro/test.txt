@@ -1,4 +1,2 @@
-wait shift off
-wait ctrl off
-
 1000
+LMouse Click
