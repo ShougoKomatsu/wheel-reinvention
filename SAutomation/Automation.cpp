@@ -23,15 +23,50 @@ int SetWindowForward(CString sWindowName)
 	hwnd = FindWindow(nullptr,sWindowName);
 	if(hwnd <=0){return -1;}
 
-	//	CRect	rect ;
-	//	GetWindowRect(hwnd,&rect) ;
-	//	SetWindowPos(hwnd, HWND_TOPMOST,rect.left,rect.top,0,0,SWP_NOSIZE) ;
-	//SetWindowPos(hwnd, HWND_NOTOPMOST,rect.left,rect.top,0,0,SWP_NOSIZE) ;
-
 
 	if(SetForegroundWindow(hwnd) == FALSE){return -1;};
 	return 0;
 }
+int WindowSize(CStringArray* saData)
+{
+	HWND hwnd = GetForegroundWindow();
+	CRect	rect ;
+	GetWindowRect(hwnd,&rect) ;
+	int iLeft;
+	int iTop;
+	int iWidth;
+	int iHeight;
+
+	if(saData->GetCount()!=2){return -1;}
+
+	iWidth = _ttoi(saData->GetAt(0));
+	iHeight = _ttoi(saData->GetAt(1));
+	iLeft = rect.left;
+	iTop = rect.top;
+	SetWindowPos(hwnd, HWND_TOP,iLeft, iTop, iWidth, iHeight,SWP_NOMOVE) ;
+	return 0;
+}
+int WindowPos(CStringArray* saData)
+{
+	HWND hwnd = GetForegroundWindow();
+	CRect	rect ;
+	GetWindowRect(hwnd,&rect) ;
+	int iLeft;
+	int iTop;
+	int iWidth;
+	int iHeight;
+
+	if(saData->GetCount()!=2){return -1;}
+	
+	iWidth = rect.Width();
+	iHeight = rect.Height();
+	iLeft = _ttoi(saData->GetAt(0));
+	iTop = _ttoi(saData->GetAt(1));
+
+	SetWindowPos(hwnd, HWND_TOP,iLeft, iTop, iWidth, iHeight,SWP_NOSIZE) ;
+	return 0;
+}
+
 int K_Sleep(LPVOID Halt, LPVOID Suspend, DWORD SleepMilliSec)
 {
 	if((Halt==NULL)&&(Suspend == NULL)){Sleep(SleepMilliSec);return 0;}
@@ -500,7 +535,14 @@ int OperateCommand(int* iSceneData, LPVOID Halt, LPVOID Suspend, LONGLONG* Speci
 		{
 			return SetWindowForward(saData.GetAt(0));
 		}
-
+	case COMMAND_WINDOW_SIZE:
+		{
+			return WindowSize(&saData);
+		}
+	case COMMAND_WINDOW_POS:
+		{
+			return WindowPos(&saData);
+		}
 	case COMMAND_NOTING:{return 0;}
 	default:{return -1;}
 	}

@@ -1,2 +1,3 @@
 1000
-LMouse Click
+WindowPOS(100,200)
+WindowSize(500,800)

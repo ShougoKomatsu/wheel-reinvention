@@ -25,6 +25,8 @@ BOOL GetCommand(CString sDataLine, int* iCommandType)
 
 	if((sDataTrimLower.Left(4).Compare(_T("dim "))==0)){*iCommandType=COMMAND_DECRARE; return TRUE;}
 	if(sDataTrimLower.Left(4).Compare(_T("wait"))==0){*iCommandType=COMMAND_WAIT; return TRUE;}
+	if(sDataTrimLower.Left(10).Compare(_T("windowsize"))==0){*iCommandType=COMMAND_WINDOW_SIZE; return TRUE;}
+	if(sDataTrimLower.Left(9).Compare(_T("windowpos"))==0){*iCommandType=COMMAND_WINDOW_POS; return TRUE;}
 
 	if(sDataTrimLower.Left(13).Compare(_T("windowforward"))==0){*iCommandType=COMMAND_WINDOW_FORWARD; return TRUE;}
 
@@ -351,8 +353,29 @@ BOOL PerseCommand(int* iSceneData, CString sDataLine, int* iCommandType, CString
 			saData->Add(sDataLocal);
 			break;
 		}
-
-
+	case COMMAND_WINDOW_SIZE:
+		{
+			ExtractData(sDataLocal, _T("("), &sArg, &sDataLocal);
+			ExtractData(sDataLocal, _T(","), &sArg, &sDataLocal);
+			if(sArg.GetLength()>0){saData->Add(sArg);}
+			ExtractData(sDataLocal, _T(")"), &sArg, &sDataLocal);
+			if(sArg.GetLength()>0){saData->Add(sArg);}
+			if((saData->GetCount())!=2){return FALSE;}
+			*iCommandType = iType;
+			break;
+		}
+		
+	case COMMAND_WINDOW_POS:
+		{
+			ExtractData(sDataLocal, _T("("), &sArg, &sDataLocal);
+			ExtractData(sDataLocal, _T(","), &sArg, &sDataLocal);
+			if(sArg.GetLength()>0){saData->Add(sArg);}
+			ExtractData(sDataLocal, _T(")"), &sArg, &sDataLocal);
+			if(sArg.GetLength()>0){saData->Add(sArg);}
+			if((saData->GetCount())!=2){return FALSE;}
+			*iCommandType = iType;
+			break;
+		}
 	}
 
 	return TRUE;
