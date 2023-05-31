@@ -21,5 +21,6 @@
 #define COMMAND_WINDOW_FORWARD (COMMAND_COMMON + 13)
 #define COMMAND_WINDOW_SIZE (COMMAND_COMMON + 14)
 #define COMMAND_WINDOW_POS (COMMAND_COMMON + 15)
+#define COMMAND_RUN (COMMAND_COMMON + 16)
 
 int OperateCommand(int* iSceneData, LPVOID Halt, LPVOID Suspend, LONGLONG* Special1, CString sDataLine);

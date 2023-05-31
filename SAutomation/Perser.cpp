@@ -23,6 +23,8 @@ BOOL GetCommand(CString sDataLine, int* iCommandType)
 	if(sDataTrimLower.Left(5).Compare(_T("wheel"))==0){*iCommandType=COMMAND_WHEEL; return TRUE;}
 	if(sDataTrimLower.SpanIncluding(_T("0123456789")).Compare(sDataTrimLower)==0){*iCommandType = COMMAND_DELAY; return TRUE;}
 
+	if((sDataTrimLower.Left(3).Compare(_T("run"))==0)){*iCommandType=COMMAND_RUN; return TRUE;}
+
 	if((sDataTrimLower.Left(4).Compare(_T("dim "))==0)){*iCommandType=COMMAND_DECRARE; return TRUE;}
 	if(sDataTrimLower.Left(4).Compare(_T("wait"))==0){*iCommandType=COMMAND_WAIT; return TRUE;}
 	if(sDataTrimLower.Left(10).Compare(_T("windowsize"))==0){*iCommandType=COMMAND_WINDOW_SIZE; return TRUE;}
@@ -364,7 +366,6 @@ BOOL PerseCommand(int* iSceneData, CString sDataLine, int* iCommandType, CString
 			*iCommandType = iType;
 			break;
 		}
-		
 	case COMMAND_WINDOW_POS:
 		{
 			ExtractData(sDataLocal, _T("("), &sArg, &sDataLocal);
@@ -373,6 +374,13 @@ BOOL PerseCommand(int* iSceneData, CString sDataLine, int* iCommandType, CString
 			ExtractData(sDataLocal, _T(")"), &sArg, &sDataLocal);
 			if(sArg.GetLength()>0){saData->Add(sArg);}
 			if((saData->GetCount())!=2){return FALSE;}
+			*iCommandType = iType;
+			break;
+		}
+	case COMMAND_RUN:
+		{
+			ExtractData(sDataLocal, _T(" "), &sArg, &sDataLocal);
+			saData->Add(sDataLocal);
 			*iCommandType = iType;
 			break;
 		}

@@ -292,6 +292,18 @@ int GetKeyCode(CString sData, BYTE* byData)
 	*byData = byDataLocal;
 	return 0;
 }
+int RunExe(CString sExePath)
+{
+	STARTUPINFO si;
+	PROCESS_INFORMATION pi;
+	memset(&si, NULL, sizeof(si));
+	si.cb=sizeof(si);
+	memset(&pi, NULL, sizeof(pi));
+
+
+	CreateProcessA(NULL,  CT2W(sExePath), NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+	return 0;
+}
 
 int WaitForKey(LPVOID Halt, LPVOID Suspend, CStringArray* saData)
 {
@@ -542,6 +554,10 @@ int OperateCommand(int* iSceneData, LPVOID Halt, LPVOID Suspend, LONGLONG* Speci
 	case COMMAND_WINDOW_POS:
 		{
 			return WindowPos(&saData);
+		}
+	case COMMAND_RUN:
+		{
+			return RunExe(saData.GetAt(0));
 		}
 	case COMMAND_NOTING:{return 0;}
 	default:{return -1;}
