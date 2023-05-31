@@ -300,8 +300,13 @@ int RunExe(CString sExePath)
 	si.cb=sizeof(si);
 	memset(&pi, NULL, sizeof(pi));
 
+	wchar_t* szTmp;
+	szTmp = new wchar_t[wcslen(sExePath) + 1];
+	memset(szTmp, NULL, sizeof(szTmp)/sizeof(wchar_t));
+	wcscpy_s(szTmp, wcslen(sExePath) + 1, sExePath);
 
-	CreateProcessA(NULL,  CT2W(sExePath), NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+	CreateProcess(NULL,  szTmp, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+	delete [] szTmp;
 	return 0;
 }
 
