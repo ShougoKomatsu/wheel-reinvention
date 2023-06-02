@@ -1,6 +1,22 @@
 #include "stdafx.h"
 
 
+BOOL GetFileName(CString sFilePath, CString* sFileName)
+{
+	int iFoundPosLast;
+	int iFoundPos;
+
+	iFoundPos = 0;
+	while(iFoundPos>=0)
+	{
+		iFoundPosLast = iFoundPos;
+		iFoundPos = sFilePath.Find(_T("\\"), iFoundPosLast+1);
+	}
+	CString sExeName;
+	if(iFoundPosLast==0){return FALSE;}
+	sFileName->Format(_T("%s"), sFilePath.Right(sFilePath.GetLength()-iFoundPosLast-1));
+	return TRUE;
+}
 
 BOOL ReadUTFFile(CString sFilePath, CString* sData)
 {

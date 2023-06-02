@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Automation.h"
 #include "windows.h"
+#include "Common.h"
 
 #include <TlHelp32.h>
 int Maximize()
@@ -293,45 +294,43 @@ int GetKeyCode(CString sData, BYTE* byData)
 	*byData = byDataLocal;
 	return 0;
 }
+
 BOOL isProcessExist(CString sExePath)
 {
-		int iFoundPosLast;
-	int iFoundPos;
-
-	iFoundPos = 0;
-	while(iFoundPos>=0)
-	{
-		iFoundPosLast = iFoundPos;
-		iFoundPos = sExePath.Find(_T("\\"), iFoundPosLast+1);
-	}
 	CString sExeName;
-	if(iFoundPosLast==0){return FALSE;}
-	sExeName.Format(_T("%s"), sExePath.Right(sExePath.GetLength()-iFoundPosLast-1));
+	BOOL bRet;
+	bRet = GetFileName(sExePath,&sExeName);
+	if(bRet != TRUE){return FALSE;}
+
 
 	PROCESSENTRY32 entry;
 	entry.dwSize=sizeof(PROCESSENTRY32);
-	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0);
-	if(Process32First(snapshot,&entry)==TRUE)
-	{
-		while(Process32Next(snapshot, &entry)==TRUE)
-		{
-			if(sExeName.Compare( entry.szExeFile)==0)
-			{
-				CloseHandle(snapshot);
-				return TRUE;
 
-			}
+	HANDLE snapshot = NULL;
+	snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0);
+	if(snapshot == NULL){return FALSE;}
+
+	bRet = Process32First(snapshot,&entry);
+	if(bRet !=TRUE){CloseHandle(snapshot);return FALSE;}
+
+	while(Process32Next(snapshot, &entry)==TRUE)
+	{
+		if(sExeName.Compare( entry.szExeFile)==0)
+		{
+			CloseHandle(snapshot);
+			return TRUE;
 		}
 	}
-				CloseHandle(snapshot);
+	CloseHandle(snapshot);
 	return FALSE;
 }
+
 int RunExe(CString sExePath)
 {
-	BOOL bAlreadyExist;
-
+	BOOL bAlreadyExist = FALSE;
 	bAlreadyExist = isProcessExist(sExePath);
 	if(bAlreadyExist==TRUE){return 0;}
+
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
 	memset(&si, NULL, sizeof(si));
