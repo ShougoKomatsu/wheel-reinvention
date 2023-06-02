@@ -469,28 +469,26 @@ VOID GetExeOtherProcessIds(CString sTargetExeName, DWORD* dwExeProcessIds, DWORD
 	{
 		if (dwAllProcessIds[i] == dwIgnoreProcessId){continue;}
 
-		TCHAR szProcessName[MAX_PATH] = TEXT("<unknown>");
+		TCHAR szProcessName[MAX_PATH] = _T("<unknown>");
 
 		HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,FALSE,dwAllProcessIds[i]);
 
-		if (hProcess != NULL)
+		if (hProcess == NULL){continue;}
+		HMODULE hMod;
+		DWORD cbNeeded;
+
+		if (EnumProcessModules(hProcess, &hMod, sizeof(hMod),&cbNeeded))
 		{
-			HMODULE hMod;
-			DWORD cbNeeded;
+			GetModuleBaseName(hProcess, hMod, szProcessName,sizeof(szProcessName) / sizeof(TCHAR));
 
-			if (EnumProcessModules(hProcess, &hMod, sizeof(hMod),&cbNeeded))
+			CString sProcName = CString(szProcessName);
+			if (sProcName.CompareNoCase(sTargetExeName)==0)
 			{
-				GetModuleBaseName(hProcess, hMod, szProcessName,sizeof(szProcessName) / sizeof(TCHAR));
-
-				CString sProcName = CString(szProcessName).MakeUpper();
-				if (sProcName.Compare(sTargetExeName.MakeUpper())==0)
-				{
-					dwExeProcessIds[j] = dwAllProcessIds[i];
-					j++;
-				}
+				dwExeProcessIds[j] = dwAllProcessIds[i];
+				j++;
 			}
-			CloseHandle(hProcess);
 		}
+		CloseHandle(hProcess);
 	}
 }
 

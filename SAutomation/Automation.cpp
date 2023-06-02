@@ -355,8 +355,8 @@ int WaitForKey(LPVOID Halt, LPVOID Suspend, CStringArray* saData)
 	iRet = GetKeyCode(saData->GetAt(0), &bUnicode, &tch, &byKey);
 	if(iRet < 0){return iRet;}
 
-	if(saData->GetAt(1).Compare(_T("on"))==0){iWaitOn=1;}
-	else if(saData->GetAt(1).Compare(_T("off"))==0){iWaitOn=0;}
+	if(saData->GetAt(1).CompareNoCase(_T("on"))==0){iWaitOn=1;}
+	else if(saData->GetAt(1).CompareNoCase(_T("off"))==0){iWaitOn=0;}
 	else{return -1;}
 
 
