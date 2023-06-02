@@ -1,1 +1,7 @@
-run D:\Program Files\mspaint.exe
+Wait ctrl off
+Wait shift off
+Space
+a
+A
+b
+!

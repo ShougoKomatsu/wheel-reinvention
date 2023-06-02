@@ -136,16 +136,6 @@ int K_Sleep(LPVOID Halt, LPVOID Suspend, DWORD SleepMilliSec)
 }
 
 
-int Break(LPVOID Halt, LONGLONG* Special1)
-{
-	while ((*(int*)Special1) == 0)
-	{
-		if((*(int*)Halt) == 1){return -1;}
-		Sleep(1);
-	}
-	return 0;
-}
-
 int KeyDownAndUp(BYTE bySendKey)
 {
 	INPUT inputs[2] = {};
@@ -182,6 +172,35 @@ int KeyDownAndUpUnicode(TCHAR tch)
 	return 0;
 }
 
+int KeyDownUnicode(TCHAR tch)
+{
+	INPUT input[1];
+	input[0].type = INPUT_KEYBOARD;
+	input[0].ki.wVk = 0;
+	input[0].ki.wScan = tch;
+	input[0].ki.dwFlags = KEYEVENTF_UNICODE;
+	input[0].ki.time = 0;
+	input[0].ki.dwExtraInfo = 0;
+
+	SendInput(1, input, sizeof(INPUT));
+	return 0;
+}
+
+int KeyUpUnicode(TCHAR tch)
+{
+	INPUT input[1];
+
+	input[0].type = INPUT_KEYBOARD;
+	input[0].ki.wVk = 0;
+	input[0].ki.wScan = tch;
+	input[0].ki.dwFlags = KEYEVENTF_UNICODE | KEYEVENTF_KEYUP;
+	input[0].ki.time = 0;
+	input[0].ki.dwExtraInfo = 0;
+
+	SendInput(1, input, sizeof(INPUT));
+	return 0;
+}
+
 int KeyDown(BYTE bySendKey)
 {
 	INPUT inputs[1] = {};
@@ -206,92 +225,69 @@ int KeyUp(BYTE bySendKey)
 }
 
 
-int GetKeyCode(CString sData, BYTE* byData)
+int GetKeyCode(CString sData, BOOL* bUnicode, TCHAR* tch, BYTE* byData)
 {
 	BYTE byDataLocal;
 	byDataLocal = 0;
-	if(sData.Compare(_T("ctrl"))==0){*byData= VK_CONTROL;return 0;}
-	if(sData.Compare(_T("shift"))==0){*byData= VK_SHIFT;return 0;}
+	*bUnicode = FALSE;
+	*tch = 0;
+	if(sData.CompareNoCase(_T("ctrl"))==0){*byData= VK_CONTROL;return 0;}
+	if(sData.CompareNoCase(_T("shift"))==0){*byData= VK_SHIFT;return 0;}
+
+	if(sData.CompareNoCase(_T("©"))==0){*byData= VK_LEFT;return 0;}
+	if(sData.CompareNoCase(_T("ª"))==0){*byData= VK_UP;return 0;}
+	if(sData.CompareNoCase(_T("¨"))==0){*byData= VK_RIGHT;return 0;}
+	if(sData.CompareNoCase(_T("«"))==0){*byData= VK_DOWN;return 0;}
+
 
 	if(sData.GetLength()==2)
 	{
-		if(sData.Compare(_T("f1"))==0){*byData = VK_F1;return 0;}
-		if(sData.Compare(_T("f2"))==0){*byData = VK_F2;return 0;}
-		if(sData.Compare(_T("f3"))==0){*byData = VK_F3;return 0;}
-		if(sData.Compare(_T("f4"))==0){*byData = VK_F4;return 0;}
-		if(sData.Compare(_T("f5"))==0){*byData = VK_F5;return 0;}
-		if(sData.Compare(_T("f6"))==0){*byData = VK_F6;return 0;}
-		if(sData.Compare(_T("f7"))==0){*byData = VK_F7;return 0;}
-		if(sData.Compare(_T("f8"))==0){*byData = VK_F8;return 0;}
-		if(sData.Compare(_T("f9"))==0){*byData = VK_F9;return 0;}
+		if(sData.CompareNoCase(_T("f1"))==0){*byData = VK_F1;return 0;}
+		if(sData.CompareNoCase(_T("f2"))==0){*byData = VK_F2;return 0;}
+		if(sData.CompareNoCase(_T("f3"))==0){*byData = VK_F3;return 0;}
+		if(sData.CompareNoCase(_T("f4"))==0){*byData = VK_F4;return 0;}
+		if(sData.CompareNoCase(_T("f5"))==0){*byData = VK_F5;return 0;}
+		if(sData.CompareNoCase(_T("f6"))==0){*byData = VK_F6;return 0;}
+		if(sData.CompareNoCase(_T("f7"))==0){*byData = VK_F7;return 0;}
+		if(sData.CompareNoCase(_T("f8"))==0){*byData = VK_F8;return 0;}
+		if(sData.CompareNoCase(_T("f9"))==0){*byData = VK_F9;return 0;}
 	}
 
 	if(sData.GetLength()==3)
 	{
-		if(sData.Compare(_T("f10"))==0){*byData = VK_F10;return 0;}
-		if(sData.Compare(_T("f11"))==0){*byData = VK_F11;return 0;}
-		if(sData.Compare(_T("f12"))==0){*byData = VK_F12;return 0;}
-		if(sData.Compare(_T("f13"))==0){*byData = VK_F13;return 0;}
-		if(sData.Compare(_T("f14"))==0){*byData = VK_F14;return 0;}
-		if(sData.Compare(_T("f15"))==0){*byData = VK_F15;return 0;}
-		if(sData.Compare(_T("f16"))==0){*byData = VK_F16;return 0;}
-		if(sData.Compare(_T("f17"))==0){*byData = VK_F17;return 0;}
-		if(sData.Compare(_T("f18"))==0){*byData = VK_F18;return 0;}
-		if(sData.Compare(_T("f19"))==0){*byData = VK_F19;return 0;}
+		if(sData.CompareNoCase(_T("f10"))==0){*byData = VK_F10;return 0;}
+		if(sData.CompareNoCase(_T("f11"))==0){*byData = VK_F11;return 0;}
+		if(sData.CompareNoCase(_T("f12"))==0){*byData = VK_F12;return 0;}
+		if(sData.CompareNoCase(_T("f13"))==0){*byData = VK_F13;return 0;}
+		if(sData.CompareNoCase(_T("f14"))==0){*byData = VK_F14;return 0;}
+		if(sData.CompareNoCase(_T("f15"))==0){*byData = VK_F15;return 0;}
+		if(sData.CompareNoCase(_T("f16"))==0){*byData = VK_F16;return 0;}
+		if(sData.CompareNoCase(_T("f17"))==0){*byData = VK_F17;return 0;}
+		if(sData.CompareNoCase(_T("f18"))==0){*byData = VK_F18;return 0;}
+		if(sData.CompareNoCase(_T("f19"))==0){*byData = VK_F19;return 0;}
 
-		if(sData.Compare(_T("f20"))==0){*byData = VK_F20;return 0;}
-		if(sData.Compare(_T("f21"))==0){*byData = VK_F21;return 0;}
-		if(sData.Compare(_T("f22"))==0){*byData = VK_F22;return 0;}
-		if(sData.Compare(_T("f23"))==0){*byData = VK_F23;return 0;}
-		if(sData.Compare(_T("f24"))==0){*byData = VK_F24;return 0;}
+		if(sData.CompareNoCase(_T("f20"))==0){*byData = VK_F20;return 0;}
+		if(sData.CompareNoCase(_T("f21"))==0){*byData = VK_F21;return 0;}
+		if(sData.CompareNoCase(_T("f22"))==0){*byData = VK_F22;return 0;}
+		if(sData.CompareNoCase(_T("f23"))==0){*byData = VK_F23;return 0;}
+		if(sData.CompareNoCase(_T("f24"))==0){*byData = VK_F24;return 0;}
 	}
 
-	if(sData.Compare(_T("lshift"))==0){*byData = VK_SHIFT;return 0;}
-	if(sData.Compare(_T("rshift"))==0){*byData = VK_SHIFT;return 0;}
-	if(sData.Compare(_T("lctrl"))==0){*byData = VK_CONTROL;return 0;}
-	if(sData.Compare(_T("rctrl"))==0){*byData = VK_CONTROL;return 0;}
-	if(sData.Compare(_T("lalt"))==0){*byData = VK_MENU;return 0;}
-	if(sData.Compare(_T("ralt"))==0){*byData = VK_MENU;return 0;}
+	if(sData.CompareNoCase(_T("lshift"))==0){*byData = VK_SHIFT;return 0;}
+	if(sData.CompareNoCase(_T("rshift"))==0){*byData = VK_SHIFT;return 0;}
+	if(sData.CompareNoCase(_T("lctrl"))==0){*byData = VK_CONTROL;return 0;}
+	if(sData.CompareNoCase(_T("rctrl"))==0){*byData = VK_CONTROL;return 0;}
+	if(sData.CompareNoCase(_T("lalt"))==0){*byData = VK_MENU;return 0;}
+	if(sData.CompareNoCase(_T("ralt"))==0){*byData = VK_MENU;return 0;}
 
-	if(sData.Compare(_T("tab"))==0){*byData = VK_TAB;return 0;}
-	if(sData.Compare(_T("enter"))==0){*byData = VK_RETURN;return 0;}
-	if(sData.Compare(_T("return"))==0){*byData = VK_RETURN;return 0;}
-	if(sData.Compare(_T("space"))==0){*byData = VK_SPACE;return 0;}
+	if(sData.CompareNoCase(_T("tab"))==0){*byData = VK_TAB;return 0;}
+	if(sData.CompareNoCase(_T("enter"))==0){*byData = VK_RETURN;return 0;}
+	if(sData.CompareNoCase(_T("return"))==0){*byData = VK_RETURN;return 0;}
+	if(sData.CompareNoCase(_T("space"))==0){*byData = VK_SPACE;return 0;}
 
-
-	if(sData.Left(2).Compare(_T("0x"))!=0){return -1;}
-	if(sData.GetLength()!=4){return -1;}
-
-	char cChar;
-	cChar = sData.GetAt(2);
-	if((cChar >= '0') && (cChar<= '9'))
-	{
-		byDataLocal = cChar-'0';
-	}
-	else if((cChar >= 'a') && (cChar<= 'f'))
-	{
-		byDataLocal = cChar-'a' + 10;
-	}
-	else
-	{
-		return -1;
-	}
-	byDataLocal *= 0x10;
-
-	cChar = sData.GetAt(3);
-	if((cChar >= '0') && (cChar<= '9'))
-	{
-		byDataLocal += cChar-'0';
-	}
-	else if((cChar >= 'a') && (cChar<= 'f'))
-	{
-		byDataLocal += cChar-'a' + 10;
-	}
-	else
-	{
-		return -1;
-	}
-	*byData = byDataLocal;
+	*bUnicode = TRUE;
+	*byData = 0x00;
+	*tch=sData.GetAt(0);
 	return 0;
 }
 
@@ -353,8 +349,10 @@ int WaitForKey(LPVOID Halt, LPVOID Suspend, CStringArray* saData)
 	int iWaitOn;
 
 	BYTE byKey;
+	BOOL bUnicode;
+	TCHAR tch;
 	int iRet;
-	iRet = GetKeyCode(saData->GetAt(0),&byKey);
+	iRet = GetKeyCode(saData->GetAt(0), &bUnicode, &tch, &byKey);
 	if(iRet < 0){return iRet;}
 
 	if(saData->GetAt(1).Compare(_T("on"))==0){iWaitOn=1;}
@@ -362,6 +360,12 @@ int WaitForKey(LPVOID Halt, LPVOID Suspend, CStringArray* saData)
 	else{return -1;}
 
 
+	if(bUnicode == TRUE)
+	{
+		if(('0'<=tch) && (tch<='9')){byKey = tch;}
+		if(('a'<=tch) && (tch<='z')){byKey = tch;}
+		if(('A'<=tch) && (tch<='Z')){byKey = tch-'A'+'a';}
+	}
 
 	short shKey;
 	while(1)
@@ -386,69 +390,11 @@ int WaitForKey(LPVOID Halt, LPVOID Suspend, CStringArray* saData)
 int KeyDownAndUp(CStringArray* saData)
 {
 	BYTE bySendKey;
+	BOOL bUnicode;
+	TCHAR tch;
 
-	if(saData->GetAt(0).Left(2).Compare(_T("0x"))==0)
-	{
-		GetKeyCode(saData->GetAt(0), &bySendKey);
-		return KeyDownAndUp(bySendKey);
-	}
-
-	if(saData->GetAt(0).Compare(_T("©"))==0){return KeyDownAndUp(VK_LEFT);}
-	if(saData->GetAt(0).Compare(_T("ª"))==0){return KeyDownAndUp(VK_UP);}
-	if(saData->GetAt(0).Compare(_T("¨"))==0){return KeyDownAndUp(VK_RIGHT);}
-	if(saData->GetAt(0).Compare(_T("«"))==0){return KeyDownAndUp(VK_DOWN);}
-
-	if(saData->GetAt(0).Compare(_T("_"))==0){return KeyDownAndUpUnicode(L'_');}
-	if(saData->GetAt(0).Compare(_T("."))==0){return KeyDownAndUpUnicode(L'.');}
-	if(saData->GetAt(0).Compare(_T("/"))==0){return KeyDownAndUpUnicode(L'/');}
-	if(saData->GetAt(0).Compare(_T("*"))==0){return KeyDownAndUpUnicode(L'*');}
-	if(saData->GetAt(0).Compare(_T("-"))==0){return KeyDownAndUpUnicode(L'-');}
-	if(saData->GetAt(0).Compare(_T("@"))==0){return KeyDownAndUpUnicode(L'@');}
-	if(saData->GetAt(0).Compare(_T("["))==0){return KeyDownAndUpUnicode(L'[');}
-	if(saData->GetAt(0).Compare(_T("]"))==0){return KeyDownAndUpUnicode(L']');}
-	if(saData->GetAt(0).Compare(_T("{"))==0){return KeyDownAndUpUnicode(L'{');}
-	if(saData->GetAt(0).Compare(_T("}"))==0){return KeyDownAndUpUnicode(L'}');}
-	if(saData->GetAt(0).Compare(_T(";"))==0){return KeyDownAndUpUnicode(L';');}
-	if(saData->GetAt(0).Compare(_T(":"))==0){return KeyDownAndUpUnicode(L':');}
-	if(saData->GetAt(0).Compare(_T("|"))==0){return KeyDownAndUpUnicode(L'|');}
-	if(saData->GetAt(0).Compare(_T("\\"))==0){return KeyDownAndUpUnicode(L'\\');}
-	if(saData->GetAt(0).Compare(_T("^"))==0){return KeyDownAndUpUnicode(L'^');}
-	if(saData->GetAt(0).Compare(_T("="))==0){return KeyDownAndUpUnicode(L'=');}
-	if(saData->GetAt(0).Compare(_T("-"))==0){return KeyDownAndUpUnicode(L'-');}
-	if(saData->GetAt(0).Compare(_T("`"))==0){return KeyDownAndUpUnicode(L'`');}
-	if(saData->GetAt(0).Compare(_T(">"))==0){return KeyDownAndUpUnicode(L'>');}
-	if(saData->GetAt(0).Compare(_T("<"))==0){return KeyDownAndUpUnicode(L'<');}
-	if(saData->GetAt(0).Compare(_T("?"))==0){return KeyDownAndUpUnicode(L'?');}
-	if(saData->GetAt(0).Compare(_T("!"))==0){return KeyDownAndUpUnicode(L'!');}
-	if(saData->GetAt(0).Compare(_T("\""))==0){return KeyDownAndUpUnicode(L'\"');}
-	if(saData->GetAt(0).Compare(_T("#"))==0){return KeyDownAndUpUnicode(L'#');}
-	if(saData->GetAt(0).Compare(_T("$"))==0){return KeyDownAndUpUnicode(L'$');}
-	if(saData->GetAt(0).Compare(_T("%%"))==0){return KeyDownAndUpUnicode(L'%');}
-	if(saData->GetAt(0).Compare(_T("&"))==0){return KeyDownAndUpUnicode(L'&');}
-	if(saData->GetAt(0).Compare(_T("'"))==0){return KeyDownAndUpUnicode(L'\'');}
-	if(saData->GetAt(0).Compare(_T("("))==0){return KeyDownAndUpUnicode(L'(');}
-	if(saData->GetAt(0).Compare(_T(")"))==0){return KeyDownAndUpUnicode(L')');}
-	bySendKey = (BYTE)(saData->GetAt(0).GetAt(0));
-
-
-	if((bySendKey>=0x00)&&(bySendKey<=0x2F))
-	{
-		return KeyDownAndUp(bySendKey);
-	}
-
-	if((bySendKey>='a')&&(bySendKey<='z'))
-	{
-		bySendKey+='A'-'a';
-		return KeyDownAndUp(bySendKey);
-	}
-
-	if((bySendKey>='A')&&(bySendKey<='Z'))
-	{
-		KeyDown(VK_SHIFT);
-		KeyDownAndUp(bySendKey);
-		KeyUp(VK_SHIFT);
-		return 0;
-	}
+	GetKeyCode(saData->GetAt(0), &bUnicode, &tch, &bySendKey);
+	if(bUnicode == TRUE){return KeyDownAndUpUnicode(tch);}
 
 	return KeyDown(bySendKey);
 }
@@ -457,27 +403,11 @@ int KeyDownAndUp(CStringArray* saData)
 int KeyDown(CStringArray* saData)
 {
 	BYTE bySendKey;
+	BOOL bUnicode;
+	TCHAR tch;
 
-	if(saData->GetAt(0).Left(2).Compare(_T("0x"))==0)
-	{
-		GetKeyCode(saData->GetAt(0), &bySendKey);
-		return KeyDown(bySendKey);
-	}
-
-	bySendKey = (BYTE)(saData->GetAt(0).GetAt(0));
-
-
-	if((bySendKey>=0x00)&&(bySendKey<=0x2F))
-	{
-		return KeyDown(bySendKey);
-	}
-
-	if((bySendKey>='a')&&(bySendKey<='z'))
-	{
-		bySendKey+='A'-'a';
-		return KeyDown(bySendKey);
-	}
-
+	GetKeyCode(saData->GetAt(0), &bUnicode, &tch, &bySendKey);
+	if(bUnicode == TRUE){return KeyDownUnicode(tch);}
 	return KeyDown(bySendKey);
 }
 
@@ -486,27 +416,11 @@ int KeyDown(CStringArray* saData)
 int KeyUp(CStringArray* saData)
 {
 	BYTE bySendKey;
+	BOOL bUnicode;
+	TCHAR tch;
 
-	if(saData->GetAt(0).Left(2).Compare(_T("0x"))==0)
-	{
-		GetKeyCode(saData->GetAt(0), &bySendKey);
-		return KeyUp(bySendKey);
-	}
-
-	bySendKey = (BYTE)(saData->GetAt(0).GetAt(0));
-
-
-	if((bySendKey>=0x00)&&(bySendKey<=0x2F))
-	{
-		return KeyUp(bySendKey);
-	}
-
-	if((bySendKey>='a')&&(bySendKey<='z'))
-	{
-		bySendKey+='A'-'a';
-		return KeyUp(bySendKey);
-	}
-
+	GetKeyCode(saData->GetAt(0), &bUnicode, &tch, &bySendKey);
+	if(bUnicode == TRUE){return KeyUpUnicode(tch);}
 	return KeyUp(bySendKey);
 }
 
