@@ -436,106 +436,31 @@ int OperateCommand(int* iSceneData, LPVOID Halt, LPVOID Suspend, LONGLONG* Speci
 
 	switch(iCommandType)
 	{
-	case COMMAND_MOUSE_L_DOWN:
-		{
-			MoveMouse(&saData);
-			MouseLDown(&saData);
-			return 0;
-		}
+	case COMMAND_DELAY:{return K_Sleep(Halt, Suspend, _ttoi(saData.GetAt(0)));}
 
-	case COMMAND_MOUSE_L_UP:
-		{
-			MoveMouse(&saData);
-			MouseLUp(&saData);
-			return 0;
-		}
-		
-	case COMMAND_MOUSE_R_DOWN:
-		{
-			MoveMouse(&saData);
-			MouseRDown(&saData);
-			return 0;
-		}
+	case COMMAND_MOUSE_L_DOWN:{return MoveMouse(&saData);MouseLDown(&saData);}
+	case COMMAND_MOUSE_R_DOWN:{return MoveMouse(&saData);MouseRDown(&saData);}
 
-	case COMMAND_MOUSE_R_UP:
-		{
-			MoveMouse(&saData);
-			MouseRUp(&saData);
-			return 0;
-		}
+	case COMMAND_MOUSE_L_UP:{return MoveMouse(&saData);MouseLUp(&saData);}
+	case COMMAND_MOUSE_R_UP:{return MoveMouse(&saData);MouseRUp(&saData);}
 
-	case COMMAND_MOUSE_MOVE:
-		{
-			MoveMouse(&saData);
-			return 0;
-		}
-	case COMMAND_DELAY:
-		{
-			iRet = K_Sleep(Halt, Suspend, _ttoi(saData.GetAt(0)));
-			return iRet;
-		}
-	case COMMAND_WHEEL:
-		{
-			MouseVWheel(&saData);
-			return 0;
-		}
-	case COMMAND_MOUSE_L_CLICK:
-		{
-			MouseLClick(&saData);
-			return 0;
-		}
-		
-	case COMMAND_MOUSE_R_CLICK:
-		{
-			MouseRClick(&saData);
-			return 0;
-		}
+	case COMMAND_MOUSE_L_CLICK:{return MouseLClick(&saData);}
+	case COMMAND_MOUSE_R_CLICK:{return MouseRClick(&saData);}
 
-	case COMMAND_KEY_DOWN_UP:
-		{
-			iRet = KeyDownAndUp(&saData);
-			return iRet;
-		}
+	case COMMAND_MOUSE_MOVE:{return MoveMouse(&saData);}
+	case COMMAND_WHEEL:{return MouseVWheel(&saData);}
 
-	case COMMAND_KEY_DOWN:
-		{
-			iRet = KeyDown(&saData);
-			return iRet;
-		}
+	case COMMAND_KEY_DOWN_UP:{return KeyDownAndUp(&saData);}
+	case COMMAND_KEY_DOWN:{return KeyDown(&saData);}
 
-	case COMMAND_KEY_UP:
-		{
-			iRet = KeyUp(&saData);
-			return iRet;
-		}
-	case COMMAND_WAIT:
-		{
-			return WaitForKey(Halt, Suspend, &saData);
-		}
-	case COMMAND_MAXIMIZE:
-		{
-			return Maximize();
-		}
-	case COMMAND_MINIMIZE:
-		{
-			return Minimize();
-		}
-	case COMMAND_WINDOW_FORWARD:
-		{
-			return SetWindowForward(saData.GetAt(0));
-		}
-	case COMMAND_WINDOW_SIZE:
-		{
-			return WindowSize(&saData);
-		}
-	case COMMAND_WINDOW_POS:
-		{
-			return WindowPos(&saData);
-		}
-	case COMMAND_RUN:
-		{
-			return RunExe(saData.GetAt(0));
-		}
+	case COMMAND_KEY_UP:{return KeyUp(&saData);}
+	case COMMAND_WAIT:{return WaitForKey(Halt, Suspend, &saData);}
+	case COMMAND_MAXIMIZE:{return Maximize();}
+	case COMMAND_MINIMIZE:{return Minimize();}
+	case COMMAND_WINDOW_FORWARD:{return SetWindowForward(saData.GetAt(0));}
+	case COMMAND_WINDOW_SIZE:{return WindowSize(&saData);}
+	case COMMAND_WINDOW_POS:{return WindowPos(&saData);}
+	case COMMAND_RUN:{return RunExe(saData.GetAt(0));}
 	case COMMAND_NOTING:{return 0;}
 	default:{return -1;}
 	}

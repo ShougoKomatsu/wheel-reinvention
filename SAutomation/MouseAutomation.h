@@ -17,24 +17,24 @@
 #define COMMAND_MOUSE_R_CLICK (COMMAND_MOUSE+100+MOUSEEVENTF_RIGHTDOWN)
 
 
-void MouseLDown(UINT nX, UINT nY);
-void MouseLDown(CStringArray* saData);
-void MouseRDown(UINT nX, UINT nY);
-void MouseRDown(CStringArray* saData);
+int MouseLDown(UINT nX, UINT nY);
+int MouseLDown(CStringArray* saData);
+int MouseRDown(UINT nX, UINT nY);
+int MouseRDown(CStringArray* saData);
 
-void MouseLUp(UINT nX, UINT nY);
-void MouseLUp(CStringArray* saData);
-void MouseRUp(UINT nX, UINT nY);
-void MouseRUp(CStringArray* saData);
+int MouseLUp(UINT nX, UINT nY);
+int MouseLUp(CStringArray* saData);
+int MouseRUp(UINT nX, UINT nY);
+int MouseRUp(CStringArray* saData);
 
-void MoveMouse(UINT nX, UINT nY);
-void MoveMouse(CStringArray* saData);
-void MouseVWheel(int iWheel);
-void MouseVWheel(CStringArray* saData);
+int MoveMouse(UINT nX, UINT nY);
+int MoveMouse(CStringArray* saData);
+int MouseVWheel(int iWheel);
+int MouseVWheel(CStringArray* saData);
 
-void MouseLClick(UINT nX, UINT nY);
-void MouseLClick(CStringArray* saData);
-void MouseRClick(UINT nX, UINT nY);
-void MouseRClick(CStringArray* saData);
+int MouseLClick(UINT nX, UINT nY);
+int MouseLClick(CStringArray* saData);
+int MouseRClick(UINT nX, UINT nY);
+int MouseRClick(CStringArray* saData);
 
 extern int g_iClickDulation;

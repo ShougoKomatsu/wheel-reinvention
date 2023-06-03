@@ -3,107 +3,114 @@
 
 int g_iClickDulation = 50;
 
-void MouseLDown(UINT nX, UINT nY)
+int MouseLDown(UINT nX, UINT nY)
 {
 	DWORD dwX, dwY;
 	dwX = (nX+1) * 65535/ ::GetSystemMetrics(SM_CXSCREEN);
 	dwY = (nY+1) * 65535/ ::GetSystemMetrics(SM_CYSCREEN);
 	mouse_event(MOUSEEVENTF_ABSOLUTE|MOUSEEVENTF_LEFTDOWN, dwX, dwY, NULL, NULL);
-	Sleep(50);
+	return 0;
 }
-void MouseLDown(CStringArray* saData)
+int MouseLDown(CStringArray* saData)
 {
-	if(saData->GetCount()==0){MouseLDown(g_iC, g_iR);}
-	else{MouseLDown(_ttoi(saData->GetAt(0)),_ttoi(saData->GetAt(1)));}
+	if(saData->GetCount()==0){return MouseLDown(g_iC, g_iR);}
+	else{return MouseLDown(_ttoi(saData->GetAt(0)),_ttoi(saData->GetAt(1)));}
 }
 
-void MouseRDown(UINT nX, UINT nY)
+int MouseRDown(UINT nX, UINT nY)
 {
 	DWORD dwX, dwY;
 	dwX = (nX+1) * 65535/ ::GetSystemMetrics(SM_CXSCREEN);
 	dwY = (nY+1) * 65535/ ::GetSystemMetrics(SM_CYSCREEN);
 	mouse_event(MOUSEEVENTF_ABSOLUTE|MOUSEEVENTF_RIGHTDOWN, dwX, dwY, NULL, NULL);
-	Sleep(50);
-}
-void MouseRDown(CStringArray* saData)
-{
-	if(saData->GetCount()==0){MouseRDown(g_iC, g_iR);}
-	else{MouseRDown(_ttoi(saData->GetAt(0)),_ttoi(saData->GetAt(1)));}
+	return 0;
 }
 
-void MouseLUp(UINT nX, UINT nY)
+int MouseRDown(CStringArray* saData)
+{
+	if(saData->GetCount()==0){return MouseRDown(g_iC, g_iR);}
+	else{return MouseRDown(_ttoi(saData->GetAt(0)),_ttoi(saData->GetAt(1)));}
+}
+
+int MouseLUp(UINT nX, UINT nY)
 {
 	DWORD dwX, dwY;
 	dwX = (nX+1) * 65535/ ::GetSystemMetrics(SM_CXSCREEN);
 	dwY = (nY+1) * 65535/ ::GetSystemMetrics(SM_CYSCREEN);
 	mouse_event(MOUSEEVENTF_ABSOLUTE|MOUSEEVENTF_LEFTUP, dwX, dwY, NULL, NULL);
+	return 0;
 }
-void MouseLUp(CStringArray* saData)
+int MouseLUp(CStringArray* saData)
 {
-	if(saData->GetCount()==0){MouseLUp(g_iC, g_iR);}
-	else{MouseLUp(_ttoi(saData->GetAt(0)),_ttoi(saData->GetAt(1)));}
+	if(saData->GetCount()==0){return MouseLUp(g_iC, g_iR);}
+	else{return MouseLUp(_ttoi(saData->GetAt(0)),_ttoi(saData->GetAt(1)));}
 }
 
-void MouseRUp(UINT nX, UINT nY)
+int MouseRUp(UINT nX, UINT nY)
 {
 	DWORD dwX, dwY;
 	dwX = (nX+1) * 65535/ ::GetSystemMetrics(SM_CXSCREEN);
 	dwY = (nY+1) * 65535/ ::GetSystemMetrics(SM_CYSCREEN);
 	mouse_event(MOUSEEVENTF_ABSOLUTE|MOUSEEVENTF_RIGHTUP, dwX, dwY, NULL, NULL);
+	return 0;
 }
-void MouseRUp(CStringArray* saData)
+int MouseRUp(CStringArray* saData)
 {
-	if(saData->GetCount()==0){MouseRUp(g_iC, g_iR);}
-	else{MouseRUp(_ttoi(saData->GetAt(0)),_ttoi(saData->GetAt(1)));}
+	if(saData->GetCount()==0){return MouseRUp(g_iC, g_iR);}
+	else{return MouseRUp(_ttoi(saData->GetAt(0)),_ttoi(saData->GetAt(1)));}
 }
 
-void MouseLClick(UINT nX, UINT nY)
+int MouseLClick(UINT nX, UINT nY)
 {
 	MoveMouse(nX, nY);
 	MouseLDown(nX, nY);
 	Sleep(g_iClickDulation);
-	MouseLUp(nX, nY);
+	return MouseLUp(nX, nY);
 }
 
-void MouseLClick(CStringArray* saData)
+int MouseLClick(CStringArray* saData)
 {
-	if(saData->GetCount()==0){MouseLClick(g_iC, g_iR);}
-	else{MouseLClick(_ttoi(saData->GetAt(0)),_ttoi(saData->GetAt(1)));}
+	if(saData->GetCount()==0){return MouseLClick(g_iC, g_iR);}
+	else{return MouseLClick(_ttoi(saData->GetAt(0)),_ttoi(saData->GetAt(1)));}
 }
 
 
-void MouseRClick(UINT nX, UINT nY)
+int MouseRClick(UINT nX, UINT nY)
 {
 	MoveMouse(nX, nY);
 	MouseRDown(nX, nY);
 	Sleep(g_iClickDulation);
-	MouseRUp(nX, nY);
+	return MouseRUp(nX, nY);
 }
 
-void MouseRClick(CStringArray* saData)
+int MouseRClick(CStringArray* saData)
 {
-	if(saData->GetCount()==0){MouseRClick(g_iC, g_iR);}
-	else{MouseRClick(_ttoi(saData->GetAt(0)),_ttoi(saData->GetAt(1)));}
+	if(saData->GetCount()==0){return MouseRClick(g_iC, g_iR);}
+	else{return MouseRClick(_ttoi(saData->GetAt(0)),_ttoi(saData->GetAt(1)));}
 }
 
 
-void MoveMouse(UINT nX, UINT nY)
+int MoveMouse(UINT nX, UINT nY)
 {
 	DWORD dwX, dwY;
 	dwX = (nX+1) * 65535/ ::GetSystemMetrics(SM_CXSCREEN);
 	dwY = (nY+1) * 65535/ ::GetSystemMetrics(SM_CYSCREEN);
 	mouse_event(MOUSEEVENTF_ABSOLUTE|MOUSEEVENTF_MOVE, dwX, dwY, NULL, NULL);
-}
-void MoveMouse(CStringArray* saData)
-{
-	MoveMouse(_ttoi(saData->GetAt(0)),_ttoi(saData->GetAt(1)));
+	return 0;
 }
 
-void MouseVWheel(int iWheel)
+int MoveMouse(CStringArray* saData)
+{
+	return MoveMouse(_ttoi(saData->GetAt(0)),_ttoi(saData->GetAt(1)));
+}
+
+int MouseVWheel(int iWheel)
 {
 	mouse_event(MOUSEEVENTF_ABSOLUTE|MOUSEEVENTF_WHEEL, 0, 0, iWheel, NULL);
+	return 0;
 }
-void MouseVWheel(CStringArray* saData)
+
+int MouseVWheel(CStringArray* saData)
 {
-	MouseVWheel(_ttoi(saData->GetAt(0)));
+	return MouseVWheel(_ttoi(saData->GetAt(0)));
 }
