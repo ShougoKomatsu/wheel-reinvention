@@ -1,7 +1,4 @@
 Wait ctrl off
 Wait shift off
-Space
-a
-A
-b
-!
+
+RMouse Click(300, 400)

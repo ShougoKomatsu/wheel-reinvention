@@ -471,22 +471,26 @@ VOID GetExeOtherProcessIds(CString sTargetExeName, DWORD* dwExeProcessIds, DWORD
 
 		TCHAR szProcessName[MAX_PATH] = _T("<unknown>");
 
-		HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,FALSE,dwAllProcessIds[i]);
-
+		HANDLE hProcess = NULL;
+		hProcess=OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,FALSE,dwAllProcessIds[i]);
 		if (hProcess == NULL){continue;}
+
 		HMODULE hMod;
 		DWORD cbNeeded;
-
-		if (EnumProcessModules(hProcess, &hMod, sizeof(hMod),&cbNeeded))
+		bRet = EnumProcessModules(hProcess, &hMod, sizeof(hMod),&cbNeeded);
+		if (bRet != TRUE)
 		{
-			GetModuleBaseName(hProcess, hMod, szProcessName,sizeof(szProcessName) / sizeof(TCHAR));
+			CloseHandle(hProcess);
+			continue;
+		}
 
-			CString sProcName = CString(szProcessName);
-			if (sProcName.CompareNoCase(sTargetExeName)==0)
-			{
-				dwExeProcessIds[j] = dwAllProcessIds[i];
-				j++;
-			}
+		GetModuleBaseName(hProcess, hMod, szProcessName,sizeof(szProcessName) / sizeof(TCHAR));
+
+		CString sProcName = CString(szProcessName);
+		if (sProcName.CompareNoCase(sTargetExeName)==0)
+		{
+			dwExeProcessIds[j] = dwAllProcessIds[i];
+			j++;
 		}
 		CloseHandle(hProcess);
 	}

@@ -449,6 +449,20 @@ int OperateCommand(int* iSceneData, LPVOID Halt, LPVOID Suspend, LONGLONG* Speci
 			MouseLUp(&saData);
 			return 0;
 		}
+		
+	case COMMAND_MOUSE_R_DOWN:
+		{
+			MoveMouse(&saData);
+			MouseRDown(&saData);
+			return 0;
+		}
+
+	case COMMAND_MOUSE_R_UP:
+		{
+			MoveMouse(&saData);
+			MouseRUp(&saData);
+			return 0;
+		}
 
 	case COMMAND_MOUSE_MOVE:
 		{
@@ -470,6 +484,13 @@ int OperateCommand(int* iSceneData, LPVOID Halt, LPVOID Suspend, LONGLONG* Speci
 			MouseLClick(&saData);
 			return 0;
 		}
+		
+	case COMMAND_MOUSE_R_CLICK:
+		{
+			MouseRClick(&saData);
+			return 0;
+		}
+
 	case COMMAND_KEY_DOWN_UP:
 		{
 			iRet = KeyDownAndUp(&saData);
