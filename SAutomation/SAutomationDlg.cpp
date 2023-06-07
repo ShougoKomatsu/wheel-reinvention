@@ -610,6 +610,7 @@ BOOL CSAutomationDlg::OnInitDialog()
 	m_sliderSpeed.SetPos(50);
 	UpdateData(FALSE);
 
+
 	TrayNotifyIconMessage(NIM_ADD);
 
 	// このダイアログのアイコンを設定します。アプリケーションのメイン ウィンドウがダイアログでない場合、

@@ -428,7 +428,6 @@ int OperateCommand(int* iSceneData, LPVOID Halt, LPVOID Suspend, LONGLONG* Speci
 {
 	int iCommandType=COMMAND_UNDEFINED;
 	BOOL bRet;
-	int iRet;
 	CStringArray saData;
 	bRet = PerseCommand(iSceneData, sDataLine, &iCommandType, &saData);
 	if(iCommandType == COMMAND_NOTING){return 0;}
@@ -452,8 +451,8 @@ int OperateCommand(int* iSceneData, LPVOID Halt, LPVOID Suspend, LONGLONG* Speci
 
 	case COMMAND_KEY_DOWN_UP:{return KeyDownAndUp(&saData);}
 	case COMMAND_KEY_DOWN:{return KeyDown(&saData);}
-
 	case COMMAND_KEY_UP:{return KeyUp(&saData);}
+
 	case COMMAND_WAIT:{return WaitForKey(Halt, Suspend, &saData);}
 	case COMMAND_MAXIMIZE:{return Maximize();}
 	case COMMAND_MINIMIZE:{return Minimize();}
@@ -464,5 +463,5 @@ int OperateCommand(int* iSceneData, LPVOID Halt, LPVOID Suspend, LONGLONG* Speci
 	case COMMAND_NOTING:{return 0;}
 	default:{return -1;}
 	}
-	return iRet;
+	return -1;
 }
