@@ -1,6 +1,6 @@
 ﻿
 1000
-Ctrl Down
-v
-Ctrl Up
 
+Alt Down
+Tab
+Alt Up

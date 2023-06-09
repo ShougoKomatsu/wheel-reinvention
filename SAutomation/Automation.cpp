@@ -237,7 +237,7 @@ int GetKeyCode(CString sData, BOOL* bUnicode, TCHAR* tch, BYTE* byData)
 		return 0;
 	}
 	if(sData.CompareNoCase(_T("shift"))==0){*byData= VK_SHIFT;return 0;}
-	if(sData.CompareNoCase(_T("alt"))==0){*byData= VK_SHIFT;return 0;}
+	if(sData.CompareNoCase(_T("alt"))==0){*byData= VK_MENU;return 0;}
 
 	if(sData.CompareNoCase(_T("Å©"))==0){*byData= VK_LEFT;return 0;}
 	if(sData.CompareNoCase(_T("Å™"))==0){*byData= VK_UP;return 0;}

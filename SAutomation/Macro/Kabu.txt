@@ -1,3 +1,19 @@
-﻿Ctrl Down
-v
+﻿Wait Ctrl off
+Wait Shift off
+Ctrl Down
+c
 Ctrl up
+1000
+
+Alt Down
+Tab
+Alt Up
+1000
+
+LMouse Click(500, 105)
+100
+Ctrl Down
+v
+Ctrl Up
+100
+LMouse Click(565, 105)
