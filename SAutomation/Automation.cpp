@@ -293,9 +293,25 @@ int GetKeyCode(CString sData, BOOL* bUnicode, TCHAR* tch, BYTE* byData)
 	
 	if(sData.GetLength()==1)
 	{
-		for(char cChar = ' '; cChar<'~'; cChar++)
+		char cChar;
+		cChar = sData.GetAt(0);
+		if(('0'<=cChar)&&(cChar <= '9'))
 		{
-			if(sData.GetAt(0)==cChar){*byData = cChar;*bUnicode = FALSE; *byData = cChar;return 0;}
+			*byData = sData.GetAt(0);
+			*bUnicode = FALSE;
+			return 0;
+		}
+		if(('A' <= cChar) &&(cChar <= 'Z'))
+		{
+			*byData = sData.GetAt(0);
+			*bUnicode = FALSE;
+			return 0;
+		}
+		if(('a' <= cChar) &&(cChar <= 'z'))
+		{
+			*byData = sData.GetAt(0)-'a'+'A';
+			*bUnicode = FALSE;
+			return 0;
 		}
 	}
 
