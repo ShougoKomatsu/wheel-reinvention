@@ -77,7 +77,7 @@ DWORD WINAPI CommandThread(LPVOID arg)
 	(*(int*)arg) = 0;  
 
 	int iScene;
-	iScene = (iData&0x07);
+	iScene = (iData&0x0F);
 
 	ReadTextFile(g_sFilePath[iScene],&saCommands);
 	g_iSceneData[iScene]=iScene;
