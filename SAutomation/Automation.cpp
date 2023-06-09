@@ -231,8 +231,13 @@ int GetKeyCode(CString sData, BOOL* bUnicode, TCHAR* tch, BYTE* byData)
 	byDataLocal = 0;
 	*bUnicode = FALSE;
 	*tch = 0;
-	if(sData.CompareNoCase(_T("ctrl"))==0){*byData= VK_CONTROL;return 0;}
+	if(sData.CompareNoCase(_T("ctrl"))==0)
+	{
+		*byData= VK_CONTROL;
+		return 0;
+	}
 	if(sData.CompareNoCase(_T("shift"))==0){*byData= VK_SHIFT;return 0;}
+	if(sData.CompareNoCase(_T("alt"))==0){*byData= VK_SHIFT;return 0;}
 
 	if(sData.CompareNoCase(_T("Å©"))==0){*byData= VK_LEFT;return 0;}
 	if(sData.CompareNoCase(_T("Å™"))==0){*byData= VK_UP;return 0;}
@@ -284,6 +289,16 @@ int GetKeyCode(CString sData, BOOL* bUnicode, TCHAR* tch, BYTE* byData)
 	if(sData.CompareNoCase(_T("enter"))==0){*byData = VK_RETURN;return 0;}
 	if(sData.CompareNoCase(_T("return"))==0){*byData = VK_RETURN;return 0;}
 	if(sData.CompareNoCase(_T("space"))==0){*byData = VK_SPACE;return 0;}
+
+	
+	if(sData.GetLength()==1)
+	{
+		for(char cChar = ' '; cChar<'~'; cChar++)
+		{
+			if(sData.GetAt(0)==cChar){*byData = cChar;*bUnicode = FALSE; *byData = cChar;return 0;}
+		}
+	}
+
 
 	*bUnicode = TRUE;
 	*byData = 0x00;
@@ -396,7 +411,7 @@ int KeyDownAndUp(CStringArray* saData)
 	GetKeyCode(saData->GetAt(0), &bUnicode, &tch, &bySendKey);
 	if(bUnicode == TRUE){return KeyDownAndUpUnicode(tch);}
 
-	return KeyDown(bySendKey);
+	return KeyDownAndUp(bySendKey);
 }
 
 
@@ -408,6 +423,7 @@ int KeyDown(CStringArray* saData)
 
 	GetKeyCode(saData->GetAt(0), &bUnicode, &tch, &bySendKey);
 	if(bUnicode == TRUE){return KeyDownUnicode(tch);}
+
 	return KeyDown(bySendKey);
 }
 
@@ -421,6 +437,7 @@ int KeyUp(CStringArray* saData)
 
 	GetKeyCode(saData->GetAt(0), &bUnicode, &tch, &bySendKey);
 	if(bUnicode == TRUE){return KeyUpUnicode(tch);}
+
 	return KeyUp(bySendKey);
 }
 
