@@ -1,1 +1,2 @@
-﻿WindowForward Firefox
+﻿
+WindowForward Firefox

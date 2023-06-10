@@ -32,6 +32,7 @@ struct OperationInfo
 	DWORD dwHotKey;
 	BOOL m_bRunning;
 	CString sFileName;
+	OperationInfo(){m_bRunning=FALSE;}
 };
 
 // CSAutomationDlg ダイアログ
