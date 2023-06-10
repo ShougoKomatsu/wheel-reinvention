@@ -7,6 +7,8 @@
 #include "MouseGestureDlg.h"
 #include "afxdialogex.h"
 
+#include "MouseHook.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -71,7 +73,7 @@ BEGIN_MESSAGE_MAP(CMouseGestureDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 
-#include "MouseHook_ex.h"
+HHOOK g_hhook;
 BOOL CMouseGestureDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
@@ -109,10 +111,8 @@ BOOL CMouseGestureDlg::OnInitDialog()
 
 	// TODO: 初期化をここに追加します。
 	DWORD dwThreadID;
-	HINSTANCE hHookmodule;
-	hHookmodule = LoadLibrary("MouseHook.dll");
 
-	hhook=SetWindowsHookEx(WH_MOUSE,(HOOKPROC)MouseHookProc,hHookmodule ,0);
+	g_hhook=SetWindowsHookEx(WH_MOUSE_LL,(HOOKPROC)MouseHookProc,NULL ,0);
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }      
 
@@ -196,7 +196,7 @@ void CMouseGestureDlg::OnRButtonDown(UINT nFlags, CPoint point)
 void CMouseGestureDlg::OnClose()
 {
 	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
-	UnhookWindowsHookEx(hhook);
+	UnhookWindowsHookEx(g_hhook);
 
 	CDialogEx::OnClose();
 }
