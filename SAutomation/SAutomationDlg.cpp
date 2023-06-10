@@ -214,6 +214,7 @@ int g_iR=0;
 int g_iC=0;
 
 HANDLE g_hHotkey[MAX_THREAD];
+BOOL g_iMninizedOnce=FALSE;
 
 LRESULT CALLBACK MouseHookProc(int code, WPARAM wParam, LPARAM lParam)
 {
@@ -826,17 +827,20 @@ void CSAutomationDlg::OnTimer(UINT_PTR nIDEvent)
 				return;
 			}
 		}
-		if(g_iWatching==1){
-			UnregisterHotKey(NULL, HOTKEY_ID_ESCAPE); g_iWatching=0;
-		}
+		if(g_iWatching==1){UnregisterHotKey(NULL, HOTKEY_ID_ESCAPE); g_iWatching=0;}
 	}
 	if(nIDEvent == TIMER_WAKE_UP)
 	{
+
 		if(m_bAutoMinimize==TRUE)
 		{
-		ShowWindow( SW_MINIMIZE );
+			ShowWindow( SW_MINIMIZE );
+
+			if(IsIconic()==TRUE)
+			{
+				KillTimer(TIMER_WAKE_UP);
+			}
 		}
-		KillTimer(TIMER_WAKE_UP);
 	}
 	CDialogEx::OnTimer(nIDEvent);
 }
