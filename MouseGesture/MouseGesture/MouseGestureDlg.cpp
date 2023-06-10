@@ -14,6 +14,7 @@
 #endif
 
 
+#define TIMER_WAKE_UP (102)
 // アプリケーションのバージョン情報に使われる CAboutDlg ダイアログ
 
 class CAboutDlg : public CDialogEx
@@ -67,13 +68,34 @@ BEGIN_MESSAGE_MAP(CMouseGestureDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDOK, &CMouseGestureDlg::OnBnClickedOk)
 	ON_WM_RBUTTONDOWN()
-	ON_WM_CLOSE()
 	ON_WM_SHOWWINDOW()
 	ON_WM_WINDOWPOSCHANGING()
+    ON_MESSAGE(WM_TRAYNOTIFY, OnTrayNotify)
+	ON_WM_TIMER()
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 
 HHOOK g_hhook;
+
+
+BOOL CMouseGestureDlg::TrayNotifyIconMessage(DWORD dwMessage)
+{
+    CString sTip = _T("MouseGesture.exe");
+    NOTIFYICONDATA nid;
+
+    nid.cbSize = sizeof(NOTIFYICONDATA);
+    nid.hWnd   = GetSafeHwnd();
+	nid.uID    = IDR_MAINFRAME;
+    nid.uFlags = NIF_MESSAGE | NIF_ICON;
+    nid.uCallbackMessage = WM_TRAYNOTIFY;
+    nid.uFlags = NIF_MESSAGE | NIF_ICON | NIF_TIP;
+    nid.hIcon  = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_MAINFRAME));
+    _tcscpy_s(nid.szTip, _countof(nid.szTip), (LPCTSTR)sTip);
+    
+    return Shell_NotifyIcon(dwMessage, &nid);
+
+}
 BOOL CMouseGestureDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
@@ -102,11 +124,9 @@ BOOL CMouseGestureDlg::OnInitDialog()
 	//  Framework は、この設定を自動的に行います。
 	SetIcon(m_hIcon, TRUE);			// 大きいアイコンの設定
 	SetIcon(m_hIcon, FALSE);		// 小さいアイコンの設定
-
-	NOTIFYICONDATA nid = {}; 
-	nid.uVersion = NOTIFYICON_VERSION_4;
-	Shell_NotifyIcon(NIM_ADD, &nid);
-	Shell_NotifyIcon(NIM_SETVERSION, &nid);
+	
+	SetTimer(TIMER_WAKE_UP, 100, NULL);
+	TrayNotifyIconMessage(NIM_ADD);
 
 
 	// TODO: 初期化をここに追加します。
@@ -115,6 +135,26 @@ BOOL CMouseGestureDlg::OnInitDialog()
 	g_hhook=SetWindowsHookEx(WH_MOUSE_LL,(HOOKPROC)MouseHookProc,NULL ,0);
 	return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
 }      
+
+LRESULT CMouseGestureDlg::OnTrayNotify(WPARAM wParam, LPARAM lParam)
+{
+    switch (lParam)
+    {
+	case WM_LBUTTONUP: 
+		{
+            ShowWindow(SW_NORMAL);
+            SetForegroundWindow();
+            SetFocus();
+        break;
+		}
+    default:
+		{
+        break;
+		}
+    } 
+
+    return 0;
+}
 
 
 void CMouseGestureDlg::OnSysCommand(UINT nID, LPARAM lParam)
@@ -193,28 +233,36 @@ void CMouseGestureDlg::OnRButtonDown(UINT nFlags, CPoint point)
 }
 
 
-void CMouseGestureDlg::OnClose()
+BOOL CMouseGestureDlg::DestroyWindow()
 {
-	// TODO: ここにメッセージ ハンドラー コードを追加するか、既定の処理を呼び出します。
 	UnhookWindowsHookEx(g_hhook);
+    TrayNotifyIconMessage(NIM_DELETE);
 
-	CDialogEx::OnClose();
+	return CDialogEx::DestroyWindow();
+}
+
+void CMouseGestureDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	if(nIDEvent == TIMER_WAKE_UP)
+	{
+
+			ShowWindow( SW_MINIMIZE );
+
+			if(IsIconic()==TRUE)
+			{
+				KillTimer(TIMER_WAKE_UP);
+			}
+	}
+	CDialogEx::OnTimer(nIDEvent);
 }
 
 
-void CMouseGestureDlg::OnShowWindow(BOOL bShow, UINT nStatus)
+void CMouseGestureDlg::OnSize(UINT nType, int cx, int cy)
 {
-
-	CDialogEx::OnShowWindow(bShow, nStatus);
-
-	// TODO: ここにメッセージ ハンドラー コードを追加します。
-}
-
-
-void CMouseGestureDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
-{
-	lpwndpos->flags &= ~SWP_SHOWWINDOW;
-	CDialogEx::OnWindowPosChanging(lpwndpos);
-
-	// TODO: ここにメッセージ ハンドラー コードを追加します。
+	CDialogEx::OnSize(nType, cx, cy);
+	
+    if (nType == SIZE_MINIMIZED)
+    {
+        ShowWindow(SW_HIDE);
+    }
 }

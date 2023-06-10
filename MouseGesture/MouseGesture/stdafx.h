@@ -39,6 +39,7 @@
 
 
 
+#define WM_TRAYNOTIFY (WM_APP + 11)
 
 
 
