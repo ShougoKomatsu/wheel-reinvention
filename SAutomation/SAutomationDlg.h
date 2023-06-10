@@ -60,6 +60,7 @@ protected:
 
 	BOOL m_bEnableHotkey;
 	BOOL m_bAutoMinimize;
+	BOOL m_bMinimizeToTaskTray;
 	CString m_sHotkeyEnable;
 
 	
@@ -170,4 +171,5 @@ public:
 	afx_msg void OnKillfocusEditSpeed();
 	afx_msg void OnCustomdrawSliderSpeed(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedButtonConfing();
+	afx_msg void OnBnClickedCheckTasktray();
 };

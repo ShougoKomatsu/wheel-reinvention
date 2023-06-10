@@ -205,6 +205,7 @@ BEGIN_MESSAGE_MAP(CSAutomationDlg, CDialogEx)
 	ON_EN_KILLFOCUS(IDC_EDIT_SPEED, &CSAutomationDlg::OnKillfocusEditSpeed)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER_SPEED, &CSAutomationDlg::OnCustomdrawSliderSpeed)
 	ON_BN_CLICKED(IDC_BUTTON_CONFING, &CSAutomationDlg::OnBnClickedButtonConfing)
+	ON_BN_CLICKED(IDC_CHECK_TASKTRAY, &CSAutomationDlg::OnBnClickedCheckTasktray)
 END_MESSAGE_MAP()
 
 
@@ -393,6 +394,10 @@ void CSAutomationDlg::ReadSettings()
 	GetPrivateProfileString(_T("Common"),_T("AutoMnimize"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
 	if(wcscmp(szData,_T("1"))==0){m_bAutoMinimize=TRUE;}
 	else{m_bAutoMinimize=FALSE;}
+
+	GetPrivateProfileString(_T("Common"),_T("MinimizeToTasktray"),_T("0"),szData,sizeof(szData)/sizeof(TCHAR),sFilePath);
+	if(wcscmp(szData,_T("1"))==0){m_bMinimizeToTaskTray=TRUE;}
+	else{m_bMinimizeToTaskTray=FALSE;}
 }
 
 void CSAutomationDlg::SaveSettings()
@@ -453,6 +458,14 @@ void CSAutomationDlg::SaveSettings()
 	else
 	{
 		WritePrivateProfileString(_T("Common"),_T("AutoMnimize"),_T("0"),sFilePath);
+	}
+	if(((CButton*)GetDlgItem(IDC_CHECK_TASKTRAY))->GetCheck()==1)
+	{
+		WritePrivateProfileString(_T("Common"),_T("MinimizeToTasktray"),_T("1"),sFilePath);
+	}
+	else
+	{
+		WritePrivateProfileString(_T("Common"),_T("MinimizeToTasktray"),_T("0"),sFilePath);
 	}
 }
 
@@ -594,6 +607,15 @@ BOOL CSAutomationDlg::OnInitDialog()
 	else
 	{
 		((CButton*)GetDlgItem(IDC_CHECK_AUTO_MINIMIZE))->SetCheck(0);
+	}
+
+	if(m_bMinimizeToTaskTray==TRUE)
+	{
+		((CButton*)GetDlgItem(IDC_CHECK_TASKTRAY))->SetCheck(1);
+	}
+	else
+	{
+		((CButton*)GetDlgItem(IDC_CHECK_TASKTRAY))->SetCheck(0);
 	}
 
 	if(m_bEnableHotkey==TRUE)
@@ -1037,7 +1059,10 @@ void CSAutomationDlg::OnSize(UINT nType, int cx, int cy)
 	
     if (nType == SIZE_MINIMIZED)
     {
+		if(m_bMinimizeToTaskTray==TRUE)
+		{
         ShowWindow(SW_HIDE);
+		}
     }
 }
 
@@ -1088,4 +1113,19 @@ void CSAutomationDlg::OnCustomdrawSliderSpeed(NMHDR *pNMHDR, LRESULT *pResult)
 void CSAutomationDlg::OnBnClickedButtonConfing()
 {
 	// TODO: ここにコントロール通知ハンドラー コードを追加します。
+}
+
+
+void CSAutomationDlg::OnBnClickedCheckTasktray()
+{
+	
+	if(((CButton*)GetDlgItem(IDC_CHECK_TASKTRAY))->GetCheck()==1)
+	{
+		m_bMinimizeToTaskTray=TRUE;
+	}
+	else
+	{
+		m_bMinimizeToTaskTray=FALSE;
+	}
+
 }
