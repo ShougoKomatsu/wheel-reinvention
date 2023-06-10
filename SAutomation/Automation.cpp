@@ -18,17 +18,52 @@ int Minimize()
 	return 0;
 }
 
+#define MAX_WINDOW_HANDLE (4096)
+HWND g_hWnds[MAX_WINDOW_HANDLE];
+int g_iWnd=0;
 
-int SetWindowForward(CString sWindowName)
+BOOL CALLBACK EnumWindowsFunc(HWND hWnd, LPARAM lParam)
 {
-	HWND hwnd;
-	hwnd = FindWindow(nullptr,sWindowName);
-	if(hwnd <=0){return -1;}
+	g_hWnds[g_iWnd]=hWnd;
+	g_iWnd++;
+	if(g_iWnd>=MAX_WINDOW_HANDLE){return FALSE;}
 
+	return TRUE;
+}
 
-	if(SetForegroundWindow(hwnd) == FALSE){return -1;};
+int SetWindowForward(CString sTargetName)
+{
+
+	WCHAR wszWindowName[MAX_PATH];
+	CString sWindowName;
+
+	g_iWnd=0;
+	EnumWindows(EnumWindowsFunc, 0) ;
+
+	int iTargetHandle;
+	BOOL bFound;
+	bFound = FALSE;
+	iTargetHandle=0;
+	for(int i=0; i<g_iWnd; i++)
+	{
+		GetWindowText(g_hWnds[i],wszWindowName,MAX_PATH);
+		sWindowName.Format(_T("%s"), wszWindowName);
+		if(sWindowName.Find(sTargetName)>0){bFound = TRUE;iTargetHandle = i;break;}
+	}
+
+	if(bFound != TRUE){return -1;}
+
+	BOOL bRet;
+	bRet = ShowWindow(g_hWnds[iTargetHandle], SW_RESTORE);
+	if(bRet != TRUE){return -1;}
+	bRet = SetForegroundWindow(g_hWnds[iTargetHandle]);
+	if(bRet != TRUE){return -1;}
+
 	return 0;
 }
+
+
+
 int WindowSize(CStringArray* saData)
 {
 	HWND hwnd = GetForegroundWindow();
