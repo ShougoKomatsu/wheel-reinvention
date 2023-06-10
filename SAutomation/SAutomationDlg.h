@@ -29,6 +29,8 @@ struct OperationInfo
 	CString sHotkey;
 	BOOL bUseCtrl;
 	BOOL bUseShift;
+	BOOL bUseAlt;
+	BOOL bUseWin;
 	DWORD dwHotKey;
 	BOOL m_bRunning;
 	CString sFileName;
