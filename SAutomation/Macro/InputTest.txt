@@ -1,2 +1,2 @@
-﻿
-WindowForward Firefox
+﻿1000
+LMouse Down(500,500)

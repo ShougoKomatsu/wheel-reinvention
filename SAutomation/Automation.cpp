@@ -354,11 +354,11 @@ int OperateCommand(int* iSceneData, LPVOID Halt, LPVOID Suspend, LONGLONG* Speci
 	{
 	case COMMAND_DELAY:{return K_Sleep(Halt, Suspend, _ttoi(saData.GetAt(0)));}
 
-	case COMMAND_MOUSE_L_DOWN:{return MoveMouse(&saData);MouseLDown(&saData);}
-	case COMMAND_MOUSE_R_DOWN:{return MoveMouse(&saData);MouseRDown(&saData);}
+	case COMMAND_MOUSE_L_DOWN:{MoveMouse(&saData);return MouseLDown(&saData);}
+	case COMMAND_MOUSE_R_DOWN:{MoveMouse(&saData);return MouseRDown(&saData);}
 
-	case COMMAND_MOUSE_L_UP:{return MoveMouse(&saData);MouseLUp(&saData);}
-	case COMMAND_MOUSE_R_UP:{return MoveMouse(&saData);MouseRUp(&saData);}
+	case COMMAND_MOUSE_L_UP:{MoveMouse(&saData);return MouseLUp(&saData);}
+	case COMMAND_MOUSE_R_UP:{MoveMouse(&saData);return MouseRUp(&saData);}
 
 	case COMMAND_MOUSE_L_CLICK:{return MouseLClick(&saData);}
 	case COMMAND_MOUSE_R_CLICK:{return MouseRClick(&saData);}
