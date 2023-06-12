@@ -1,4 +1,1 @@
-Wait ctrl off
-Wait shift off
-
-RMouse Click(300, 400)
+WindowForward ArtViewer

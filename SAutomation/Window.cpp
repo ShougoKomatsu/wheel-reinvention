@@ -97,7 +97,7 @@ int SetWindowForward(CString sTargetName)
 	{
 		GetWindowText(g_hWnds[i],wszWindowName,MAX_PATH);
 		sWindowName.Format(_T("%s"), wszWindowName);
-		if(sWindowName.Find(sTargetName)>0){bFound = TRUE;iTargetHandle = i;break;}
+		if(sWindowName.Find(sTargetName)>=0){bFound = TRUE;iTargetHandle = i;break;}
 	}
 
 	if(bFound != TRUE){return -1;}
