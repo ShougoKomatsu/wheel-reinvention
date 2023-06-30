@@ -93,7 +93,7 @@ BOOL SendClose()
 
 
 int g_x_start;
-int g_g_y_start;
+int g_y_start;
 
 int g_iRightHolding = 0;
 int g_iLeftHolding = 0;
@@ -132,7 +132,7 @@ LRESULT CALLBACK  MouseHookProc(int code, WPARAM wParam, LPARAM lParam)
 			GetCursorPos(&p);
 			double ddx, ddy;
 			ddx = p.x-g_x_start;
-			ddy = p.y-g_g_y_start;
+			ddy = p.y-g_y_start;
 			if((fabs(ddx)>=50) || (fabs(ddy)>=50))
 			{
 				if(fabs(ddx)>fabs(ddy))
@@ -141,7 +141,7 @@ LRESULT CALLBACK  MouseHookProc(int code, WPARAM wParam, LPARAM lParam)
 					{
 						if(g_pathIndex>=2)
 						{
-							if(g_path[g_pathIndex-1]==0){g_x_start=p.x;g_g_y_start=p.y;break;}
+							if(g_path[g_pathIndex-1]==0){g_x_start=p.x;g_y_start=p.y;break;}
 						}
 						g_path[g_pathIndex]=0;
 					}
@@ -149,7 +149,7 @@ LRESULT CALLBACK  MouseHookProc(int code, WPARAM wParam, LPARAM lParam)
 					{
 						if(g_pathIndex>=2)
 						{
-							if(g_path[g_pathIndex-1]==180){g_x_start=p.x;g_g_y_start=p.y;break;}
+							if(g_path[g_pathIndex-1]==180){g_x_start=p.x;g_y_start=p.y;break;}
 						}
 						g_path[g_pathIndex]=180;
 					}
@@ -160,7 +160,7 @@ LRESULT CALLBACK  MouseHookProc(int code, WPARAM wParam, LPARAM lParam)
 					{
 						if(g_pathIndex>=2)
 						{
-							if(g_path[g_pathIndex-1]==270){g_x_start=p.x;g_g_y_start=p.y;break;}
+							if(g_path[g_pathIndex-1]==270){g_x_start=p.x;g_y_start=p.y;break;}
 						}
 						g_path[g_pathIndex]=270;
 					}
@@ -168,14 +168,14 @@ LRESULT CALLBACK  MouseHookProc(int code, WPARAM wParam, LPARAM lParam)
 					{
 						if(g_pathIndex>=2)
 						{
-							if(g_path[g_pathIndex-1]!=90){g_x_start=p.x;g_g_y_start=p.y;break;}
+							if(g_path[g_pathIndex-1]!=90){g_x_start=p.x;g_y_start=p.y;break;}
 						}
 						g_path[g_pathIndex]=90;
 					}
 				}
 				g_pathIndex++;
 				g_x_start=p.x;
-				g_g_y_start=p.y;
+				g_y_start=p.y;
 
 			}
 			break;
@@ -194,6 +194,18 @@ LRESULT CALLBACK  MouseHookProc(int code, WPARAM wParam, LPARAM lParam)
 			break;
 		}
 
+
+	case WM_LBUTTONUP:
+		{
+			g_iLeftHolding=0;
+			g_pathIndex=0;
+			if(g_iRightHolding==1){return 0;}
+
+			if(g_iAnyAction==1){g_iAnyAction=0;return 0;}
+			g_iAnyAction=0;
+			break;
+		}
+		
 	case WM_RBUTTONDOWN:
 		{
 			g_iRightHolding=1;
@@ -208,7 +220,7 @@ LRESULT CALLBACK  MouseHookProc(int code, WPARAM wParam, LPARAM lParam)
 			POINT p;
 			GetCursorPos(&p);
 			g_x_start=p.x;
-			g_g_y_start=p.y;
+			g_y_start=p.y;
 
 			g_pathIndex=0;
 
@@ -217,30 +229,12 @@ LRESULT CALLBACK  MouseHookProc(int code, WPARAM wParam, LPARAM lParam)
 		}
 
 
-	case WM_LBUTTONUP:
-		{
-			g_iLeftHolding=0;
-			if(g_iRightHolding==1)
-			{
-				SendEscape();
-				g_iLeftHolding=0;
-				g_iAnyAction=1;
-				return 0;
-			}
-
-			g_iAnyAction=0;
-			break;
-		}
 	case WM_RBUTTONUP:
 		{
 			g_iRightHolding=0;
-			if(g_iAnyAction==1)
-			{
-				SendEscape();
-				g_pathIndex=0;
-				g_iAnyAction=0;
-				return 0;
-			}
+
+			if(g_iLeftHolding==1){g_pathIndex=0;return 0;}
+			if(g_iAnyAction==1){g_pathIndex=0;g_iAnyAction=0;return 0;}
 
 
 			int iPathOut[10];
@@ -261,7 +255,7 @@ LRESULT CALLBACK  MouseHookProc(int code, WPARAM wParam, LPARAM lParam)
 			g_pathIndex=0;
 			if(g_iAnyAction==1)
 			{
-				SendEscape();
+//				SendEscape();
 				g_iAnyAction=0;
 				return 0;
 			}
